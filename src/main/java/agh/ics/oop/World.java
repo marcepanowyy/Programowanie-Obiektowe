@@ -3,7 +3,6 @@ package agh.ics.oop;
 import java.util.ArrayList;
 import java.util.List;
 
-// test test
 
 public class World {
 
