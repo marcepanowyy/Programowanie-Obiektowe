@@ -33,6 +33,7 @@ public class World {
                 }
             }
 
+
         run(FilteredDirections);
         System.out.println("system zakonczyl dzialanie");
     }
