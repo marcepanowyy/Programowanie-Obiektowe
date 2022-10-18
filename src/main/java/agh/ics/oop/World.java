@@ -6,43 +6,36 @@ import java.util.List;
 
 public class World {
 
+    public static final Vector2d bottomLeftVector = new Vector2d(0, 0);
+    public static final Vector2d topRightVector = new Vector2d(4, 4);
+
     public static void main(String[] args){
 
-        System.out.println("system wystartowal");
-
-        List <Direction> FilteredDirections = new ArrayList<>();
-
-        for(String arg: args){
-
-            switch(arg)
-                {
-                    case "f": FilteredDirections.add(Direction.FORWARD);
-                    break;
-
-                    case "b": FilteredDirections.add(Direction.BACKWARD);
-                    break;
-
-                    case "l": FilteredDirections.add(Direction.LEFT);
-                    break;
-
-                    case "r": FilteredDirections.add(Direction.RIGHT);
-                    break;
-
-                    default: ;
-
-                }
-            }
+//        Animal animal = new Animal();
+//        System.out.print(animal.getPosition());
+//        System.out.println(animal);
 
 
-        run(FilteredDirections);
-        System.out.println("system zakonczyl dzialanie");
-    }
-    public static void run(List<Direction>directions){
+//        ArrayList<MoveDirection> directions1 = OptionsParser.parse(new String[]{"r", "f", "f", "f", "f"});
+//        for(MoveDirection move: directions1){
+//            animal.move(move);
+//            System.out.print(animal.getPosition());
+//            System.out.println(animal);
+//        }
 
-        for(Direction move: directions){
-            System.out.println(move.getDisplayName());
+
+//        String testing = "f backward o pies kot szczur i p f f b f b f l r f f l w w";
+//        ArrayList<MoveDirection> directions2;
+//        directions2 = OptionsParser.parse(testing.split(" "));
+//
+//        for(MoveDirection move: directions2){
+//            animal.move(move);
+//            System.out.print(animal.getPosition());
+//            System.out.println(animal);
+//        }
+
         }
 
-    }
 
 }
+

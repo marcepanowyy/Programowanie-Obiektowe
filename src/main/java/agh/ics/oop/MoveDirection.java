@@ -6,3 +6,4 @@ public enum MoveDirection {
     RIGHT,
     LEFT;
 }
+
