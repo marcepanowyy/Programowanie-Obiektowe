@@ -48,7 +48,7 @@ public class AnimalTest {
 
     for(int i = 0; i < parsed.size(); i++){
         animal.move(parsed.get(i));
-        assertEquals(expected[i], animal.orientation);
+        assertEquals(expected[i], animal.getOrientation());
     }
     }
 
@@ -78,7 +78,7 @@ public class AnimalTest {
 
         for(int i = 0; i < parsed.size(); i++){
             animal.move(parsed.get(i));
-            assertEquals(expected[i], animal.position.toString());
+            assertEquals(expected[i], animal.getPosition().toString());
         }
     }
 }

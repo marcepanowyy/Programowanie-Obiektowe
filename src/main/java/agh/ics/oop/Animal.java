@@ -5,8 +5,8 @@ import java.util.List;
 
 public class Animal {
 
-    MapDirection orientation = MapDirection.NORTH;
-    Vector2d position = new Vector2d(2, 2);
+    private MapDirection orientation = MapDirection.NORTH;
+    private Vector2d position = new Vector2d(2, 2);
 
 
     public String toString(){
@@ -20,6 +20,11 @@ public class Animal {
 
     public Vector2d getPosition() {
         return this.position;
+    }
+
+
+    public MapDirection getOrientation() {
+        return orientation;
     }
 
     public boolean isAt(Vector2d position){
@@ -55,8 +60,6 @@ public class Animal {
     public boolean onMap(Vector2d position){
         return (position.follows(World.bottomLeftVector) && position.precedes(World.topRightVector));
     }
-
-
 
 
 
