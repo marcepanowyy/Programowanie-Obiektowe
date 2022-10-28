@@ -1,12 +1,10 @@
 package agh.ics.oop;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class Animal {
 
     private MapDirection orientation = MapDirection.NORTH;
-    private Vector2d position = new Vector2d(2, 2);
+    private Vector2d position;
+    private final IWorldMap map;
 
 
     public String toString(){
@@ -18,10 +16,19 @@ public class Animal {
         };
     }
 
-    public Vector2d getPosition() {
-        return this.position;
+    public Animal(IWorldMap map){
+        this.map = map;
+        position = new Vector2d(2, 2);
+
+    }
+    public Animal(IWorldMap map, Vector2d initialPosition){
+        this.map = map;
+        position = initialPosition;
     }
 
+    public Vector2d getPosition() {
+        return position;
+    }
 
     public MapDirection getOrientation() {
         return orientation;
@@ -37,30 +44,24 @@ public class Animal {
 
         switch (direction) {
 
-            case RIGHT:
-                orientation = orientation.next();
-                break;
+            case RIGHT -> orientation = orientation.next();
 
-            case LEFT:
-                orientation = orientation.previous();
-                break;
+            case LEFT -> orientation = orientation.previous();
 
-            case FORWARD:
+            case FORWARD -> {
                 newPosition = position.add(orientation.toUnitVector());
-                if (onMap(newPosition)) position = newPosition;
-                break;
+                if (map.canMoveTo(newPosition)){
+                    position = newPosition;
+                }
+            }
 
-            case BACKWARD:
+            case BACKWARD -> {
                 newPosition = position.subtract(orientation.toUnitVector());
-                if (onMap(newPosition)) position = newPosition;
-                break;
+                if (map.canMoveTo(newPosition)){
+                    position = newPosition;
+                }
+            }
         }
     }
-
-    public boolean onMap(Vector2d position){
-        return (position.follows(World.bottomLeftVector) && position.precedes(World.topRightVector));
-    }
-
-
 
 }

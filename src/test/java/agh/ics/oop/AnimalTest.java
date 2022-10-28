@@ -1,10 +1,11 @@
 package agh.ics.oop;
 
 import org.junit.jupiter.api.Test;
-import java.util.ArrayList;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class AnimalTest {
+
+    private static final IWorldMap map = new RectangularMap(5, 5);
 
     @Test
     void testParser() {
@@ -21,16 +22,15 @@ public class AnimalTest {
                 MoveDirection.LEFT,
         };
 
-        ArrayList<MoveDirection> parsed = OptionsParser.parse(testInput);
-        assertEquals(parsed.size(), expected.length);
-
-        for (int i = 0; i < parsed.size(); i++) {
-            assertEquals(expected[i], parsed.get(i));
+        MoveDirection[] parsed = OptionsParser.parse(testInput);
+        assertEquals(parsed.length, expected.length);
+        for (int i = 0; i < expected.length; i++) {
+            assertEquals(expected[i], parsed[i]);
         }
     }
 
     @Test
-    void testOrientation(){
+    void testOrientation() {
         String[] testInput = "f b f b l null backward s f r back int left ...".split(" ");
         MapDirection[] expected = {
                 MapDirection.NORTH,
@@ -43,17 +43,18 @@ public class AnimalTest {
                 MapDirection.NORTH,
                 MapDirection.WEST};
 
-    ArrayList<MoveDirection> parsed = OptionsParser.parse(testInput);
-    Animal animal = new Animal();
 
-    for(int i = 0; i < parsed.size(); i++){
-        animal.move(parsed.get(i));
-        assertEquals(expected[i], animal.getOrientation());
-    }
+        MoveDirection[] parsed = OptionsParser.parse(testInput);
+        Animal animal = new Animal(map);
+
+        for (int i = 0; i < expected.length; i++) {
+            animal.move(parsed[i]);
+            assertEquals(animal.getOrientation(), expected[i]);
+        }
     }
 
     @Test
-    public void testPositions(){
+    public void testPositions() {
         String[] testInput = "f f f l f f r f f f f l f f f".split(" ");
         String[] expected = {
                 "(2, 3)",
@@ -73,15 +74,33 @@ public class AnimalTest {
                 "(0, 4)",
         };
 
-        ArrayList<MoveDirection> parsed = OptionsParser.parse(testInput);
-        Animal animal = new Animal();
+        MoveDirection[] parsed = OptionsParser.parse(testInput);
+        Animal animal = new Animal(map, new Vector2d(2, 2));
 
-        for(int i = 0; i < parsed.size(); i++){
-            animal.move(parsed.get(i));
-            assertEquals(expected[i], animal.getPosition().toString());
+        for (int i = 0; i < expected.length; i++) {
+            animal.move(parsed[i]);
+            assertEquals(animal.getPosition().toString(), expected[i]);
         }
     }
+
+    @Test
+    void testOutOfBounds() {
+        IWorldMap map = new RectangularMap(4, 4);
+        Animal animal = new Animal(map);
+        String[] input = new String[]{"f", "f", "forward", "f", "f", "f"};
+
+        MoveDirection[] moves = OptionsParser.parse(input);
+        for (MoveDirection move : moves) {
+            animal.move(move);
+        }
+        String result = animal.toString();
+
+        assertEquals("^", result);
+        assertEquals(new Vector2d(2, 3), animal.getPosition());
+    }
 }
+
+
 
 
 
