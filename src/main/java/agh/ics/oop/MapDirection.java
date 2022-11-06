@@ -1,6 +1,6 @@
 package agh.ics.oop;
 
-enum MapDirection {
+public enum MapDirection {
     NORTH,
     EAST,
     SOUTH,

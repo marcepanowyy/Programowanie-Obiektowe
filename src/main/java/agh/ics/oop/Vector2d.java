@@ -4,14 +4,13 @@ import java.util.Objects;
 
 public class Vector2d {
 
-    public int x;
-    public int y;
+    final int x;
+    final int y;
 
     public Vector2d(int x, int y) {
         this.x = x;
         this.y = y;
     }
-
 
     @Override
     public String toString(){
@@ -60,5 +59,13 @@ public class Vector2d {
     @Override
     public int hashCode() {
         return Objects.hash(this.x, this.y);
+    }
+
+    public static Vector2d randomVector(int maxX, int maxY) {
+        return new Vector2d(randomInt(maxX), randomInt(maxY));
+    }
+
+    private static int randomInt(int n) {
+        return (int) (Math.random() * (n + 1));
     }
 }
