@@ -1,10 +1,9 @@
 package agh.ics.oop;
 
-import java.util.ArrayList;
-import java.util.List;
-
 
 public class World {
+
+//    f f f r f f f f f f f f f f f f f f f f f f f f f f f f f f f f
 
     public static void main(String[] args){
 
@@ -14,16 +13,14 @@ public class World {
         Vector2d[] positions = {
                 new Vector2d(2,2),
                 new Vector2d(3,4),
-                new Vector2d(0,0),
-                new Vector2d(10,10),
-                new Vector2d(10,4),
-                new Vector2d(3,4),
-                new Vector2d(-3,-4),
+                new Vector2d(8,8),
+                new Vector2d(9,9),
         };
 
         IEngine engine = new SimulationEngine(directions, map, positions);
         engine.run();
-        System.out.println(map);
+        System.out.print(map);
+
     }
 
 

@@ -18,13 +18,13 @@ public interface IWorldMap {
     boolean canMoveTo(Vector2d position);
 
     /**
-     * Place a animal on the map.
+     * Place an animal on the map.
      *
      * @param animal
      *            The animal to place on the map.
      * @return True if the animal was placed. The animal cannot be placed if the map is already occupied.
      */
-    boolean place(IMapElement animal);
+    boolean place(IMapElement element);
 
     /**
      * Return true if given position on the map is occupied. Should not be
@@ -45,7 +45,4 @@ public interface IWorldMap {
      * @return Object or null if the position is not occupied.
      */
     Object objectAt(Vector2d position);
-
-    void moveAnimal(Animal animal, MoveDirection move);
-
 }

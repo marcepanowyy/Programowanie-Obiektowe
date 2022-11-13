@@ -13,7 +13,7 @@ public class MapVisualizer {
     private IWorldMap map;
 
     /**
-     * Initializes the MapVisualizer with an instance of map to visualize. 
+     * Initializes the MapVisualizer with an instance of map to visualize.
      * @param map
      */
     public MapVisualizer(IWorldMap map) {
@@ -70,9 +70,10 @@ public class MapVisualizer {
     }
 
     private String drawObject(Vector2d currentPosition) {
-        String result = null;
+        String result;
         if (this.map.isOccupied(currentPosition)) {
             Object object = this.map.objectAt(currentPosition);
+
             if (object != null) {
                 result = object.toString();
             } else {

@@ -2,11 +2,8 @@ package agh.ics.oop;
 
 import org.junit.jupiter.api.Test;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashSet;
-import java.util.stream.Collectors;
 import static org.junit.jupiter.api.Assertions.*;
-
 
 public class GrassFieldTest {
 
@@ -115,7 +112,6 @@ public class GrassFieldTest {
         IWorldMap map = new GrassField(10);
         Animal animal = new Animal(map, new Vector2d(2, 2));
         map.place(animal);
-
         Object result = map.objectAt(new Vector2d(2, 2));
         assertEquals(result, animal);
     }
