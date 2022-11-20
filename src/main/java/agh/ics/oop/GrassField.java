@@ -3,26 +3,30 @@ package agh.ics.oop;
 
 public class GrassField extends AbstractWorldMap {
 
-    private final int fieldsCount;
-    private final int maxFieldIndex;
+//    private final int fieldsCount;
+    private final int maxGrassFieldIndex;
+    private final MapBoundary mapBoundary = new MapBoundary(this);
     private static final Vector2d lowerLeftBound = new Vector2d(0, 0);
     private static final Vector2d upperRightBound = new Vector2d(Integer.MAX_VALUE, Integer.MAX_VALUE);
+    private int elementsCount = 0;
 
-    public GrassField(int fieldsCount) {
-        if (fieldsCount <= 0) throw new Error("grass fields error");
-        this.fieldsCount = fieldsCount;
-        this.maxFieldIndex = Math.min((int) Math.sqrt(fieldsCount * 10), Integer.MAX_VALUE);
+    public GrassField(int grassCount) {
+        if (grassCount <= 0) throw new Error("grass fields error");
+        this.maxGrassFieldIndex = Math.min((int) Math.sqrt(grassCount * 10), Integer.MAX_VALUE);
         spawnGrass();
     }
 
     @Override
-    public boolean place(IMapElement element) {
+    public void place(IMapElement element) throws IllegalArgumentException {
         Vector2d position = element.getPosition();
+        if (objectAt(position) != element) elementsCount ++;
         boolean overrodeGrass = objectAt(position) instanceof Grass;
-        boolean isPlaced = super.place(element);
-        if (isPlaced) updateMapBounds(element.getPosition());
+        IMapElement grass = objectAt(position);
+        newMapElements.remove(grass);
+        if (overrodeGrass) grass.remove();
+        super.place(element);
+        updateMapBounds(null, position);
         if (overrodeGrass) spawnSingleGrass();
-        return isPlaced;
     }
 
     @Override
@@ -30,11 +34,10 @@ public class GrassField extends AbstractWorldMap {
         return position.follows(lowerLeftBound) && position.precedes(upperRightBound);
     }
 
-    private void updateMapBounds(Vector2d position) {
-        if      (position.x < lowerLeft.x)  lowerLeft  = new Vector2d(position.x, lowerLeft.y);
-        else if (position.x > upperRight.x) upperRight = new Vector2d(position.x, upperRight.y);
-        if      (position.y < lowerLeft.y)  lowerLeft  = new Vector2d(lowerLeft.x, position.y);
-        else if (position.y > upperRight.y) upperRight = new Vector2d(upperRight.x, position.y);
+    private void updateMapBounds(Vector2d oldPosition, Vector2d newPosition) {
+        mapBoundary.positionChanged(oldPosition, newPosition);
+        lowerLeft = mapBoundary.getLowerLeftBound();
+        upperRight = mapBoundary.getUpperRightBound();
     }
 
     private Vector2d getNextEmptyField(int maxX, int maxY) {
@@ -44,15 +47,16 @@ public class GrassField extends AbstractWorldMap {
     }
 
     private void spawnGrass() {
-        IMapElement initialGrass = new Grass(getNextEmptyField(maxFieldIndex, maxFieldIndex));
-        lowerLeft = upperRight = initialGrass.getPosition();
-        place(initialGrass);
-        for (int i = 1; i < fieldsCount; i++) spawnSingleGrass();
+        for (int i = 1; i < maxGrassFieldIndex; i++) spawnSingleGrass();
     }
 
     private void spawnSingleGrass() {
-        IMapElement grass = new Grass(getNextEmptyField(maxFieldIndex, maxFieldIndex));
-        place(grass);
+
+        if(elementsCount <= maxGrassFieldIndex * maxGrassFieldIndex){
+            IMapElement grass = new Grass(getNextEmptyField(maxGrassFieldIndex, maxGrassFieldIndex));
+            placeNewMapElement(grass);
+            updateMapBounds(null, grass.getPosition());
+        }
     }
 }
 

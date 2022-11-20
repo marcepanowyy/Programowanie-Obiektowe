@@ -1,11 +1,10 @@
 package agh.ics.oop;
 
-public class Grass implements IMapElement {
+public class Grass extends AbstractMapElement {
     private static final String sign = "*";
-    private final Vector2d position;
 
     public Grass(Vector2d position) {
-        this.position = position;
+        super(position);
     }
 
     @Override

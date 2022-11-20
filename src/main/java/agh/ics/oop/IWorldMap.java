@@ -1,5 +1,7 @@
 package agh.ics.oop;
 
+import java.util.Set;
+
 /**
  * The interface responsible for interacting with the map of the world.
  * Assumes that Vector2d and MoveDirection classes are defined.
@@ -20,11 +22,11 @@ public interface IWorldMap {
     /**
      * Place an animal on the map.
      *
-     * @param animal
+     * @param element
      *            The animal to place on the map.
      * @return True if the animal was placed. The animal cannot be placed if the map is already occupied.
      */
-    boolean place(IMapElement element);
+    void place(IMapElement element);
 
     /**
      * Return true if given position on the map is occupied. Should not be
@@ -44,5 +46,33 @@ public interface IWorldMap {
      *            The position of the object.
      * @return Object or null if the position is not occupied.
      */
+
     Object objectAt(Vector2d position);
+
+    Vector2d getLowerLeft();
+
+    /**
+     * Return an object at a given position.
+     *
+     * @return Vector representing coordinates of the lower left map corner
+     */
+    Vector2d getUpperRight();
+
+    /**
+     * Return a set of newly added map elements. After returning
+     * currently new elements, the set of new elements will be replaced
+     * by the empty set.
+     *
+     * @return Set of map objects pairs
+     */
+    Set<IMapElement> getNewMapElements();
+
+    /**
+     * Return a list of newly added map elements. After returning
+     * currently new elements, the list of new elements will be cleared.
+     * @param element
+     *              The element newly added to the ma for the firs time.
+     */
+    void placeNewMapElement(IMapElement element);
+
 }
