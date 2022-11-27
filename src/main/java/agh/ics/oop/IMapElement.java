@@ -8,4 +8,5 @@ public interface IMapElement {
 
     void addObserver(IPositionChangeObserver observer);
     void removeObserver(IPositionChangeObserver observer);
+    String getPath(IMapElement object);
 }

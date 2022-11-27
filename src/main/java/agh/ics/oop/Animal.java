@@ -49,4 +49,17 @@ public class Animal extends AbstractMapElement {
             observer.positionChanged(oldPosition, newPosition);
         }
     }
+
+    @Override
+    public String getPath(IMapElement object){
+        Animal animal = (Animal) object;
+        MapDirection orientation = animal.orientation;
+        switch (orientation){
+            case NORTH -> {return "src/main/resources/North.png";}
+            case EAST -> {return "src/main/resources/East.png";}
+            case SOUTH -> {return "src/main/resources/South.png";}
+            case WEST -> {return "src/main/resources/WEST.png";}
+            default -> {return "src/main/resources/WEST.png";}
+        }
+    }
 }

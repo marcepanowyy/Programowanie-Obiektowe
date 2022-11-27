@@ -1,55 +1,90 @@
 package agh.ics.oop.gui;
 
 import agh.ics.oop.*;
-import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.geometry.HPos;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.layout.ColumnConstraints;
-import javafx.scene.layout.RowConstraints;
-import javafx.stage.Stage;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.layout.GridPane;
-
+import javafx.scene.control.TextField;
+import javafx.scene.layout.*;
+import javafx.stage.Stage;
+import javafx.application.Application;
 import java.util.Set;
+import java.io.FileNotFoundException;
+public class App extends Application implements ISimulationEngineObserver {
 
-public class App extends Application {
-
-    private GridPane gridPane;
-    private AbstractWorldMap abstractWorldMap;
+    GridPane gridPane = new GridPane();
+    private AbstractWorldMap map;
+    SimulationEngine engine;
     int size = 50;
     private Set<IMapElement> elementsList;
 
 
-    public void start(Stage primaryStage) throws RuntimeException {
+    public void init() {
+        try {
+            this.map = new GrassField(10);
+            Vector2d[] positions = {
+                    new Vector2d(3, 4),
+                    new Vector2d(10, 4),
+                    new Vector2d(5, 7),
+            };
 
-        gridPane = new GridPane();
-        MoveDirection[] directions = OptionsParser.parse(getParameters().getRaw().toArray(new String[0]));
-        AbstractWorldMap map = new GrassField(10);
+            this.engine = new SimulationEngine(this.map, positions, 500);
+            engine.addObserver(this);
 
-        Vector2d[] positions = {
-//                new Vector2d(2,2),
-//                new Vector2d(3,4),
-                new Vector2d(10, 4),
-                new Vector2d(5, 7),
-        };
-
-        SimulationEngine engine = new SimulationEngine(directions, map, positions);
-        engine.run();
-        abstractWorldMap = map;
-        elementsList = map.getNewMapElements();
-
-        drawMap();
-        Scene scene = new Scene(gridPane, 400, 400);
-        primaryStage.setScene(scene);
-        primaryStage.show();
+        } catch (IllegalArgumentException e) {
+            System.out.println(e.getMessage());
+        }
     }
 
-    public void drawMap() {
+    public void start(Stage primaryStage) throws FileNotFoundException{
+
+        makeScene();
+
+        TextField textField = new TextField();
+        textField.setText("animal moves sequence");
+        textField.setPrefWidth(200);
+        textField.setMaxWidth(200);
+        Button start = new Button("start");
+        start.setOnAction(e -> {
+
+            MoveDirection[] directions = new OptionsParser().parse(
+                    textField.getText().split(" ")
+            );
+            engine.setMoves(directions);
+            Thread engineThread = new Thread(engine);
+            engineThread.start();
+        });
+
+        VBox vbox = new VBox(gridPane, textField, start);
+        vbox.setAlignment(Pos.CENTER);
+        vbox.setSpacing(20);
+
+
+        Scene scene = new Scene(vbox, 800, 800);
+        primaryStage.setScene(scene);
+        primaryStage.show();
+
+    }
+
+    private void makeScene() throws FileNotFoundException {
+
+        elementsList = map.getNewMapElements();
+        for(IMapElement element: elementsList){
+            System.out.println(element.toString());
+        }
+
+        gridPane.setGridLinesVisible(true);
+        gridPane.setAlignment(Pos.CENTER);
+        gridPane.getColumnConstraints().clear();
+        gridPane.getRowConstraints().clear();
 
         Label label = new Label("y\\x");
 
-        Vector2d lowerLeft = abstractWorldMap.getLowerLeft();
-        Vector2d upperRight = abstractWorldMap.getUpperRight();
+        Vector2d lowerLeft = map.getLowerLeft();
+        Vector2d upperRight = map.getUpperRight();
 
         int startX = lowerLeft.getX();
         int startY = lowerLeft.getY();
@@ -60,19 +95,18 @@ public class App extends Application {
         gridPane.getRowConstraints().add(new RowConstraints(size));
         gridPane.getColumnConstraints().add(new ColumnConstraints(size));
         GridPane.setHalignment(label, HPos.CENTER);
-        gridPane.setGridLinesVisible(true);
 
-        createAxisX(startX, endX);
-        createAxisY(startY, endY);
 
-        for(IMapElement element: elementsList){
-            Label el = new Label(element.toString());
-            Vector2d pos = element.getPosition();
-            gridPane.add(el, pos.getX() - startX + 1, endY - pos.getY() + 1);
-            GridPane.setHalignment(el, HPos.CENTER);
+        for (int i = startX; i <= endX + 1; i++) {
+            for (int j = startY; j <= endY + 1; j++) {
+                Object object = this.map.objectAt(new Vector2d(i, endY + startY - j));
+                if (object != null) {
+                    VBox el = new GuiElementBox((IMapElement) object).getvBox();
+                    gridPane.add(el, i+1 - lowerLeft.getX(), j+1 -lowerLeft.getY());
+                    GridPane.setHalignment(el, HPos.CENTER);
+                }
+            }
         }
-    }
-    private void createAxisX(int startX, int endX){
 
         for (int i = startX; i <= endX; i++) {
             Label xAxisNumber = new Label("" + i);
@@ -80,8 +114,7 @@ public class App extends Application {
             gridPane.getColumnConstraints().add(new ColumnConstraints(size));
             GridPane.setHalignment(xAxisNumber, HPos.CENTER);
         }
-    }
-    private void createAxisY(int startY, int endY){
+
         for (int i = startY; i <= endY; i++) {
             Label yAxisNumber = new Label("" + i);
             gridPane.add(yAxisNumber, 0, endY - i + 1);
@@ -89,6 +122,21 @@ public class App extends Application {
             GridPane.setHalignment(yAxisNumber, HPos.CENTER);
         }
     }
+
+    @Override
+    public void mapChanged() {
+        Platform.runLater(() -> {
+            gridPane.setGridLinesVisible(false);
+            gridPane.getChildren().clear();
+            try {
+                makeScene();
+            } catch (FileNotFoundException ex) {
+                ex.printStackTrace();
+            }
+        });
+    }
+
+
 
 }
 

@@ -16,4 +16,9 @@ public class Grass extends AbstractMapElement {
     public String toString() {
         return sign;
     }
+
+    @Override
+    public String getPath(IMapElement object) {
+        return "src/main/resources/grass.png";
+    }
 }
