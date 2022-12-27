@@ -51,6 +51,7 @@ public class Simulation implements Runnable {
         this.COLUMN_WIDTH = SCREEN_WIDTH / width;
         this.ROW_HEIGHT = SCREEN_HEIGHT / height;
         this.map = new GrassField(plantsNum);
+        System.out.println(plantsNum);
         Stage stage1 = new Stage();
         gridPane = createMap(width, height);
         Scene scene = new Scene(gridPane, SCREEN_WIDTH, SCREEN_HEIGHT);
@@ -74,12 +75,12 @@ public class Simulation implements Runnable {
                 Object object = this.map.objectAt(new Vector2d(i,  j));
                 if (object instanceof Grass) {
                     Pane pane = new Pane();
-                    pane.setStyle("-fx-background-color: #454343;");
+                    pane.setStyle("-fx-background-color: #03ac13;");
                     gridPane.add(pane, i, j);
                 }
                 if (object instanceof Animal){
                     Pane pane = new Pane();
-                    pane.setStyle("-fx-background-color: #03ac13;");
+                    pane.setStyle("-fx-background-color: #454343;");
                     gridPane.add(pane, i, j);
                 }
 
@@ -90,7 +91,6 @@ public class Simulation implements Runnable {
             }
         }
         gridPane.setGridLinesVisible(true);
-        System.out.println("koniec");
         return gridPane;
     }
 
@@ -113,7 +113,7 @@ public class Simulation implements Runnable {
 
     }
     public void update(){
-
+        map.mapElements.forEach((key, value) -> System.out.println(key + "" + value));
 
     }
 
