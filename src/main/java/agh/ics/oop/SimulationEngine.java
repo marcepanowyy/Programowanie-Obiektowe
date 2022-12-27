@@ -11,14 +11,19 @@ import javafx.stage.Stage;
 
 public class SimulationEngine implements Runnable, IEngine {
     private final ArrayList<Animal> animals = new ArrayList<>();
-    private final Vector2d[] positions;
     private final IWorldMap map;
     private final int moveDelay;
     MoveDirection[] moves;
     private final ArrayList<ISimulationEngineObserver> observers = new ArrayList<ISimulationEngineObserver>();
+    private int width;
+    private int height;
+    private int plantsNum;
+    private int plantEnergy;
+    private int animalsNum;
+    private int startingEnergy;
+    private int genomeLength;
 
-    public SimulationEngine(IWorldMap map, Vector2d[] positions, int moveDelay) {
-        this.positions = positions;
+    public SimulationEngine(IWorldMap map, int moveDelay) {
         this.map = map;
         this.moveDelay = moveDelay;
         addAnimalsToMap();
@@ -29,11 +34,7 @@ public class SimulationEngine implements Runnable, IEngine {
     }
 
     private void addAnimalsToMap() {
-        for (Vector2d position : positions) {
-            Animal animal = new Animal(map, position);
-            map.placeNewMapElement(animal);
-            animals.add(animal);
-        }
+
     }
 
     @Override
@@ -74,4 +75,13 @@ public class SimulationEngine implements Runnable, IEngine {
     }
 
 
+    public void setValues(int width, int height, int plantsNum, int plantEnergy, int animalsNum, int startingEnergy, int genomeLength) {
+        this.width = width;
+        this.height = height;
+        this.plantsNum = plantsNum;
+        this.plantEnergy = plantEnergy;
+        this.animalsNum = animalsNum;
+        this.startingEnergy = startingEnergy;
+        this.genomeLength = genomeLength;
+    }
 }

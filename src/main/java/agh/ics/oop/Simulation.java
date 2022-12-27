@@ -1,19 +1,13 @@
-package agh.ics.oop.main;
+package agh.ics.oop;
 
-import agh.ics.oop.Animal;
-import agh.ics.oop.Vector2d;
 import javafx.scene.Scene;
-import javafx.scene.control.Label;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.RowConstraints;
 import javafx.stage.Stage;
 
-
-public class GamePanel implements Runnable{
-
+public class Simulation implements Runnable {
     Thread gameThread;
     GridPane gridPane;
     public int width;
@@ -22,15 +16,23 @@ public class GamePanel implements Runnable{
     public int plantEnergy;
     public int plantsDaily;
     public int animalsNum;
-    public static int genomeLength;
+    public int genomeLength;
     public int startingEnergy;
-    int SCREEN_WIDTH = 1000;
-    int SCREEN_HEIGHT = 700;
+    public int energyToBreed;
+    public int energyToFull;
+    public int minNumOfMutations;
+    public int maxNumOfMutations;
+    public String mutationWarrant;
+    public String behaviourWarrant;
+    public String plantGrowthWarrant;
+    int SCREEN_WIDTH = 800;
+    int SCREEN_HEIGHT = 800;
     private int COLUMN_WIDTH;
     private int ROW_HEIGHT;
-    Animal animal;
+    AbstractWorldMap map;
 
-    public GamePanel(int width, int height, int plantsNum, int plantEnergy, int plantsDaily, int animalsNum, int startingEnergy, int genomeLength){
+    public Simulation(int width, int height, int plantsNum, int plantEnergy, int plantsDaily, int animalsNum, int startingEnergy, int genomeLength, int energyToBreed, int energyToFull,
+                      int minNumOfMutations, int maxNumOfMutations, String mutationWarrant, String behaviourWarrant, String plantGrowthWarrant){
         this.width = width;
         this.height = height;
         this.plantsNum = plantsNum;
@@ -39,14 +41,23 @@ public class GamePanel implements Runnable{
         this.animalsNum = animalsNum;
         this.startingEnergy = startingEnergy;
         this.genomeLength = genomeLength;
+        this.energyToBreed = energyToBreed;
+        this.energyToFull = energyToFull;
+        this.minNumOfMutations = minNumOfMutations;
+        this.maxNumOfMutations = maxNumOfMutations;
+        this.mutationWarrant = mutationWarrant;
+        this.plantGrowthWarrant = plantGrowthWarrant;
+        this.behaviourWarrant = behaviourWarrant;
         this.COLUMN_WIDTH = SCREEN_WIDTH / width;
         this.ROW_HEIGHT = SCREEN_HEIGHT / height;
+        this.map = new GrassField(plantsNum);
         Stage stage1 = new Stage();
         gridPane = createMap(width, height);
         Scene scene = new Scene(gridPane, SCREEN_WIDTH, SCREEN_HEIGHT);
         stage1.setScene(scene);
         stage1.setResizable(false);
         stage1.show();
+
         startGameThread();
     }
     public void startGameThread(){
@@ -56,12 +67,22 @@ public class GamePanel implements Runnable{
     }
 
     public GridPane createMap(int width, int height){
+
         GridPane gridPane = new GridPane();
         for (int i = 0; i < height; i++){
             for ( int j = 0; j < width; j++){
-                Label label = new Label("" + i +"," + j);
-                GridPane.setConstraints(label, i, j);
-                gridPane.getChildren().add(label);
+                Object object = this.map.objectAt(new Vector2d(i,  j));
+                if (object instanceof Grass) {
+                    Pane pane = new Pane();
+                    pane.setStyle("-fx-background-color: #454343;");
+                    gridPane.add(pane, i, j);
+                }
+                if (object instanceof Animal){
+                    Pane pane = new Pane();
+                    pane.setStyle("-fx-background-color: #03ac13;");
+                    gridPane.add(pane, i, j);
+                }
+
                 ColumnConstraints columnConstraints = new ColumnConstraints(COLUMN_WIDTH);
                 RowConstraints rowConstraints = new RowConstraints(ROW_HEIGHT);
                 gridPane.getRowConstraints().add(rowConstraints);
@@ -69,6 +90,7 @@ public class GamePanel implements Runnable{
             }
         }
         gridPane.setGridLinesVisible(true);
+        System.out.println("koniec");
         return gridPane;
     }
 

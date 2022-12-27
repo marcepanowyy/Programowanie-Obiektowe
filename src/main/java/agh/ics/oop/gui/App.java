@@ -1,21 +1,25 @@
 package agh.ics.oop.gui;
 
-import agh.ics.oop.main.GamePanel;
-import javafx.application.Application;
+import agh.ics.oop.*;
+
 import javafx.event.ActionEvent;
+
 import javafx.geometry.Insets;
-import javafx.scene.Group;
-import javafx.scene.Parent;
+
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.GridPane;
+
+import javafx.scene.layout.*;
 import javafx.stage.Stage;
+import javafx.application.Application;
+
+public class App extends Application {
 
 
-public class App extends  Application{
-
+    private AbstractWorldMap map;
+    Simulation simulation;
     private TextField widthTextField;
     private TextField heightTextField;
     private TextField plantsNumTextField;
@@ -24,18 +28,34 @@ public class App extends  Application{
     private TextField animalsNumTextField;
     private TextField startingEnergyTextField;
     private TextField genomeLengthTextField;
-
+    private TextField energyToFullTextField;
+    private TextField energyToBreedTextField;
+    private TextField minNumOfMutationsTextField;
+    private TextField maxNumOfMutationsTextField;
+    private TextField mutationWarrantTextField;
+    private TextField behaviourWarrantTextField;
+    private TextField plantGrowthWarrantTextField;
+    public int energyToBreed;
+    public int energyToFull;
+    public int minNumOfMutations;
+    public int maxNumOfMutations;
+    public String mutationWarrant;
+    public String behaviourWarrant;
+    public String plantGrowthWarrant;
     public int width;
     public int height;
     public int plantsNum;
     public int plantEnergy;
     public int plantsDaily;
     public int animalsNum;
+    public static int genomeLength;
     public int startingEnergy;
-    public int genomeLength;
-    public GamePanel gamePanel;
+    int SCREEN_WIDTH = 800;
+    int SCREEN_HEIGHT = 800;
+    private int COLUMN_WIDTH;
+    private int ROW_HEIGHT;
 
-    @Override
+
     public void start(Stage primaryStage) throws Exception {
         GridPane grid = new GridPane();
         grid.setPadding(new Insets(10, 10, 10, 10));
@@ -76,9 +96,9 @@ public class App extends  Application{
 
         Label label6 = new Label("Plant's growth warrant");
         GridPane.setConstraints(label6, 0, 5);
-        TextField name6 = new TextField();
-        name6.setPromptText("warrant");
-        GridPane.setConstraints(name6, 1, 5);
+        plantGrowthWarrantTextField = new TextField();
+        plantGrowthWarrantTextField.setPromptText("zalesione równiki/toksyczne trupy");
+        GridPane.setConstraints(plantGrowthWarrantTextField, 1, 5);
 
         Label label7 = new Label("Number of starting animals");
         GridPane.setConstraints(label7, 0, 6);
@@ -94,34 +114,34 @@ public class App extends  Application{
 
         Label label9 = new Label("Necessary energy to create new animal");
         GridPane.setConstraints(label9, 0, 8);
-        TextField name9 = new TextField();
-        name9.setPromptText("energy");
-        GridPane.setConstraints(name9, 1, 8);
+        energyToFullTextField = new TextField();
+        energyToFullTextField.setPromptText("energy");
+        GridPane.setConstraints(energyToFullTextField, 1, 8);
 
         Label label10 = new Label("Energy used after new animal");
         GridPane.setConstraints(label10, 0, 9);
-        TextField name10 = new TextField();
-        name10.setPromptText("energy");
-        GridPane.setConstraints(name10, 1, 9);
+        energyToBreedTextField = new TextField();
+        energyToBreedTextField.setPromptText("energy");
+        GridPane.setConstraints(energyToBreedTextField, 1, 9);
 
         Label label11 = new Label("Min num of mutations");
         GridPane.setConstraints(label11, 0, 10);
-        TextField name11 = new TextField();
-        name11.setPromptText("min num");
-        GridPane.setConstraints(name11, 1, 10);
+        minNumOfMutationsTextField = new TextField();
+        minNumOfMutationsTextField.setPromptText("min num");
+        GridPane.setConstraints(minNumOfMutationsTextField, 1, 10);
 
 
         Label label12 = new Label("Max num of mutations");
         GridPane.setConstraints(label12, 0, 11);
-        TextField name12 = new TextField();
-        name12.setPromptText("max num");
-        GridPane.setConstraints(name12, 1, 11);
+        maxNumOfMutationsTextField = new TextField();
+        maxNumOfMutationsTextField.setPromptText("max num");
+        GridPane.setConstraints(maxNumOfMutationsTextField, 1, 11);
 
         Label label13 = new Label("Mutation warrant");
         GridPane.setConstraints(label13, 0, 12);
-        TextField name13 = new TextField();
-        name13.setPromptText("min num");
-        GridPane.setConstraints(name13, 1, 12);
+        mutationWarrantTextField = new TextField();
+        mutationWarrantTextField.setPromptText("pełna losowość/lekka korekta");
+        GridPane.setConstraints(mutationWarrantTextField, 1, 12);
 
         Label label14 = new Label("Genome length");
         GridPane.setConstraints(label14, 0, 13);
@@ -131,16 +151,14 @@ public class App extends  Application{
 
         Label label15 = new Label("Behaviour warrant");
         GridPane.setConstraints(label15, 0, 14);
-        TextField name15 = new TextField();
-        name15.setPromptText("warrant");
-        GridPane.setConstraints(name15, 1, 14);
-
+        behaviourWarrantTextField = new TextField();
+        behaviourWarrantTextField.setPromptText("pełna predestynacja/nieco szaleństwa");
+        GridPane.setConstraints(behaviourWarrantTextField, 1, 14);
         Button startButton = new Button("Start");
         startButton.setOnAction(this::submit);
         GridPane.setConstraints(startButton, 1, 15);
-        grid.getChildren().addAll(label1, widthTextField, label2, heightTextField, label3, plantsNumTextField, label4, plantsEnergyTextField, label5, plantsDailyTextField, label6, name6, label7, animalsNumTextField, label8, startingEnergyTextField, label9, name9,
-                label10, name10, label11, name11, label12, name12, label13, name13, label14, genomeLengthTextField, label15, name15, startButton);
-
+        grid.getChildren().addAll(label1, widthTextField, label2, heightTextField, label3, plantsNumTextField, label4, plantsEnergyTextField, label5, plantsDailyTextField, label6, plantGrowthWarrantTextField, label7, animalsNumTextField, label8, startingEnergyTextField, label9, energyToFullTextField,
+                label10, energyToBreedTextField, label11, minNumOfMutationsTextField, label12, maxNumOfMutationsTextField, label13, mutationWarrantTextField, label14, genomeLengthTextField, label15, behaviourWarrantTextField, startButton);
 
 
         Scene scene = new Scene(grid, 1000, 700);
@@ -148,8 +166,8 @@ public class App extends  Application{
         primaryStage.show();
     }
 
-    public void submit(ActionEvent event){
-        try{
+    public void submit(ActionEvent event) {
+        try {
             width = Integer.parseInt(widthTextField.getText());
             height = Integer.parseInt(heightTextField.getText());
             plantsNum = Integer.parseInt(plantsNumTextField.getText());
@@ -158,9 +176,16 @@ public class App extends  Application{
             animalsNum = Integer.parseInt(animalsNumTextField.getText());
             startingEnergy = Integer.parseInt(startingEnergyTextField.getText());
             genomeLength = Integer.parseInt(genomeLengthTextField.getText());
-            gamePanel = new GamePanel(width, height, plantsNum, plantEnergy, plantsDaily, animalsNum, startingEnergy, genomeLength);
-        }
-        catch (NumberFormatException e){
+            energyToFull = Integer.parseInt(energyToFullTextField.getText());
+            energyToBreed = Integer.parseInt(energyToBreedTextField.getText());
+            minNumOfMutations = Integer.parseInt(minNumOfMutationsTextField.getText());
+            maxNumOfMutations = Integer.parseInt(maxNumOfMutationsTextField.getText());
+            mutationWarrant = mutationWarrantTextField.getText();
+            behaviourWarrant = behaviourWarrantTextField.getText();
+            plantGrowthWarrant = plantGrowthWarrantTextField.getText();
+            simulation = new Simulation(width, height, plantsNum, plantEnergy, plantsDaily, animalsNum, startingEnergy, genomeLength, energyToFull, energyToBreed, minNumOfMutations,
+                    maxNumOfMutations, mutationWarrant, behaviourWarrant, plantGrowthWarrant);
+        } catch (NumberFormatException e) {
             System.out.println("Wrong data");
 
         }
