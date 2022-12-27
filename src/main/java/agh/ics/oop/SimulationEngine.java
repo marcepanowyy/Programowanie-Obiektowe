@@ -16,9 +16,19 @@ public class SimulationEngine implements Runnable, IEngine {
     private final int moveDelay;
     MoveDirection[] moves;
     private final ArrayList<ISimulationEngineObserver> observers = new ArrayList<ISimulationEngineObserver>();
-
-    private int startEnergy = 10;
-    private int genomeLength = 4;
+    private int energyToBreed;
+    private int energyToFull;
+    private int minNumOfMutations;
+    private int maxNumOfMutations;
+    private String mutationWarrant;
+    private String behaviourWarrant;
+    private String plantGrowthWarrant;
+    private int plantsNum;
+    private int plantEnergy;
+    private int plantsDaily;
+    private int animalsNum;
+    private int genomeLength;
+    private int startingEnergy;
 
     public SimulationEngine(IWorldMap map, Vector2d[] positions, int moveDelay) {
         this.positions = positions;
@@ -33,7 +43,7 @@ public class SimulationEngine implements Runnable, IEngine {
 
     private void addAnimalsToMap() {
         for (Vector2d position : positions) {
-            Animal animal = new Animal(map, position, startEnergy);
+            Animal animal = new Animal(map, position, startingEnergy);
             map.placeNewMapElement(animal);
             animals.add(animal);
         }
@@ -76,4 +86,20 @@ public class SimulationEngine implements Runnable, IEngine {
     }
 
 
+    public void setParameters(int plantsNum,int plantEnergy,int plantsDaily,int animalsNum, int startingEnergy, int genomeLength, int energyToFull, int energyToBreed, int minNumOfMutations, int maxNumOfMutations,
+                           String mutationWarrant, String behaviourWarrant, String plantGrowthWarrant) {
+        this.plantsNum = plantsNum;
+        this.plantEnergy = plantEnergy;
+        this.plantsDaily = plantsDaily;
+        this.animalsNum = animalsNum;
+        this.startingEnergy = startingEnergy;
+        this.genomeLength = genomeLength;
+        this.energyToFull = energyToFull;
+        this.energyToBreed = energyToBreed;
+        this.minNumOfMutations = minNumOfMutations;
+        this.maxNumOfMutations = maxNumOfMutations;
+        this.mutationWarrant = mutationWarrant;
+        this.behaviourWarrant = behaviourWarrant;
+        this.plantGrowthWarrant = plantGrowthWarrant;
+    }
 }
