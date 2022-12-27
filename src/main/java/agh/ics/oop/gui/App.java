@@ -24,23 +24,6 @@ public class App extends Application implements ISimulationEngineObserver {
     private int height;
     private int width;
 
-    public void init() {
-        try {
-            this.map = new GrassField(20);
-            Vector2d[] positions = {
-                    new Vector2d(6, 8),
-//                    new Vector2d(10, 4),
-                    new Vector2d(10, 10),
-                    new Vector2d(6, 6),
-            };
-
-            this.engine = new SimulationEngine(this.map, positions, 500);
-            engine.addObserver(this);
-
-        } catch (IllegalArgumentException e) {
-            System.out.println(e.getMessage());
-        }
-    }
 
     public void start(Stage primaryStage) throws FileNotFoundException{
 
