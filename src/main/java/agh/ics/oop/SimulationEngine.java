@@ -17,6 +17,9 @@ public class SimulationEngine implements Runnable, IEngine {
     MoveDirection[] moves;
     private final ArrayList<ISimulationEngineObserver> observers = new ArrayList<ISimulationEngineObserver>();
 
+    private int startEnergy = 10;
+    private int genomeLength = 4;
+
     public SimulationEngine(IWorldMap map, Vector2d[] positions, int moveDelay) {
         this.positions = positions;
         this.map = map;
@@ -24,13 +27,13 @@ public class SimulationEngine implements Runnable, IEngine {
         addAnimalsToMap();
     }
 
-    public void setMoves(MoveDirection[] moves) {
-        this.moves = moves;
-    }
+//    public void setMoves(MoveDirection[] moves) {
+//        this.moves = moves;
+//    }
 
     private void addAnimalsToMap() {
         for (Vector2d position : positions) {
-            Animal animal = new Animal(map, position);
+            Animal animal = new Animal(map, position, startEnergy);
             map.placeNewMapElement(animal);
             animals.add(animal);
         }
@@ -39,22 +42,21 @@ public class SimulationEngine implements Runnable, IEngine {
     @Override
     public void run() {
         if(animals.size() != 0) {
-            int j;
-            for (int i = 0; i < moves.length; i++) {
+            while (true) {
 
-                try{
-                    Thread.sleep(this.moveDelay);
+                for (int i = 0; i < animals.size(); i++) {
 
-                }catch (InterruptedException e){
-                    e.printStackTrace();
+                    try {
+                        Thread.sleep(this.moveDelay);
+
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+
+                    Animal animal = animals.get(i);
+                    animal.move();
+                    mapChanged();
                 }
-
-                j = i % animals.size();
-                Animal animal = animals.get(j);
-                if (j == 0) System.out.println(map);
-                System.out.println("animal direction: " + animal + ", position before next move: " + animal.getPosition() + ", next move: " + moves[i]);
-                animal.move(moves[i]);
-                mapChanged();
             }
         }
     }

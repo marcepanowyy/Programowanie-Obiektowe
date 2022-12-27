@@ -1,13 +1,13 @@
 package agh.ics.oop;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 public abstract class AbstractMapElement implements IMapElement {
 
     protected Vector2d position;
     protected final Set<IPositionChangeObserver> observers = new HashSet<>(){};
-
 
     public AbstractMapElement(Vector2d position){
         this.position = position;

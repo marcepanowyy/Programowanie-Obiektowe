@@ -18,17 +18,17 @@ public class App extends Application implements ISimulationEngineObserver {
     GridPane gridPane = new GridPane();
     private AbstractWorldMap map;
     SimulationEngine engine;
-    int size = 50;
+    int size = 40;
     private Set<IMapElement> elementsList;
-
 
     public void init() {
         try {
-            this.map = new GrassField(10);
+            this.map = new GrassField(20);
             Vector2d[] positions = {
-                    new Vector2d(3, 4),
-                    new Vector2d(10, 4),
-                    new Vector2d(5, 7),
+                    new Vector2d(6, 8),
+//                    new Vector2d(10, 4),
+                    new Vector2d(10, 10),
+                    new Vector2d(6, 6),
             };
 
             this.engine = new SimulationEngine(this.map, positions, 500);
@@ -50,10 +50,6 @@ public class App extends Application implements ISimulationEngineObserver {
         Button start = new Button("start");
         start.setOnAction(e -> {
 
-            MoveDirection[] directions = new OptionsParser().parse(
-                    textField.getText().split(" ")
-            );
-            engine.setMoves(directions);
             Thread engineThread = new Thread(engine);
             engineThread.start();
         });
@@ -72,9 +68,13 @@ public class App extends Application implements ISimulationEngineObserver {
     private void makeScene() throws FileNotFoundException {
 
         elementsList = map.getNewMapElements();
-        for(IMapElement element: elementsList){
-            System.out.println(element.toString());
-        }
+//        for(IMapElement element: elementsList){
+//            if(element instanceof Animal){
+//                System.out.println(((Animal) element).getGenomeList());
+//                System.out.println(((Animal) element).getRotationNum());
+//                System.out.println(((Animal) element).getOrientation());
+//            }
+//        }
 
         gridPane.setGridLinesVisible(true);
         gridPane.setAlignment(Pos.CENTER);
@@ -139,5 +139,3 @@ public class App extends Application implements ISimulationEngineObserver {
 
 
 }
-
-
