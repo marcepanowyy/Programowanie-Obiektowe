@@ -4,15 +4,19 @@ import java.util.HashSet;
 import java.util.Set;
 public class Animal extends AbstractMapElement {
 
-    private MapDirection orientation = MapDirection.NORTH;
+    private MapDirection orientation = MapDirection.randomDirection();
     private final IWorldMap map;
 
     public String toString(){
         return switch(this.orientation){
-            case NORTH -> "^";
-            case EAST -> ">";
-            case SOUTH -> "v";
-            case WEST -> "<";
+            case N -> "^";
+            case NE -> "^>";
+            case E -> ">";
+            case SE -> "v>";
+            case S -> "v";
+            case SW -> "v<";
+            case W -> "<";
+            case NW -> "<^";
         };
     }
 
@@ -55,10 +59,10 @@ public class Animal extends AbstractMapElement {
         Animal animal = (Animal) object;
         MapDirection orientation = animal.orientation;
         switch (orientation){
-            case NORTH -> {return "src/main/resources/North.png";}
-            case EAST -> {return "src/main/resources/East.png";}
-            case SOUTH -> {return "src/main/resources/South.png";}
-            case WEST -> {return "src/main/resources/WEST.png";}
+            case N -> {return "src/main/resources/North.png";}
+            case E -> {return "src/main/resources/East.png";}
+            case S -> {return "src/main/resources/South.png";}
+            case W -> {return "src/main/resources/WEST.png";}
             default -> {return "src/main/resources/WEST.png";}
         }
     }
