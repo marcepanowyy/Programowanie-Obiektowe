@@ -23,12 +23,15 @@ public class SimulationEngine implements Runnable, IEngine {
     private String mutationWarrant;
     private String behaviourWarrant;
     private String plantGrowthWarrant;
+    private String mapWarrant;
     private int plantsNum;
     private int plantEnergy;
     private int plantsDaily;
     private int animalsNum;
     private int genomeLength;
     private int startingEnergy;
+    private int height;
+    private int width;
 
     public SimulationEngine(IWorldMap map, Vector2d[] positions, int moveDelay) {
         this.positions = positions;
@@ -64,7 +67,7 @@ public class SimulationEngine implements Runnable, IEngine {
                     }
 
                     Animal animal = animals.get(i);
-                    animal.move();
+                    animal.move(mapWarrant, width, height);
                     mapChanged();
                 }
             }
@@ -86,8 +89,10 @@ public class SimulationEngine implements Runnable, IEngine {
     }
 
 
-    public void setParameters(int plantsNum,int plantEnergy,int plantsDaily,int animalsNum, int startingEnergy, int genomeLength, int energyToFull, int energyToBreed, int minNumOfMutations, int maxNumOfMutations,
-                           String mutationWarrant, String behaviourWarrant, String plantGrowthWarrant) {
+    public void setParameters(int width, int height, int plantsNum,int plantEnergy,int plantsDaily,int animalsNum, int startingEnergy, int genomeLength, int energyToFull, int energyToBreed, int minNumOfMutations, int maxNumOfMutations,
+                           String mutationWarrant, String behaviourWarrant, String plantGrowthWarrant, String mapWarrant) {
+        this.height = height;
+        this.width = width;
         this.plantsNum = plantsNum;
         this.plantEnergy = plantEnergy;
         this.plantsDaily = plantsDaily;
@@ -101,5 +106,6 @@ public class SimulationEngine implements Runnable, IEngine {
         this.mutationWarrant = mutationWarrant;
         this.behaviourWarrant = behaviourWarrant;
         this.plantGrowthWarrant = plantGrowthWarrant;
+        this.mapWarrant = mapWarrant;
     }
 }

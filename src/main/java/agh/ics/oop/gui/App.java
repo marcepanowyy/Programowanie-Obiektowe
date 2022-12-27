@@ -60,8 +60,10 @@ public class App extends Application implements ISimulationEngineObserver {
         GridPane.setConstraints(behaviourWarrantTextField, 1, 3);
         TextField plantGrowthWarrantTextField = new TextField("plant growth warrant");
         GridPane.setConstraints(plantGrowthWarrantTextField, 2, 3);
+        TextField mapWarrantTextField = new TextField("map warrant");
+        GridPane.setConstraints(mapWarrantTextField, 3, 3);
         Button start = new Button("start");
-        GridPane.setConstraints(start, 3, 3);
+        GridPane.setConstraints(start, 0, 4);
         start.setOnAction(e -> {
             this.width = Integer.parseInt(widthTextField.getText());
             this.height = Integer.parseInt(heightTextField.getText());
@@ -75,6 +77,7 @@ public class App extends Application implements ISimulationEngineObserver {
             int energyToBreed = Integer.parseInt(energyToBreedTextField.getText());
             int minNumOfMutations = Integer.parseInt(minNumOfMutationsTextField.getText());
             int maxNumOfMutations = Integer.parseInt(maxNumOfMutationsTextField.getText());
+            String mapWarrant = mapWarrantTextField.getText();
             String mutationWarrant = mutationWarrantTextField.getText();
             String behaviourWarrant = behaviourWarrantTextField.getText();
             String plantGrowthWarrant = plantGrowthWarrantTextField.getText();
@@ -93,8 +96,8 @@ public class App extends Application implements ISimulationEngineObserver {
             } catch (FileNotFoundException ex) {
                 ex.printStackTrace();
             }
-            engine.setParameters(plantsNum, plantEnergy, plantsDaily, animalsNum, startingEnergy, genomeLength, energyToFull, energyToBreed, minNumOfMutations, maxNumOfMutations,
-                    mutationWarrant, behaviourWarrant, plantGrowthWarrant);
+            engine.setParameters(this.width, this.height, plantsNum, plantEnergy, plantsDaily, animalsNum, startingEnergy, genomeLength, energyToFull, energyToBreed, minNumOfMutations, maxNumOfMutations,
+                    mutationWarrant, behaviourWarrant, plantGrowthWarrant, mapWarrant);
             Thread engineThread = new Thread(engine);
             engineThread.start();
         });
@@ -103,7 +106,7 @@ public class App extends Application implements ISimulationEngineObserver {
         gridPane1.setPadding(new Insets(10, 10, 10, 10));
         gridPane1.setAlignment(Pos.BOTTOM_CENTER);
         gridPane1.getChildren().addAll(widthTextField, heightTextField, plantsNumTextField, plantsEnergyTextField, plantsDailyTextField, animalsNumTextField, startingEnergyTextField,
-                genomeLengthTextField, energyToFullTextField, energyToBreedTextField, minNumOfMutationsTextField, maxNumOfMutationsTextField, mutationWarrantTextField, behaviourWarrantTextField, plantGrowthWarrantTextField, start);
+                genomeLengthTextField, energyToFullTextField, energyToBreedTextField, minNumOfMutationsTextField, maxNumOfMutationsTextField, mutationWarrantTextField, behaviourWarrantTextField, plantGrowthWarrantTextField, mapWarrantTextField, start);
 
         VBox vbox = new VBox(gridPane, gridPane1);
 

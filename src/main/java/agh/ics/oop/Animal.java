@@ -110,15 +110,26 @@ public class Animal extends AbstractMapElement {
 
     // moving
 
-    public void move() {
-
+    public void move(String warrant, int width, int height) {
+        System.out.println("to to");
         System.out.println(orientation.toString());
         System.out.println(position.toString());
 
         Vector2d newPosition = position;
-
-        newPosition = position.add(orientation.toUnitVector());
-
+        if (warrant.equals("kula ziemska")){
+            //TO DO
+//            System.out.println("OK");
+//            newPosition = position.add(orientation.toUnitVector());
+//            if (newPosition.x > width) {
+//                newPosition = new Vector2d(0, position.y);
+//            }
+//            else if (newPosition.x < 0){
+//                newPosition = new Vector2d(width - 1, position.y);
+//            }
+        }
+        else {
+            newPosition = position.add(orientation.toUnitVector());
+        }
         changePosition(position, newPosition);
         position = newPosition;
 
