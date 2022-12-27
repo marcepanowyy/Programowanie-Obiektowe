@@ -1,143 +1,169 @@
 package agh.ics.oop.gui;
 
-import agh.ics.oop.*;
-import javafx.application.Platform;
-import javafx.geometry.HPos;
-import javafx.geometry.Pos;
+import agh.ics.oop.main.GamePanel;
+import javafx.application.Application;
+import javafx.event.ActionEvent;
+import javafx.geometry.Insets;
+import javafx.scene.Group;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.*;
+import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
-import javafx.application.Application;
-import java.util.Set;
-import java.io.FileNotFoundException;
-public class App extends Application implements ISimulationEngineObserver {
-
-    GridPane gridPane = new GridPane();
-    private AbstractWorldMap map;
-    SimulationEngine engine;
-    int size = 50;
-    private Set<IMapElement> elementsList;
 
 
-    public void init() {
-        try {
-            this.map = new GrassField(10);
-            Vector2d[] positions = {
-                    new Vector2d(3, 4),
-                    new Vector2d(10, 4),
-                    new Vector2d(5, 7),
-            };
+public class App extends  Application{
 
-            this.engine = new SimulationEngine(this.map, positions, 500);
-            engine.addObserver(this);
+    private TextField widthTextField;
+    private TextField heightTextField;
+    private TextField plantsNumTextField;
+    private TextField plantsEnergyTextField;
+    private TextField plantsDailyTextField;
+    private TextField animalsNumTextField;
+    private TextField startingEnergyTextField;
+    private TextField genomeLengthTextField;
 
-        } catch (IllegalArgumentException e) {
-            System.out.println(e.getMessage());
-        }
-    }
-
-    public void start(Stage primaryStage) throws FileNotFoundException{
-
-        makeScene();
-
-        TextField textField = new TextField();
-        textField.setText("animal moves sequence");
-        textField.setPrefWidth(200);
-        textField.setMaxWidth(200);
-        Button start = new Button("start");
-        start.setOnAction(e -> {
-
-            MoveDirection[] directions = new OptionsParser().parse(
-                    textField.getText().split(" ")
-            );
-            engine.setMoves(directions);
-            Thread engineThread = new Thread(engine);
-            engineThread.start();
-        });
-
-        VBox vbox = new VBox(gridPane, textField, start);
-        vbox.setAlignment(Pos.CENTER);
-        vbox.setSpacing(20);
-
-
-        Scene scene = new Scene(vbox, 800, 800);
-        primaryStage.setScene(scene);
-        primaryStage.show();
-
-    }
-
-    private void makeScene() throws FileNotFoundException {
-
-        elementsList = map.getNewMapElements();
-        for(IMapElement element: elementsList){
-            System.out.println(element.toString());
-        }
-
-        gridPane.setGridLinesVisible(true);
-        gridPane.setAlignment(Pos.CENTER);
-        gridPane.getColumnConstraints().clear();
-        gridPane.getRowConstraints().clear();
-
-        Label label = new Label("y\\x");
-
-        Vector2d lowerLeft = map.getLowerLeft();
-        Vector2d upperRight = map.getUpperRight();
-
-        int startX = lowerLeft.getX();
-        int startY = lowerLeft.getY();
-        int endX = upperRight.getX();
-        int endY = upperRight.getY();
-
-        gridPane.add(label, 0, 0);
-        gridPane.getRowConstraints().add(new RowConstraints(size));
-        gridPane.getColumnConstraints().add(new ColumnConstraints(size));
-        GridPane.setHalignment(label, HPos.CENTER);
-
-
-        for (int i = startX; i <= endX + 1; i++) {
-            for (int j = startY; j <= endY + 1; j++) {
-                Object object = this.map.objectAt(new Vector2d(i, endY + startY - j));
-                if (object != null) {
-                    VBox el = new GuiElementBox((IMapElement) object).getvBox();
-                    gridPane.add(el, i+1 - lowerLeft.getX(), j+1 -lowerLeft.getY());
-                    GridPane.setHalignment(el, HPos.CENTER);
-                }
-            }
-        }
-
-        for (int i = startX; i <= endX; i++) {
-            Label xAxisNumber = new Label("" + i);
-            gridPane.add(xAxisNumber, i - startX + 1, 0);
-            gridPane.getColumnConstraints().add(new ColumnConstraints(size));
-            GridPane.setHalignment(xAxisNumber, HPos.CENTER);
-        }
-
-        for (int i = startY; i <= endY; i++) {
-            Label yAxisNumber = new Label("" + i);
-            gridPane.add(yAxisNumber, 0, endY - i + 1);
-            gridPane.getRowConstraints().add(new RowConstraints(size));
-            GridPane.setHalignment(yAxisNumber, HPos.CENTER);
-        }
-    }
+    public int width;
+    public int height;
+    public int plantsNum;
+    public int plantEnergy;
+    public int plantsDaily;
+    public int animalsNum;
+    public int startingEnergy;
+    public int genomeLength;
+    public GamePanel gamePanel;
 
     @Override
-    public void mapChanged() {
-        Platform.runLater(() -> {
-            gridPane.setGridLinesVisible(false);
-            gridPane.getChildren().clear();
-            try {
-                makeScene();
-            } catch (FileNotFoundException ex) {
-                ex.printStackTrace();
-            }
-        });
+    public void start(Stage primaryStage) throws Exception {
+        GridPane grid = new GridPane();
+        grid.setPadding(new Insets(10, 10, 10, 10));
+        grid.setVgap(5);
+
+        //
+        Label label1 = new Label("Map width: ");
+        GridPane.setConstraints(label1, 0, 0);
+        widthTextField = new TextField();
+        widthTextField.setPromptText("width");
+        GridPane.setConstraints(widthTextField, 1, 0);
+
+        //
+        Label label2 = new Label("Map height: ");
+        GridPane.setConstraints(label2, 0, 1);
+        heightTextField = new TextField();
+        heightTextField.setPromptText("height");
+        GridPane.setConstraints(heightTextField, 1, 1);
+
+
+        Label label3 = new Label("Number of plants: ");
+        GridPane.setConstraints(label3, 0, 2);
+        plantsNumTextField = new TextField();
+        plantsNumTextField.setPromptText("plants");
+        GridPane.setConstraints(plantsNumTextField, 1, 2);
+
+        Label label4 = new Label("Plants energy: ");
+        GridPane.setConstraints(label4, 0, 3);
+        plantsEnergyTextField = new TextField();
+        plantsEnergyTextField.setPromptText("plant energy");
+        GridPane.setConstraints(plantsEnergyTextField, 1, 3);
+
+        Label label5 = new Label("Number of plants per day ");
+        GridPane.setConstraints(label5, 0, 4);
+        plantsDailyTextField = new TextField();
+        plantsDailyTextField.setPromptText("plants per day");
+        GridPane.setConstraints(plantsDailyTextField, 1, 4);
+
+        Label label6 = new Label("Plant's growth warrant");
+        GridPane.setConstraints(label6, 0, 5);
+        TextField name6 = new TextField();
+        name6.setPromptText("warrant");
+        GridPane.setConstraints(name6, 1, 5);
+
+        Label label7 = new Label("Number of starting animals");
+        GridPane.setConstraints(label7, 0, 6);
+        animalsNumTextField = new TextField();
+        animalsNumTextField.setPromptText("starting animals");
+        GridPane.setConstraints(animalsNumTextField, 1, 6);
+
+        Label label8 = new Label("Starting energy");
+        GridPane.setConstraints(label8, 0, 7);
+        startingEnergyTextField = new TextField();
+        startingEnergyTextField.setPromptText("starting energy");
+        GridPane.setConstraints(startingEnergyTextField, 1, 7);
+
+        Label label9 = new Label("Necessary energy to create new animal");
+        GridPane.setConstraints(label9, 0, 8);
+        TextField name9 = new TextField();
+        name9.setPromptText("energy");
+        GridPane.setConstraints(name9, 1, 8);
+
+        Label label10 = new Label("Energy used after new animal");
+        GridPane.setConstraints(label10, 0, 9);
+        TextField name10 = new TextField();
+        name10.setPromptText("energy");
+        GridPane.setConstraints(name10, 1, 9);
+
+        Label label11 = new Label("Min num of mutations");
+        GridPane.setConstraints(label11, 0, 10);
+        TextField name11 = new TextField();
+        name11.setPromptText("min num");
+        GridPane.setConstraints(name11, 1, 10);
+
+
+        Label label12 = new Label("Max num of mutations");
+        GridPane.setConstraints(label12, 0, 11);
+        TextField name12 = new TextField();
+        name12.setPromptText("max num");
+        GridPane.setConstraints(name12, 1, 11);
+
+        Label label13 = new Label("Mutation warrant");
+        GridPane.setConstraints(label13, 0, 12);
+        TextField name13 = new TextField();
+        name13.setPromptText("min num");
+        GridPane.setConstraints(name13, 1, 12);
+
+        Label label14 = new Label("Genome length");
+        GridPane.setConstraints(label14, 0, 13);
+        genomeLengthTextField = new TextField();
+        genomeLengthTextField.setPromptText("length");
+        GridPane.setConstraints(genomeLengthTextField, 1, 13);
+
+        Label label15 = new Label("Behaviour warrant");
+        GridPane.setConstraints(label15, 0, 14);
+        TextField name15 = new TextField();
+        name15.setPromptText("warrant");
+        GridPane.setConstraints(name15, 1, 14);
+
+        Button startButton = new Button("Start");
+        startButton.setOnAction(this::submit);
+        GridPane.setConstraints(startButton, 1, 15);
+        grid.getChildren().addAll(label1, widthTextField, label2, heightTextField, label3, plantsNumTextField, label4, plantsEnergyTextField, label5, plantsDailyTextField, label6, name6, label7, animalsNumTextField, label8, startingEnergyTextField, label9, name9,
+                label10, name10, label11, name11, label12, name12, label13, name13, label14, genomeLengthTextField, label15, name15, startButton);
+
+
+
+        Scene scene = new Scene(grid, 1000, 700);
+        primaryStage.setScene(scene);
+        primaryStage.show();
     }
 
+    public void submit(ActionEvent event){
+        try{
+            width = Integer.parseInt(widthTextField.getText());
+            height = Integer.parseInt(heightTextField.getText());
+            plantsNum = Integer.parseInt(plantsNumTextField.getText());
+            plantEnergy = Integer.parseInt(plantsEnergyTextField.getText());
+            plantsDaily = Integer.parseInt(plantsDailyTextField.getText());
+            animalsNum = Integer.parseInt(animalsNumTextField.getText());
+            startingEnergy = Integer.parseInt(startingEnergyTextField.getText());
+            genomeLength = Integer.parseInt(genomeLengthTextField.getText());
+            gamePanel = new GamePanel(width, height, plantsNum, plantEnergy, plantsDaily, animalsNum, startingEnergy, genomeLength);
+        }
+        catch (NumberFormatException e){
+            System.out.println("Wrong data");
 
+        }
 
+    }
 }
-
-
