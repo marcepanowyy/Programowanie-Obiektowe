@@ -31,6 +31,7 @@ public class SimulationEngine implements Runnable, IEngine {
     private int animalsNum;
     private int genomeLength;
     private int startingEnergy;
+    private int counter = 0;
 
     public SimulationEngine(AbstractWorldMap map, int moveDelay, int width, int height, int plantsNum,int plantEnergy,int plantsDaily,int animalsNum, int startingEnergy, int genomeLength, int energyToFull, int energyToBreed, int minNumOfMutations, int maxNumOfMutations,
                             String mutationWarrant, String behaviourWarrant, String plantGrowthWarrant, String worldWarrant) {
@@ -97,8 +98,11 @@ public class SimulationEngine implements Runnable, IEngine {
 
                     Animal animal = map.getAnimals().get(i);
                     animal.move();
+
                     mapChanged();
                 }
+
+                counter++;
                 map.spawnGrass(plantsDaily);
                 mapChanged();
             }

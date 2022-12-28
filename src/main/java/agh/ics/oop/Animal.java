@@ -151,7 +151,9 @@ public class Animal extends AbstractMapElement {
         if (this.energy < 0) {
             this.energy = 0;
         }
+        this.energy--;
     }
+
 
 
 

@@ -207,7 +207,6 @@ public class AbstractWorldMap implements IWorldMap, IPositionChangeObserver {
             int chance = (int) (Math.random() * 10);
             int counter = 0;
             while (true) {
-                System.out.println(chance);
                 counter++;
                 int randomX;
                 int randomY;
