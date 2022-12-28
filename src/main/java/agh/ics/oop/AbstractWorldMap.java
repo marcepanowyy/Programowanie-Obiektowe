@@ -167,6 +167,18 @@ public class AbstractWorldMap implements IWorldMap, IPositionChangeObserver {
         return true;
     }
 
+    public void nextDay() {
+        for (LinkedList<Animal> animalList : animals.values()) {
+            if (animalList != null) {
+                if (animalList.size() > 0) {
+                    for (Animal a : animalList) {
+                        a.changeEnergy(dayCost);
+                    }
+                }
+            }
+        }
+    }
+
 
     public LinkedList<Animal> getAnimals() {
         return animalsList;

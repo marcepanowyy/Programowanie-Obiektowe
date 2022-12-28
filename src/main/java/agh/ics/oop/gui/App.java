@@ -94,14 +94,15 @@ public class App extends Application implements ISimulationEngineObserver {
             String behaviourWarrant = behaviourWarrantTextField.getText();
             String plantGrowthWarrant = plantGrowthWarrantTextField.getText();
 
-//            this.map = new GrassField(plantsNum);
+            this.map = new AbstractWorldMap(this.width, this.height, plantEnergy, 1, energyToBreed, startingEnergy);
+
 
             Vector2d[] positions = {
                     new Vector2d(6, 8),
-//                    new Vector2d(10, 4),
                     new Vector2d(10, 10),
                     new Vector2d(6, 6),
             };
+
             this.engine = new SimulationEngine(this.map, positions , 500, this.width, this.height);
             engine.addObserver(this);
 
