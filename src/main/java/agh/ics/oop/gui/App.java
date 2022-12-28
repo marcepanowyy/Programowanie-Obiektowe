@@ -24,23 +24,6 @@ public class App extends Application implements ISimulationEngineObserver {
     private int height;
     private int width;
 
-//    public void init() {
-//        try {
-//            this.map = new GrassField(20);
-//            Vector2d[] positions = {
-//                    new Vector2d(6, 8),
-////                    new Vector2d(10, 4),
-//                    new Vector2d(10, 10),
-//                    new Vector2d(6, 6),
-//            };
-//
-//            this.engine = new SimulationEngine(this.map, positions, 500);
-//            engine.addObserver(this);
-//
-//        } catch (IllegalArgumentException e) {
-//            System.out.println(e.getMessage());
-//        }
-//    }
 
     public void start(Stage primaryStage) throws FileNotFoundException{
 
@@ -75,8 +58,10 @@ public class App extends Application implements ISimulationEngineObserver {
         GridPane.setConstraints(behaviourWarrantTextField, 1, 3);
         TextField plantGrowthWarrantTextField = new TextField("plant growth warrant");
         GridPane.setConstraints(plantGrowthWarrantTextField, 2, 3);
+        TextField worldWarrantTextField = new TextField("World warrant");
+        GridPane.setConstraints(worldWarrantTextField, 3, 3);
         Button start = new Button("start");
-        GridPane.setConstraints(start, 3, 3);
+        GridPane.setConstraints(start, 0, 4);
         start.setOnAction(e -> {
             this.width = Integer.parseInt(widthTextField.getText());
             this.height = Integer.parseInt(heightTextField.getText());
@@ -93,6 +78,7 @@ public class App extends Application implements ISimulationEngineObserver {
             String mutationWarrant = mutationWarrantTextField.getText();
             String behaviourWarrant = behaviourWarrantTextField.getText();
             String plantGrowthWarrant = plantGrowthWarrantTextField.getText();
+            String worldWarrant = worldWarrantTextField.getText();
 
             this.map = new AbstractWorldMap(this.width, this.height, plantEnergy, 1, energyToBreed, startingEnergy);
 
@@ -103,7 +89,8 @@ public class App extends Application implements ISimulationEngineObserver {
                     new Vector2d(6, 6),
             };
 
-            this.engine = new SimulationEngine(this.map, positions , 500, this.width, this.height);
+            this.engine = new SimulationEngine(this.map, positions , 500, this.width, this.height, plantsNum, plantEnergy, plantsDaily, animalsNum, startingEnergy,  genomeLength,  energyToFull,  energyToBreed,  minNumOfMutations,  maxNumOfMutations,
+             mutationWarrant, behaviourWarrant,  plantGrowthWarrant, worldWarrant);
             engine.addObserver(this);
 
             try {
@@ -111,8 +98,6 @@ public class App extends Application implements ISimulationEngineObserver {
             } catch (FileNotFoundException ex) {
                 ex.printStackTrace();
             }
-            engine.setParameters(plantsNum, plantEnergy, plantsDaily, animalsNum, startingEnergy, genomeLength, energyToFull, energyToBreed, minNumOfMutations, maxNumOfMutations,
-                    mutationWarrant, behaviourWarrant, plantGrowthWarrant);
             Thread engineThread = new Thread(engine);
             engineThread.start();
         });
@@ -121,7 +106,7 @@ public class App extends Application implements ISimulationEngineObserver {
         gridPane1.setPadding(new Insets(10, 10, 10, 10));
         gridPane1.setAlignment(Pos.BOTTOM_CENTER);
         gridPane1.getChildren().addAll(widthTextField, heightTextField, plantsNumTextField, plantsEnergyTextField, plantsDailyTextField, animalsNumTextField, startingEnergyTextField,
-                genomeLengthTextField, energyToFullTextField, energyToBreedTextField, minNumOfMutationsTextField, maxNumOfMutationsTextField, mutationWarrantTextField, behaviourWarrantTextField, plantGrowthWarrantTextField, start);
+                genomeLengthTextField, energyToFullTextField, energyToBreedTextField, minNumOfMutationsTextField, maxNumOfMutationsTextField, mutationWarrantTextField, behaviourWarrantTextField, plantGrowthWarrantTextField, worldWarrantTextField, start);
 
         VBox vbox = new VBox(gridPane, gridPane1);
 

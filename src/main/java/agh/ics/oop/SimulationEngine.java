@@ -14,6 +14,7 @@ public class SimulationEngine implements Runnable, IEngine {
     private final Vector2d[] positions;
     private final IWorldMap map;
     private final int moveDelay;
+    private final String worldWarrant;
     MoveDirection[] moves;
     private final ArrayList<ISimulationEngineObserver> observers = new ArrayList<ISimulationEngineObserver>();
     private int width;
@@ -32,12 +33,27 @@ public class SimulationEngine implements Runnable, IEngine {
     private int genomeLength;
     private int startingEnergy;
 
-    public SimulationEngine(IWorldMap map, Vector2d[] positions, int moveDelay, int width, int height) {
+    public SimulationEngine(IWorldMap map, Vector2d[] positions, int moveDelay, int width, int height, int plantsNum,int plantEnergy,int plantsDaily,int animalsNum, int startingEnergy, int genomeLength, int energyToFull, int energyToBreed, int minNumOfMutations, int maxNumOfMutations,
+                            String mutationWarrant, String behaviourWarrant, String plantGrowthWarrant, String worldWarrant) {
         this.positions = positions;
         this.map = map;
         this.moveDelay = moveDelay;
         this.width = width;
         this.height = height;
+        this.plantsNum = plantsNum;
+        this.plantEnergy = plantEnergy;
+        this.plantsDaily = plantsDaily;
+        this.animalsNum = animalsNum;
+        this.startingEnergy = startingEnergy;
+        this.genomeLength = genomeLength;
+        this.energyToFull = energyToFull;
+        this.energyToBreed = energyToBreed;
+        this.minNumOfMutations = minNumOfMutations;
+        this.maxNumOfMutations = maxNumOfMutations;
+        this.mutationWarrant = mutationWarrant;
+        this.behaviourWarrant = behaviourWarrant;
+        this.plantGrowthWarrant = plantGrowthWarrant;
+        this.worldWarrant = worldWarrant;
         addAnimalsToMap();
     }
 
@@ -46,6 +62,7 @@ public class SimulationEngine implements Runnable, IEngine {
             Animal animal = new Animal(map, position, startingEnergy);
             map.placeNewMapElement(animal);
             animals.add(animal);
+            ;
         }
     }
 
@@ -85,21 +102,4 @@ public class SimulationEngine implements Runnable, IEngine {
         }
     }
 
-
-    public void setParameters(int plantsNum,int plantEnergy,int plantsDaily,int animalsNum, int startingEnergy, int genomeLength, int energyToFull, int energyToBreed, int minNumOfMutations, int maxNumOfMutations,
-                           String mutationWarrant, String behaviourWarrant, String plantGrowthWarrant) {
-        this.plantsNum = plantsNum;
-        this.plantEnergy = plantEnergy;
-        this.plantsDaily = plantsDaily;
-        this.animalsNum = animalsNum;
-        this.startingEnergy = startingEnergy;
-        this.genomeLength = genomeLength;
-        this.energyToFull = energyToFull;
-        this.energyToBreed = energyToBreed;
-        this.minNumOfMutations = minNumOfMutations;
-        this.maxNumOfMutations = maxNumOfMutations;
-        this.mutationWarrant = mutationWarrant;
-        this.behaviourWarrant = behaviourWarrant;
-        this.plantGrowthWarrant = plantGrowthWarrant;
-    }
 }
