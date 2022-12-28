@@ -45,6 +45,7 @@ public class AbstractWorldMap implements IWorldMap, IPositionChangeObserver {
         this.upperRight = new Vector2d(width - 1, height - 1);
         this.width = width;
         this.height = height;
+        spawnGrass(10);
     }
 
 
@@ -174,6 +175,20 @@ public class AbstractWorldMap implements IWorldMap, IPositionChangeObserver {
                     for (Animal a : animalList) {
                         a.changeEnergy(dayCost);
                     }
+                }
+            }
+        }
+    }
+
+    public void spawnGrass(int num){
+        for (int i = 0; i < num; i++) {
+            while (true) {
+                int randomX = (int) (Math.random() * width);
+                int randomY = (int) (Math.random() * height);
+                Vector2d randomPos = new Vector2d(randomX, randomY);
+                if (objectAt(randomPos) == null) {
+                    grassList.add(new Grass(randomPos));
+                    break;
                 }
             }
         }
