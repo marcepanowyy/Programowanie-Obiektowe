@@ -1,5 +1,6 @@
 package agh.ics.oop;
 
+import java.util.LinkedList;
 import java.util.Set;
 
 /**
@@ -70,9 +71,7 @@ public interface IWorldMap {
     /**
      * Return a list of newly added map elements. After returning
      * currently new elements, the list of new elements will be cleared.
-     * @param element
      *              The element newly added to the ma for the firs time.
      */
-    void placeNewMapElement(IMapElement element);
-
+    LinkedList<Animal> getAnimals();
 }

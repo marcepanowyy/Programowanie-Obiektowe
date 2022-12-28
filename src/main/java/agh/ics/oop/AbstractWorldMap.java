@@ -45,7 +45,6 @@ public class AbstractWorldMap implements IWorldMap, IPositionChangeObserver {
         this.upperRight = new Vector2d(width - 1, height - 1);
         this.width = width;
         this.height = height;
-        spawnGrass(10);
     }
 
 
@@ -68,10 +67,11 @@ public class AbstractWorldMap implements IWorldMap, IPositionChangeObserver {
         return returnedSet;
     }
 
-    public void placeNewMapElement(IMapElement element){
-        newMapElements.add(element);
-        place(element);
-    }
+
+//    public void placeNewMapElement(IMapElement element){
+//        newMapElements.add(element);
+//        place(element);
+//    }
 
     @Override
     public void positionChanged(Vector2d oldPosition, Vector2d newPosition, Object a){
@@ -137,9 +137,18 @@ public class AbstractWorldMap implements IWorldMap, IPositionChangeObserver {
 
 
 
+//    @Override
+//    public IMapElement objectAt(Vector2d position) {
+//        return mapElements.get(position);
+//    }
+
     @Override
-    public IMapElement objectAt(Vector2d position) {
-        return mapElements.get(position);
+    public Object objectAt(Vector2d position) {
+//        Vector2d position = toNoBoundedPosition(position2);
+        LinkedList<Animal> l = animals.get(position);
+        if (l == null) return grass.get(position);
+        else if (l.size() == 0) return grass.get(position);
+        else return l.getFirst();
     }
 
 
@@ -175,20 +184,6 @@ public class AbstractWorldMap implements IWorldMap, IPositionChangeObserver {
                     for (Animal a : animalList) {
                         a.changeEnergy(dayCost);
                     }
-                }
-            }
-        }
-    }
-
-    public void spawnGrass(int num){
-        for (int i = 0; i < num; i++) {
-            while (true) {
-                int randomX = (int) (Math.random() * width);
-                int randomY = (int) (Math.random() * height);
-                Vector2d randomPos = new Vector2d(randomX, randomY);
-                if (objectAt(randomPos) == null) {
-                    grassList.add(new Grass(randomPos));
-                    break;
                 }
             }
         }

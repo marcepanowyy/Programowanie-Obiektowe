@@ -82,14 +82,13 @@ public class App extends Application implements ISimulationEngineObserver {
 
             this.map = new AbstractWorldMap(this.width, this.height, plantEnergy, 1, energyToBreed, startingEnergy);
 
+//            Vector2d[] positions = {
+//                    new Vector2d(6, 8),
+//                    new Vector2d(10, 10),
+//                    new Vector2d(6, 6),
+//            };
 
-            Vector2d[] positions = {
-                    new Vector2d(6, 8),
-                    new Vector2d(10, 10),
-                    new Vector2d(6, 6),
-            };
-
-            this.engine = new SimulationEngine(this.map, positions , 500, this.width, this.height, plantsNum, plantEnergy, plantsDaily, animalsNum, startingEnergy,  genomeLength,  energyToFull,  energyToBreed,  minNumOfMutations,  maxNumOfMutations,
+            this.engine = new SimulationEngine(this.map, 500, this.width, this.height, plantsNum, plantEnergy, plantsDaily, animalsNum, startingEnergy,  genomeLength,  energyToFull,  energyToBreed,  minNumOfMutations,  maxNumOfMutations,
              mutationWarrant, behaviourWarrant,  plantGrowthWarrant, worldWarrant);
             engine.addObserver(this);
 

@@ -2,6 +2,7 @@ package agh.ics.oop;
 
 import java.util.ArrayList;
 import java.io.FileNotFoundException;
+import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
 import agh.ics.oop.gui.App;
@@ -10,8 +11,6 @@ import javafx.application.Platform;
 import javafx.stage.Stage;
 
 public class SimulationEngine implements Runnable, IEngine {
-    private final ArrayList<Animal> animals = new ArrayList<>();
-    private final Vector2d[] positions;
     private final IWorldMap map;
     private final int moveDelay;
     private final String worldWarrant;
@@ -33,9 +32,8 @@ public class SimulationEngine implements Runnable, IEngine {
     private int genomeLength;
     private int startingEnergy;
 
-    public SimulationEngine(IWorldMap map, Vector2d[] positions, int moveDelay, int width, int height, int plantsNum,int plantEnergy,int plantsDaily,int animalsNum, int startingEnergy, int genomeLength, int energyToFull, int energyToBreed, int minNumOfMutations, int maxNumOfMutations,
+    public SimulationEngine(IWorldMap map, int moveDelay, int width, int height, int plantsNum,int plantEnergy,int plantsDaily,int animalsNum, int startingEnergy, int genomeLength, int energyToFull, int energyToBreed, int minNumOfMutations, int maxNumOfMutations,
                             String mutationWarrant, String behaviourWarrant, String plantGrowthWarrant, String worldWarrant) {
-        this.positions = positions;
         this.map = map;
         this.moveDelay = moveDelay;
         this.width = width;
@@ -57,21 +55,37 @@ public class SimulationEngine implements Runnable, IEngine {
         addAnimalsToMap();
     }
 
+    public Vector2d getRandomVector(){
+
+        Random rand = new Random();
+        int x = rand.nextInt(this.width);
+        int y = rand.nextInt(this.height);
+        return new Vector2d(x, y);
+
+    }
+//    private void addAnimalsToMap() {
+//        for (Vector2d position : positions) {
+//            Animal animal = new Animal(map, position, startingEnergy);
+//            map.place(animal);
+//        }
+//    }
+
     private void addAnimalsToMap() {
-        for (Vector2d position : positions) {
-            Animal animal = new Animal(map, position, startingEnergy);
-            map.placeNewMapElement(animal);
-            animals.add(animal);
-            ;
+        for (int i = 0; i < this.animalsNum; i++) {
+            Animal animal = new Animal(map, getRandomVector(), startingEnergy);
+//            animals.add(animal);
+            map.place(animal);
         }
     }
 
+
     @Override
     public void run() {
-        if(animals.size() != 0) {
+//        if(animals.size() != 0) {
+        if(map.getAnimals().size() != 0) {
             while (true) {
 
-                for (int i = 0; i < animals.size(); i++) {
+                for (int i = 0; i < map.getAnimals().size(); i++) {
 
                     try {
                         Thread.sleep(this.moveDelay);
@@ -80,14 +94,14 @@ public class SimulationEngine implements Runnable, IEngine {
                         e.printStackTrace();
                     }
 
-                    Animal animal = animals.get(i);
+//                    Animal animal = animals.get(i);
+                    Animal animal = map.getAnimals().get(i);
                     animal.move();
                     mapChanged();
                 }
             }
         }
     }
-
     public void addObserver(ISimulationEngineObserver observer) {
         this.observers.add(observer);
     }
