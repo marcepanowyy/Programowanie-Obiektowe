@@ -88,7 +88,8 @@ public class App extends Application implements ISimulationEngineObserver {
                     new Vector2d(10, 10),
                     new Vector2d(6, 6),
             };
-            this.engine = new SimulationEngine(this.map, positions , 500);
+            this.engine = new SimulationEngine(this.map, positions , 500, this.width, this.height, plantsNum, plantEnergy, plantsDaily,  animalsNum, startingEnergy, genomeLength, energyToFull,  energyToBreed, minNumOfMutations,  maxNumOfMutations,
+              mutationWarrant,behaviourWarrant, plantGrowthWarrant,  mapWarrant);
             engine.addObserver(this);
 
             try {
@@ -96,8 +97,6 @@ public class App extends Application implements ISimulationEngineObserver {
             } catch (FileNotFoundException ex) {
                 ex.printStackTrace();
             }
-            engine.setParameters(this.width, this.height, plantsNum, plantEnergy, plantsDaily, animalsNum, startingEnergy, genomeLength, energyToFull, energyToBreed, minNumOfMutations, maxNumOfMutations,
-                    mutationWarrant, behaviourWarrant, plantGrowthWarrant, mapWarrant);
             Thread engineThread = new Thread(engine);
             engineThread.start();
         });

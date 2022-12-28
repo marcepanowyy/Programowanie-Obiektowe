@@ -75,4 +75,5 @@ public interface IWorldMap {
      */
     void placeNewMapElement(IMapElement element);
 
+    void removeAnimal(Vector2d position);
 }

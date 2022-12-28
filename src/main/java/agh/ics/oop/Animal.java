@@ -6,9 +6,12 @@ public class Animal extends AbstractMapElement {
 
     private MapDirection orientation = MapDirection.randomDirection();
     private final IWorldMap map;
-
-    private int startingEnergy = 10;
-    private int genomeLength = 4;
+    private int grassEaten = 0;
+    private int kids = 0;
+    private int daysAlive = 0;
+    private int deathDate;
+    public int startingEnergy;
+    private int genomeLength;
     private List<Integer> genomeList;
 
     private int actualGenomeIndex;
@@ -30,14 +33,16 @@ public class Animal extends AbstractMapElement {
         this.map = map;
         addObserver((IPositionChangeObserver) map);
     }
-    public Animal(IWorldMap map, Vector2d initialPosition, int energy){
+    public Animal(IWorldMap map, Vector2d initialPosition, int energy, int genomeLength){
         super(initialPosition);
+        this.genomeLength = genomeLength;
         this.map = map;
         this.genomeList = generateRandomGenome();
 //        this.genomeList = new ArrayList<>(Arrays.asList(0, 0, 0, 4, 0, 0, 0, 0, 0, 0));
         this.orientation = MapDirection.randomDirection();
 //        this.orientation = MapDirection.NW;
         this.actualGenomeIndex = -1;
+        this.startingEnergy = energy;
         addObserver((IPositionChangeObserver) map);
     }
 
@@ -55,6 +60,7 @@ public class Animal extends AbstractMapElement {
 
 
     public List<Integer> getGenomeList(){
+
         return this.genomeList;
     }
 
@@ -100,10 +106,7 @@ public class Animal extends AbstractMapElement {
         int rotation = getRotationNum();
 
         for(int i = 1; i <= rotation; i++){
-            System.out.println(orientation);
             this.orientation = this.orientation.next();
-            System.out.println(orientation);
-
         }
 
     }
@@ -111,21 +114,19 @@ public class Animal extends AbstractMapElement {
     // moving
 
     public void move(String warrant, int width, int height) {
-        System.out.println("to to");
-        System.out.println(orientation.toString());
-        System.out.println(position.toString());
-
         Vector2d newPosition = position;
         if (warrant.equals("kula ziemska")){
-            //TO DO
-//            System.out.println("OK");
-//            newPosition = position.add(orientation.toUnitVector());
-//            if (newPosition.x > width) {
-//                newPosition = new Vector2d(0, position.y);
-//            }
-//            else if (newPosition.x < 0){
-//                newPosition = new Vector2d(width - 1, position.y);
-//            }
+            newPosition = position.add(orientation.toUnitVector());
+            if (newPosition.x > width) {
+                newPosition = new Vector2d(0, position.y);
+            }
+            else if (newPosition.x < 0){
+                newPosition = new Vector2d(width - 1, position.y);
+
+            }
+            else {
+                newPosition = position.add(orientation.toUnitVector());
+            }
         }
         else {
             newPosition = position.add(orientation.toUnitVector());
@@ -134,7 +135,18 @@ public class Animal extends AbstractMapElement {
         position = newPosition;
 
         rotate();
+    }
 
+    public void reduceEnergy(){
+        this.startingEnergy -= 1;
+    }
+
+    public void increaseEnergy(){
+        this.startingEnergy += 1;
+    }
+
+    public boolean isDead(){
+        return startingEnergy <= 0;
     }
 
 

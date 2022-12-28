@@ -2,12 +2,6 @@ package agh.ics.oop;
 
 import java.util.ArrayList;
 import java.io.FileNotFoundException;
-import java.util.concurrent.TimeUnit;
-
-import agh.ics.oop.gui.App;
-import javafx.application.Application;
-import javafx.application.Platform;
-import javafx.stage.Stage;
 
 public class SimulationEngine implements Runnable, IEngine {
     private final ArrayList<Animal> animals = new ArrayList<>();
@@ -33,10 +27,28 @@ public class SimulationEngine implements Runnable, IEngine {
     private int height;
     private int width;
 
-    public SimulationEngine(IWorldMap map, Vector2d[] positions, int moveDelay) {
+    public SimulationEngine(IWorldMap map, Vector2d[] positions, int moveDelay, int width, int height, int plantsNum, int plantEnergy, int plantsDaily, int animalsNum, int startingEnergy, int genomeLength, int energyToFull, int energyToBreed, int minNumOfMutations, int maxNumOfMutations,
+                            String mutationWarrant, String behaviourWarrant, String plantGrowthWarrant, String mapWarrant) {
         this.positions = positions;
         this.map = map;
         this.moveDelay = moveDelay;
+        this.height = height;
+        this.width = width;
+        this.plantsNum = plantsNum;
+        this.plantEnergy = plantEnergy;
+        this.plantsDaily = plantsDaily;
+        this.animalsNum = animalsNum;
+        this.startingEnergy = startingEnergy;
+        this.genomeLength = genomeLength;
+        this.energyToFull = energyToFull;
+        this.energyToBreed = energyToBreed;
+        this.minNumOfMutations = minNumOfMutations;
+        this.maxNumOfMutations = maxNumOfMutations;
+        this.mutationWarrant = mutationWarrant;
+        this.behaviourWarrant = behaviourWarrant;
+        this.plantGrowthWarrant = plantGrowthWarrant;
+        this.mapWarrant = mapWarrant;
+        System.out.println(genomeLength);
         addAnimalsToMap();
     }
 
@@ -46,11 +58,12 @@ public class SimulationEngine implements Runnable, IEngine {
 
     private void addAnimalsToMap() {
         for (Vector2d position : positions) {
-            Animal animal = new Animal(map, position, startingEnergy);
+            Animal animal = new Animal(map, position, startingEnergy, genomeLength);
             map.placeNewMapElement(animal);
             animals.add(animal);
         }
     }
+
 
     @Override
     public void run() {
@@ -66,8 +79,12 @@ public class SimulationEngine implements Runnable, IEngine {
                         e.printStackTrace();
                     }
 
+
                     Animal animal = animals.get(i);
+                    animal.reduceEnergy();
                     animal.move(mapWarrant, width, height);
+                    removeDead(animal, i);
+
                     mapChanged();
                 }
             }
@@ -89,23 +106,10 @@ public class SimulationEngine implements Runnable, IEngine {
     }
 
 
-    public void setParameters(int width, int height, int plantsNum,int plantEnergy,int plantsDaily,int animalsNum, int startingEnergy, int genomeLength, int energyToFull, int energyToBreed, int minNumOfMutations, int maxNumOfMutations,
-                           String mutationWarrant, String behaviourWarrant, String plantGrowthWarrant, String mapWarrant) {
-        this.height = height;
-        this.width = width;
-        this.plantsNum = plantsNum;
-        this.plantEnergy = plantEnergy;
-        this.plantsDaily = plantsDaily;
-        this.animalsNum = animalsNum;
-        this.startingEnergy = startingEnergy;
-        this.genomeLength = genomeLength;
-        this.energyToFull = energyToFull;
-        this.energyToBreed = energyToBreed;
-        this.minNumOfMutations = minNumOfMutations;
-        this.maxNumOfMutations = maxNumOfMutations;
-        this.mutationWarrant = mutationWarrant;
-        this.behaviourWarrant = behaviourWarrant;
-        this.plantGrowthWarrant = plantGrowthWarrant;
-        this.mapWarrant = mapWarrant;
+    public void removeDead(Animal animal, int idx){
+        if (animal.isDead()){
+            map.removeAnimal(animal.getPosition());
+            animals.remove(idx);
+        }
     }
 }

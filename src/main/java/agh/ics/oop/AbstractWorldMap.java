@@ -71,4 +71,8 @@ public abstract class AbstractWorldMap implements IWorldMap, IPositionChangeObse
     }
 
     protected abstract boolean isOnMap(Vector2d position);
+
+    public void removeAnimal(Vector2d position){
+        mapElements.remove(position);
+    }
 }
