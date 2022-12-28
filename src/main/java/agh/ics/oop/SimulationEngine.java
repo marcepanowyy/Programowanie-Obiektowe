@@ -16,6 +16,8 @@ public class SimulationEngine implements Runnable, IEngine {
     private final int moveDelay;
     MoveDirection[] moves;
     private final ArrayList<ISimulationEngineObserver> observers = new ArrayList<ISimulationEngineObserver>();
+    private int width;
+    private int height;
     private int energyToBreed;
     private int energyToFull;
     private int minNumOfMutations;
@@ -30,16 +32,14 @@ public class SimulationEngine implements Runnable, IEngine {
     private int genomeLength;
     private int startingEnergy;
 
-    public SimulationEngine(IWorldMap map, Vector2d[] positions, int moveDelay) {
+    public SimulationEngine(IWorldMap map, Vector2d[] positions, int moveDelay, int width, int height) {
         this.positions = positions;
         this.map = map;
         this.moveDelay = moveDelay;
+        this.width = width;
+        this.height = height;
         addAnimalsToMap();
     }
-
-//    public void setMoves(MoveDirection[] moves) {
-//        this.moves = moves;
-//    }
 
     private void addAnimalsToMap() {
         for (Vector2d position : positions) {

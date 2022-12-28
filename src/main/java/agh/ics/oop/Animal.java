@@ -6,8 +6,9 @@ public class Animal extends AbstractMapElement {
 
     private MapDirection orientation = MapDirection.randomDirection();
     private final IWorldMap map;
+    public ArrayList<IPositionChangeObserver> observerlist = new ArrayList<>();
 
-    private int startingEnergy = 10;
+    private int energy = 10;
     private int genomeLength = 4;
     private List<Integer> genomeList;
 
@@ -28,17 +29,16 @@ public class Animal extends AbstractMapElement {
 
         super(new Vector2d(0, 0));
         this.map = map;
-        addObserver((IPositionChangeObserver) map);
+//        addObserver((IPositionChangeObserver) map);
     }
     public Animal(IWorldMap map, Vector2d initialPosition, int energy){
         super(initialPosition);
         this.map = map;
         this.genomeList = generateRandomGenome();
-//        this.genomeList = new ArrayList<>(Arrays.asList(0, 0, 0, 4, 0, 0, 0, 0, 0, 0));
         this.orientation = MapDirection.randomDirection();
-//        this.orientation = MapDirection.NW;
         this.actualGenomeIndex = -1;
-        addObserver((IPositionChangeObserver) map);
+        this.energy = energy;
+//        addObserver((IPositionChangeObserver) map);
     }
 
     public int getRandomNumber(){
@@ -60,13 +60,6 @@ public class Animal extends AbstractMapElement {
 
     public MapDirection getOrientation(){
         return this.orientation;
-    }
-
-    void changePosition(Vector2d oldPosition, Vector2d newPosition) {
-        position = newPosition;
-        for (IPositionChangeObserver observer: observers) {
-            observer.positionChanged(oldPosition, newPosition);
-        }
     }
 
     @Override
@@ -100,30 +93,64 @@ public class Animal extends AbstractMapElement {
         int rotation = getRotationNum();
 
         for(int i = 1; i <= rotation; i++){
-            System.out.println(orientation);
             this.orientation = this.orientation.next();
-            System.out.println(orientation);
 
         }
 
     }
 
+//    OBSERVERS
+
+    public void addObserver(IPositionChangeObserver observer) {
+        observerlist.add(observer);
+    }
+
+    public void removeObserver(IPositionChangeObserver observer) {
+        observerlist.remove(observer);
+    }
+    private void positionChanged(Vector2d old, Vector2d n, Object a) {
+        for (IPositionChangeObserver o : observerlist) {
+            o.positionChanged(old, n, a);
+        }
+    }
+
     // moving
 
+//    public void move(String warrant, int width, int height) {
     public void move() {
 
-        System.out.println(orientation.toString());
-        System.out.println(position.toString());
-
         Vector2d newPosition = position;
+//        if (warrant.equals("kula ziemska")){
+            //TO DO
+//            System.out.println("OK");
+//            newPosition = position.add(orientation.toUnitVector());
+//            if (newPosition.x > width) {
+//                newPosition = new Vector2d(0, position.y);
+//            }
+//            else if (newPosition.x < 0){
+//                newPosition = new Vector2d(width - 1, position.y);
+//            }
+//        }
+//        else {
+//            newPosition = position.add(orientation.toUnitVector());
+//        }
 
         newPosition = position.add(orientation.toUnitVector());
-
-        changePosition(position, newPosition);
+        this.positionChanged(this.position, newPosition, this);
         position = newPosition;
-
         rotate();
 
+    }
+
+    public boolean isDead() {
+        return this.energy <= 0;
+    }
+
+    public void changeEnergy(int value) {
+        this.energy = this.energy + value;
+        if (this.energy < 0) {
+            this.energy = 0;
+        }
     }
 
 

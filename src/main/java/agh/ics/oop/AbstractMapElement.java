@@ -21,7 +21,7 @@ public abstract class AbstractMapElement implements IMapElement {
     @Override
     public void remove(){
         for (IPositionChangeObserver observer: observers){
-            observer.positionChanged(position, null);
+            observer.positionChanged(position, null, this);
         }
     }
 

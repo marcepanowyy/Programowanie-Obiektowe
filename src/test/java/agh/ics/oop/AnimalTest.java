@@ -12,7 +12,7 @@
 //    @Test
 //    void testAnimal(){
 //
-//        this.map = new GrassField(20);
+////        this.map = new GrassField(20);
 //
 //        Animal animal1 = new Animal(this.map, new Vector2d(5,5), 10);
 //        Animal animal2 = new Animal(this.map, new Vector2d(5,5), 10);

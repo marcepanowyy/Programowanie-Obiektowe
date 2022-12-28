@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="agh.ics.oop.MapTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2022-12-28T14:35:50" hostname="DESKTOP-9BCLMCE" time="0.047">
+  <properties/>
+  <testcase name="testAnimal()" classname="agh.ics.oop.MapTest" time="0.047"/>
+  <system-out><![CDATA[[<^, ^>, v]
+{(5, 5)=[<^], (2, 2)=[^>], (3, 3)=[v]}
+[<^, v, v<]
+{(3, 2)=[v<], (3, 3)=[v], (4, 6)=[<^]}
+]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>
