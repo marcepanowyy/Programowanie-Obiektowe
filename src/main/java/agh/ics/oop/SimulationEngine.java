@@ -26,7 +26,7 @@ public class SimulationEngine implements Runnable, IEngine {
     private String behaviourWarrant;
     private String plantGrowthWarrant;
     private int plantsNum;
-    private int plantEnergy;
+    public int plantEnergy;
     private int plantsDaily;
     private int animalsNum;
     private int genomeLength;
@@ -82,7 +82,7 @@ public class SimulationEngine implements Runnable, IEngine {
 
     @Override
     public void run() {
-//        if(animals.size() != 0) {
+
         if(map.getAnimals().size() != 0) {
             while (true) {
 
@@ -95,7 +95,6 @@ public class SimulationEngine implements Runnable, IEngine {
                         e.printStackTrace();
                     }
 
-//                    Animal animal = animals.get(i);
                     Animal animal = map.getAnimals().get(i);
                     animal.move();
                     mapChanged();

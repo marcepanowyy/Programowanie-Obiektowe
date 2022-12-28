@@ -20,6 +20,13 @@ public class AbstractWorldMap implements IWorldMap, IPositionChangeObserver {
     private final Vector2d lowerLeft;
     public int width;
     public int height;
+    private int middleX;
+    private int middleY;
+    private long equatorFields;
+    private long equatorStartY;
+    private long equatorStartX;
+    private long equatorEndX;
+    private long equatorEndY;
 
     //eating
     private int grassProfit;
@@ -45,6 +52,11 @@ public class AbstractWorldMap implements IWorldMap, IPositionChangeObserver {
         this.upperRight = new Vector2d(width - 1, height - 1);
         this.width = width;
         this.height = height;
+        this.middleX = width / 2;
+        this.middleY = height / 2;
+        this.equatorFields = Math.round((height * width) * 0.2);
+        getEquatorWidth();
+        System.out.println(equatorFields);
     }
 
 
@@ -192,16 +204,47 @@ public class AbstractWorldMap implements IWorldMap, IPositionChangeObserver {
 
     public void spawnGrass(int num){
         for (int i = 0; i < num; i++) {
+            int chance = (int) (Math.random() * 10);
+            int counter = 0;
             while (true) {
-                int randomX = (int) (Math.random() * width);
-                int randomY = (int) (Math.random() * height);
+                System.out.println(chance);
+                counter++;
+                int randomX;
+                int randomY;
+                if (chance <= 8){
+                    randomX = (int) ((Math.random() * (equatorEndX - equatorStartX)) + equatorStartX);
+                    randomY = (int) ((Math.random() * (equatorEndY - equatorStartY)) + equatorStartY);
+                }
+                else {
+                    randomX = (int) (Math.random() * width);
+                    randomY = (int) (Math.random() * height);
+                }
                 Vector2d randomPos = new Vector2d(randomX, randomY);
                 if (objectAt(randomPos) == null) {
                     grass.put(randomPos , new Grass(randomPos));
                     break;
                 }
+                if (counter > equatorFields){
+                    break;
+                }
             }
         }
+    }
+
+    public void getEquatorWidth(){
+        long equatorLength = 1;
+        long equatorHeight = 1;
+        for (int i = width - 1; i > 0; i--){
+            if (equatorFields % i == 0){
+                equatorLength = i;
+                equatorHeight = equatorFields / equatorLength;
+                break;
+            }
+        }
+        this.equatorStartX = (width - equatorLength) / 2;
+        this.equatorEndX = equatorStartX + equatorLength;
+        this.equatorStartY = (height - equatorHeight) / 2;
+        this.equatorEndY = equatorStartY + equatorHeight;
     }
 
 
@@ -215,6 +258,10 @@ public class AbstractWorldMap implements IWorldMap, IPositionChangeObserver {
 
     public LinkedList<Grass> getGrass() {
         return grassList;
+    }
+
+    public void eatGrass(){
+
     }
 
 
