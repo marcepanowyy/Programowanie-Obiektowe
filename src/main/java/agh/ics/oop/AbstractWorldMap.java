@@ -110,7 +110,8 @@ public class AbstractWorldMap implements IWorldMap, IPositionChangeObserver {
         }
     }
 
-    private boolean addAnimal(Animal a, Vector2d p) {
+    public boolean addAnimal(Animal a, Vector2d p) {
+        System.out.println(animalsList);
         if (a == null) return false;
 //        Vector2d pos = a.getPosition();
         LinkedList<Animal> l = animals.get(p);
@@ -188,6 +189,24 @@ public class AbstractWorldMap implements IWorldMap, IPositionChangeObserver {
             }
         }
     }
+
+    public void spawnGrass(int num){
+        for (int i = 0; i < num; i++) {
+            while (true) {
+                int randomX = (int) (Math.random() * width);
+                int randomY = (int) (Math.random() * height);
+                Vector2d randomPos = new Vector2d(randomX, randomY);
+                if (objectAt(randomPos) == null) {
+                    grass.put(randomPos , new Grass(randomPos));
+                    break;
+                }
+            }
+        }
+    }
+
+
+
+
 
 
     public LinkedList<Animal> getAnimals() {
