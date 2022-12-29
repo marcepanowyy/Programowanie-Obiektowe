@@ -15,18 +15,63 @@ public class MapTest {
     @Test
     void testAnimal(){
 
-        this.map = new AbstractWorldMap(5, 5, 40, 40, 40, 40);
-
-        Animal animal1 = new Animal(this.map, new Vector2d(3,5), 10, 10, 10, 0, 2, 0);
+        this.map = new AbstractWorldMap(5, 5, 40, 40, 1, 40);
+        Animal animal =  new Animal(this.map, new Vector2d(3,5), 30, 10, 1, 0, 0, 0);
+        Animal animal1 = new Animal(this.map, new Vector2d(3,5), 10, 10, 1, 0, 0, 0);
         this.map.place(animal1);
-        System.out.println(animal1.getGenomeList());
-        System.out.println(map.animals);
-        animal1.move();
-        animal1.move();
-        animal1.move();
-        animal1.move();
-        animal1.move();
-        animal1.move();
+        this.map.place(animal);
+        this.map.fuckThemAll();
+
+//        System.out.println(animal1.getGenomeList());
+//        System.out.println(map.animals);
+//        System.out.println(animal1.actualGenomeIndex);
+//        animal1.move();
+//        System.out.println(animal1.actualGenomeIndex);
+//        animal1.move();
+//        System.out.println(animal1.actualGenomeIndex);
+//        animal1.move();
+//        System.out.println(animal1.actualGenomeIndex);
+//        animal1.move();
+//        System.out.println(animal1.actualGenomeIndex);
+//        animal1.move();
+//        System.out.println(animal1.actualGenomeIndex);
+//        animal1.move();
+//        System.out.println(animal1.actualGenomeIndex);
+//        animal1.move();
+//        System.out.println(animal1.actualGenomeIndex);
+//        animal1.move();
+//        System.out.println(animal1.actualGenomeIndex);
+//        animal1.move();
+//        System.out.println(animal1.actualGenomeIndex);
+//        animal1.move();
+//        System.out.println(animal1.actualGenomeIndex);
+//        animal1.move();
+//        System.out.println(animal1.actualGenomeIndex);
+//        animal1.move();
+//        System.out.println(animal1.actualGenomeIndex);
+//        animal1.move();
+//        System.out.println(animal1.actualGenomeIndex);
+//        animal1.move();
+//        System.out.println(animal1.actualGenomeIndex);
+//        animal1.move();
+//        System.out.println(animal1.actualGenomeIndex);
+//        animal1.move();
+//        System.out.println(animal1.actualGenomeIndex);
+//        animal1.move();
+//        System.out.println(animal1.actualGenomeIndex);
+//        animal1.move();
+//        System.out.println(animal1.actualGenomeIndex);
+//        animal1.move();
+//        System.out.println(animal1.actualGenomeIndex);
+//        animal1.move();
+//        System.out.println(animal1.actualGenomeIndex);
+//        animal1.move();
+//        System.out.println(animal1.actualGenomeIndex);
+//        animal1.move();
+//        System.out.println(animal1.actualGenomeIndex);
+//        animal1.move();
+//        System.out.println(animal1.actualGenomeIndex);
+//        animal1.move();
 
     }
 

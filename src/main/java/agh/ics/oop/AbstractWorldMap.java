@@ -34,6 +34,8 @@ public class AbstractWorldMap implements IWorldMap, IPositionChangeObserver {
     private int startAnimalsEnergy;
     //copulation
     private final int energyLimitToCopulation;
+    private final int energyToFull = 1;
+
 
     public AbstractWorldMap(int width, int height, int grassProfit, int dayCost, int energyLimitToCopulation, int startAnimalsEnergy) {
         this.mapVisualizer = new MapVisualizer(this);
@@ -283,5 +285,30 @@ public class AbstractWorldMap implements IWorldMap, IPositionChangeObserver {
         animals.forEach((key, value) -> eatGrassOnPosition(key));
     }
 
+    public void copulate(Vector2d position){
+        LinkedList<Animal> l = animals.get(position);
+        if (l != null && l.size() > 1){
+            Collections.sort(l, new Comparator<Animal>() {
+                public int compare(Animal a1, Animal a2) {
+                    return a2.energy - a1.energy;
+                }
+            });
+            Animal animal1 = l.getFirst();
+            Animal animal2 = l.get(1);
+            if (animal1.energy >= energyToFull && animal2.energy >= energyToFull){
+                Animal animal = new Animal(animal1, animal2, animal1.getPosition());
+                animal1.changeEnergy(-energyLimitToCopulation);
+                animal2.changeEnergy(-energyLimitToCopulation);
+                animal1.kids++;
+                animal2.kids++;
+                addAnimal(animal, animal1.getPosition());
+            }
+
+        }
+    }
+
+    public void fuckThemAll(){
+        animals.forEach((key, value) -> copulate(key));
+    }
 
 }

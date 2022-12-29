@@ -7,17 +7,18 @@ public class Animal extends AbstractMapElement {
     public MapDirection orientation = MapDirection.randomDirection();
     private final IWorldMap map;
     public ArrayList<IPositionChangeObserver> observerlist = new ArrayList<>();
-    public int age = 0;
-    public int kids = 0;
+    public int age;
+    public int kids;
     public int energy;
     private int genomeLength;
     private List<Integer> genomeList;
     public int actualGenomeIndex;
     private int energyLimitToCopulation;
-
+    private final int energyToFull = 10;
     private int mapMode;
     private int mutationMode;
     private int behaviourMode;
+
 
 
     // mode 0 - kula ziemska
@@ -55,6 +56,22 @@ public class Animal extends AbstractMapElement {
         this.age = 0;
         this.kids = 0;
     }
+
+    public Animal(Animal animal1, Animal animal2, Vector2d position){
+        super(position);
+        this.energy = animal1.energyLimitToCopulation + animal2.energyLimitToCopulation;
+        this.map = animal1.map;
+        this.genomeLength = animal1.genomeLength;
+        this.orientation = MapDirection.randomDirection();
+        this.actualGenomeIndex = 0; // Popraw
+        this.genomeList = parentsGenome(animal1, animal2);
+        this.energyLimitToCopulation = animal1.energyLimitToCopulation;
+        this.mapMode = animal1.mapMode;
+        this.mutationMode = animal1.mutationMode;
+        this.behaviourMode = animal1.behaviourMode;
+        this.age = 0;
+        this.kids = 0;
+    }
     public int getRandomNumber(){
         return (int)(Math.random() * 8);
     }
@@ -62,6 +79,35 @@ public class Animal extends AbstractMapElement {
         List<Integer> newGenome = new ArrayList<>();
         for (int i = 0; i < genomeLength ; i++) {
             newGenome.add(getRandomNumber());
+        }
+        return newGenome;
+    }
+
+    public List<Integer> parentsGenome(Animal animal1, Animal animal2){
+        int energySum = animal1.energy + animal2.energy;
+        float x = (float) energySum / animal1.energy;
+        float y = (float) genomeLength / x;
+        int firstAnimalLength = (int) y;
+        int secondAnimalLength = genomeLength - firstAnimalLength;
+        System.out.println(firstAnimalLength);
+        List<Integer> newGenome = new ArrayList<>();
+        int chance = (int) (Math.random() * 1); // 0 oznacza lewo 1 oznacza prawo
+
+        if (chance == 0){
+            for (int i = 0; i < firstAnimalLength ; i++) {
+                newGenome.add(animal1.genomeList.get(i));
+            }
+            for (int i = firstAnimalLength; i < genomeLength; i++){
+                newGenome.add(animal2.genomeList.get(i));
+            }
+        }
+        else if (chance == 1){
+            for (int i = 0; i < secondAnimalLength; i++){
+                newGenome.add(animal2.genomeList.get(i));
+            }
+            for (int i = secondAnimalLength; i < genomeLength ; i++) {
+                newGenome.add(animal1.genomeList.get(i));
+            }
         }
         return newGenome;
     }
