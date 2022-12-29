@@ -89,6 +89,7 @@ public class SimulationEngine implements Runnable, IEngine {
                     }
 
                     Animal animal = map.getAnimals().get(i);
+                    System.out.println(animal.energy);
                     animal.move();
                     mapChanged();
                 }
@@ -96,8 +97,10 @@ public class SimulationEngine implements Runnable, IEngine {
                 counter++;
                 map.feedThemALL();
                 map.spawnGrass(plantsDaily);
+                map.removeDeadAnimals();
                 mapChanged();
             }
+
         }
 
     }

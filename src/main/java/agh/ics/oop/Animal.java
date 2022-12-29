@@ -16,6 +16,8 @@ public class Animal extends AbstractMapElement {
     private int energyLimitToCopulation;
     private int mode = 0;
 
+
+
     // mode 0 - kula ziemska
     // mode 1 - piekielny portal
 
@@ -32,11 +34,10 @@ public class Animal extends AbstractMapElement {
         };
     }
     public Animal(IWorldMap map){
-
         super(new Vector2d(0, 0));
         this.map = map;
-//        addObserver((IPositionChangeObserver) map);
     }
+
     public Animal(IWorldMap map, Vector2d initialPosition, int energy, int genomeLength, int energyLimitToCopulation, int mode){
         super(initialPosition);
         this.map = map;
@@ -47,6 +48,8 @@ public class Animal extends AbstractMapElement {
         this.energy = energy;
         this.energyLimitToCopulation = energyLimitToCopulation;
         this.mode = mode;
+        this.age = 0;
+        this.kids = 0;
 //        addObserver((IPositionChangeObserver) map);
     }
     public int getRandomNumber(){
@@ -67,6 +70,10 @@ public class Animal extends AbstractMapElement {
 
     public MapDirection getOrientation(){
         return this.orientation;
+    }
+
+    public int getAnimalEnergy(){
+        return this.energy;
     }
 
     @Override
@@ -149,7 +156,7 @@ public class Animal extends AbstractMapElement {
                 rotate(false);
             }
 
-            changeEnergy(1);
+            changeEnergy(-1);
 
         }
 
@@ -167,10 +174,11 @@ public class Animal extends AbstractMapElement {
             }
 
             rotate(false);
-
-            changeEnergy(energyLimitToCopulation);
+            changeEnergy(-energyLimitToCopulation);
 
         }
+
+        this.age += 1;
 
         this.positionChanged(this.position, newPosition, this);
         position = newPosition;
@@ -183,17 +191,7 @@ public class Animal extends AbstractMapElement {
 
     public void changeEnergy(int value) {
         this.energy = this.energy + value;
-        if (this.energy < 0) {
-            this.energy = 0;
-        }
     }
-
-    public void increaseEnergy(int val){
-        this.energy += val;
-
-    }
-
-
 
 
 }
