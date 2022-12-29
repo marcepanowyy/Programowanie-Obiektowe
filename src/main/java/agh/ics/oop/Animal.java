@@ -7,8 +7,9 @@ public class Animal extends AbstractMapElement {
     public MapDirection orientation = MapDirection.randomDirection();
     private final IWorldMap map;
     public ArrayList<IPositionChangeObserver> observerlist = new ArrayList<>();
-
-    private int energy;
+    public int age = 0;
+    public int kids = 0;
+    public int energy;
     private int genomeLength;
     private List<Integer> genomeList;
     private int actualGenomeIndex;
@@ -185,7 +186,11 @@ public class Animal extends AbstractMapElement {
         if (this.energy < 0) {
             this.energy = 0;
         }
-        this.energy--;
+    }
+
+    public void increaseEnergy(int val){
+        this.energy += val;
+
     }
 
 

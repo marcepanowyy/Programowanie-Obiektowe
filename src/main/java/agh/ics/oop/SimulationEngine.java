@@ -94,6 +94,7 @@ public class SimulationEngine implements Runnable, IEngine {
                 }
 
                 counter++;
+                map.feedThemALL();
                 map.spawnGrass(plantsDaily);
                 mapChanged();
             }

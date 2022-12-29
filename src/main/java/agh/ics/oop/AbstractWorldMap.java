@@ -229,7 +229,7 @@ public class AbstractWorldMap implements IWorldMap, IPositionChangeObserver {
         long equatorLength = 1;
         long equatorHeight = 1;
         for (int i = width - 1; i > 0; i--){
-            if (equatorFields % i == 0){
+            if (width % i == 0){
                 equatorLength = i;
                 equatorHeight = equatorFields / equatorLength;
                 break;
@@ -249,8 +249,38 @@ public class AbstractWorldMap implements IWorldMap, IPositionChangeObserver {
         return grassList;
     }
 
-    public void eatGrass(){
+    public void eatGrassOnPosition(Vector2d position){
+        LinkedList<Animal> l = animals.get(position);
+        if (grass.get(position) == null){
+            return;
+        }
+        else if(l.size() == 1){
+            l.getFirst().increaseEnergy(grassProfit);
+            grass.remove(position);
+        }
+        else {
+            Collections.sort(l, new Comparator<Animal>() {
+                public int compare(Animal a1, Animal a2) {
+                    return a2.kids - a1.kids;
+                }
+            });
+            Collections.sort(l, new Comparator<Animal>() {
+                public int compare(Animal a1, Animal a2) {
+                    return a2.age - a1.age;
+                }
+            });
+            Collections.sort(l, new Comparator<Animal>() {
+                public int compare(Animal a1, Animal a2) {
+                    return a2.energy - a1.energy;
+                }
+            });
+            l.getFirst().increaseEnergy(grassProfit);
+            grass.remove(position);
+        }
+    }
 
+    public void feedThemALL(){
+        animals.forEach((key, value) -> eatGrassOnPosition(key));
     }
 
 
