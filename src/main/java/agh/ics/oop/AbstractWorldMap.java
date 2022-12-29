@@ -262,7 +262,6 @@ public class AbstractWorldMap implements IWorldMap, IPositionChangeObserver {
                 animal2.changeEnergy(-energyToBreed);
                 animal1.kids++;
                 animal2.kids++;
-                System.out.println("SEKSIK HYHYHY");
                 place(animal);
             }
 

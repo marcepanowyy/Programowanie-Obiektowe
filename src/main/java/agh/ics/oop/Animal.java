@@ -71,6 +71,7 @@ public class Animal extends AbstractMapElement {
         this.behaviourMode = animal1.behaviourMode;
         this.age = 0;
         this.kids = 0;
+
     }
     public int getRandomNumber(){
         return (int)(Math.random() * 8);
@@ -108,6 +109,15 @@ public class Animal extends AbstractMapElement {
                 newGenome.add(animal1.genomeList.get(i));
             }
         }
+        int mutationNum = (int) (Math.random() * genomeLength);
+        int num;
+        int idx;
+        for (int i = 0; i < mutationNum; i++){
+                num = getRandomNumber();
+                idx = (int) (Math.random() * genomeLength);
+                newGenome.set(idx, num);
+        }
+
         return newGenome;
     }
     public List<Integer> getGenomeList(){

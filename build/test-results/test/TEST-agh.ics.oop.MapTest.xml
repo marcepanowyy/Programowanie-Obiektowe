@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="agh.ics.oop.MapTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2022-12-29T17:41:34" hostname="LAPTOP-4VHLAV8G" time="0.024">
+<testsuite name="agh.ics.oop.MapTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2022-12-29T18:23:24" hostname="LAPTOP-4VHLAV8G" time="0.024">
   <properties/>
   <testcase name="testAnimal()" classname="agh.ics.oop.MapTest" time="0.024"/>
-  <system-out><![CDATA[SEKSIK HYHYHY
+  <system-out><![CDATA[[2, 4, 2, 3, 4, 0, 4, 0, 5, 1]
+parent1: [2, 4, 2, 3, 4, 0, 6, 5, 6, 3]
+parent2: [4, 1, 5, 6, 1, 0, 4, 0, 5, 1]
+child: [2, 1, 2, 0, 4, 0, 4, 5, 0, 6]
 (4, 4)
 (3, 5)
 ]]></system-out>
