@@ -312,7 +312,7 @@ public class AbstractWorldMap implements IWorldMap, IPositionChangeObserver {
         }
     }
 
-    public void fuckThemAll(){
+    public void copulateThemAll(){
         animals.forEach((key, value) -> copulate(key));
     }
 

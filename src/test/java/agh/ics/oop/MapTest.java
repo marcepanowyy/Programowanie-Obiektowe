@@ -20,7 +20,7 @@ public class MapTest {
         Animal animal1 = new Animal(this.map, new Vector2d(3,5), 10, 10, 1, 0, 0, 0);
         this.map.place(animal1);
         this.map.place(animal);
-        this.map.fuckThemAll();
+        this.map.copulateThemAll();
 
         animal.move();
         animal1.move();

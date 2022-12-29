@@ -96,7 +96,7 @@ public class SimulationEngine implements Runnable, IEngine {
 
                 counter++;
                 map.feedThemALL();
-                map.fuckThemAll();
+                map.copulateThemAll();
                 map.spawnGrass(plantsDaily);
                 map.removeDeadAnimals();
                 System.out.println(map.deadAnimals);
