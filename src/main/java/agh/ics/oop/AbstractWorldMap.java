@@ -30,21 +30,19 @@ public class AbstractWorldMap implements IWorldMap, IPositionChangeObserver {
 
     //eating
     private int grassProfit;
-    private int dayCost;
     private int startAnimalsEnergy;
     //copulation
     private final int energyLimitToCopulation;
     private final int energyToFull = 1;
 
 
-    public AbstractWorldMap(int width, int height, int grassProfit, int dayCost, int energyLimitToCopulation, int startAnimalsEnergy) {
+    public AbstractWorldMap(int width, int height, int grassProfit, int energyLimitToCopulation, int startAnimalsEnergy) {
         this.mapVisualizer = new MapVisualizer(this);
         this.startAnimalsEnergy = startAnimalsEnergy;
         this.grassList = new LinkedList<>();
         this.animalsList = new LinkedList<>();
         this.energyLimitToCopulation = energyLimitToCopulation;
         this.grassProfit = grassProfit;
-        this.dayCost = (-1) * dayCost;
         this.lowerLeft = new Vector2d(0, 0);
         this.upperRight = new Vector2d(width, height);
         this.width = width;
@@ -53,7 +51,6 @@ public class AbstractWorldMap implements IWorldMap, IPositionChangeObserver {
         this.middleY = height / 2;
         this.equatorFields = Math.round((height * width) * 0.2);
         getEquatorWidth();
-//        System.out.println(equatorFields);
     }
 
 
@@ -75,12 +72,6 @@ public class AbstractWorldMap implements IWorldMap, IPositionChangeObserver {
         newMapElements = new HashSet<>();
         return returnedSet;
     }
-
-
-//    public void placeNewMapElement(IMapElement element){
-//        newMapElements.add(element);
-//        place(element);
-//    }
 
     @Override
     public void positionChanged(Vector2d oldPosition, Vector2d newPosition, Object a){
@@ -120,9 +111,7 @@ public class AbstractWorldMap implements IWorldMap, IPositionChangeObserver {
     }
 
     public boolean addAnimal(Animal a, Vector2d p) {
-//        System.out.println(animalsList);
         if (a == null) return false;
-//        Vector2d pos = a.getPosition();
         LinkedList<Animal> l = animals.get(p);
         if (l == null) {
             LinkedList<Animal> tmp = new LinkedList<>();
@@ -136,25 +125,8 @@ public class AbstractWorldMap implements IWorldMap, IPositionChangeObserver {
 
     }
 
-//    @Override
-//    public void place(IMapElement element) throws IllegalArgumentException {
-//        Vector2d position = element.getPosition();
-//        if ((!isOccupied(position) || element instanceof Animal) && canMoveTo(position)) {
-//            mapElements.put(position, element);
-//
-//        } else throw new IllegalArgumentException(element + " (" + element.getClass() + ") cannot be placed on position" + position);
-//    }
-
-
-
-//    @Override
-//    public IMapElement objectAt(Vector2d position) {
-//        return mapElements.get(position);
-//    }
-
     @Override
     public Object objectAt(Vector2d position) {
-//        Vector2d position = toNoBoundedPosition(position2);
         LinkedList<Animal> l = animals.get(position);
         if (l == null) return grass.get(position);
         else if (l.size() == 0) return grass.get(position);
@@ -170,8 +142,6 @@ public class AbstractWorldMap implements IWorldMap, IPositionChangeObserver {
         return mapElements.remove(position);
     }
 
-//    protected abstract boolean isOnMap(Vector2d position);
-
     private boolean removeAnimal(Animal a, Vector2d oldPosition) {
         LinkedList<Animal> l = animals.get(oldPosition);
         if (l == null)
@@ -186,18 +156,6 @@ public class AbstractWorldMap implements IWorldMap, IPositionChangeObserver {
         }
         return true;
     }
-
-//    public void nextDay() {
-//        for (LinkedList<Animal> animalList : animals.values()) {
-//            if (animalList != null) {
-//                if (animalList.size() > 0) {
-//                    for (Animal a : animalList) {
-//                        a.changeEnergy(dayCost);
-//                    }
-//                }
-//            }
-//        }
-//    }
 
     public void spawnGrass(int num){
         for (int i = 0; i < num; i++) {

@@ -80,7 +80,7 @@ public class App extends Application implements ISimulationEngineObserver {
             String plantGrowthWarrant = plantGrowthWarrantTextField.getText();
             String worldWarrant = worldWarrantTextField.getText();
 
-            this.map = new AbstractWorldMap(this.width, this.height, plantEnergy, 1, energyToBreed, startingEnergy);
+            this.map = new AbstractWorldMap(this.width, this.height, plantEnergy, energyToBreed, startingEnergy);
 
             this.engine = new SimulationEngine(this.map, 500, this.width, this.height, plantsNum, plantEnergy, plantsDaily, animalsNum, startingEnergy,  genomeLength,  energyToFull,  energyToBreed,  minNumOfMutations,  maxNumOfMutations,
              mutationWarrant, behaviourWarrant,  plantGrowthWarrant, worldWarrant);
@@ -112,14 +112,6 @@ public class App extends Application implements ISimulationEngineObserver {
     private void makeScene() throws FileNotFoundException {
 
         elementsList = map.getNewMapElements();
-//        for(IMapElement element: elementsList){
-//            if(element instanceof Animal){
-//                System.out.println(((Animal) element).getGenomeList());
-//                System.out.println(((Animal) element).getRotationNum());
-//                System.out.println(((Animal) element).getOrientation());
-//            }
-//        }
-
         gridPane.setGridLinesVisible(true);
         gridPane.setAlignment(Pos.CENTER);
         gridPane.getColumnConstraints().clear();
