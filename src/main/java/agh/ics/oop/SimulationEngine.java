@@ -66,7 +66,7 @@ public class SimulationEngine implements Runnable, IEngine {
     }
     private void addAnimalsToMap() {
         for (int i = 0; i < this.animalsNum; i++) {
-            Animal animal = new Animal(map, getRandomVector(), startingEnergy, genomeLength, energyToBreed, 0);
+            Animal animal = new Animal(map, getRandomVector(), startingEnergy, genomeLength, energyToBreed, 0, 0, 0);
             map.place(animal);
         }
     }
@@ -89,7 +89,6 @@ public class SimulationEngine implements Runnable, IEngine {
                     }
 
                     Animal animal = map.getAnimals().get(i);
-                    System.out.println(animal.energy);
                     animal.move();
                     mapChanged();
                 }

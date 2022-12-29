@@ -12,10 +12,12 @@ public class Animal extends AbstractMapElement {
     public int energy;
     private int genomeLength;
     private List<Integer> genomeList;
-    private int actualGenomeIndex;
+    public int actualGenomeIndex;
     private int energyLimitToCopulation;
-    private int mode = 0;
 
+    private int mapMode;
+    private int mutationMode;
+    private int behaviourMode;
 
 
     // mode 0 - kula ziemska
@@ -38,7 +40,7 @@ public class Animal extends AbstractMapElement {
         this.map = map;
     }
 
-    public Animal(IWorldMap map, Vector2d initialPosition, int energy, int genomeLength, int energyLimitToCopulation, int mode){
+    public Animal(IWorldMap map, Vector2d initialPosition, int energy, int genomeLength, int energyLimitToCopulation, int mapMode, int mutationMode, int behaviourMode){
         super(initialPosition);
         this.map = map;
         this.genomeLength = genomeLength;
@@ -47,15 +49,15 @@ public class Animal extends AbstractMapElement {
         this.actualGenomeIndex = -1;
         this.energy = energy;
         this.energyLimitToCopulation = energyLimitToCopulation;
-        this.mode = mode;
+        this.mapMode = mapMode; // 0 - kula ziemska, 1 - piekielny portal DONE
+        this.mutationMode = mapMode; // 0 - brak mutacji, 1 - pelna losowosc, 2 - lekka korekta
+        this.behaviourMode = behaviourMode; // 0 - pelna predestynacja, 1 - nieco szalenstwa DONE
         this.age = 0;
         this.kids = 0;
-//        addObserver((IPositionChangeObserver) map);
     }
     public int getRandomNumber(){
         return (int)(Math.random() * 8);
     }
-
     public List<Integer> generateRandomGenome() {
         List<Integer> newGenome = new ArrayList<>();
         for (int i = 0; i < genomeLength ; i++) {
@@ -63,15 +65,12 @@ public class Animal extends AbstractMapElement {
         }
         return newGenome;
     }
-
     public List<Integer> getGenomeList(){
         return this.genomeList;
     }
-
     public MapDirection getOrientation(){
         return this.orientation;
     }
-
     public int getAnimalEnergy(){
         return this.energy;
     }
@@ -82,12 +81,13 @@ public class Animal extends AbstractMapElement {
         MapDirection orientation = animal.orientation;
         switch (orientation){
             case N -> {return "src/main/resources/turtleN.jpg";}
-            case NW -> {return "src/main/resources/turtleNW.jpg";}
-            case E -> {return "src/main/resources/turtleE.jpg";}
             case NE -> {return "src/main/resources/turtleNE.jpg";}
+            case E -> {return "src/main/resources/turtleE.jpg";}
             case SE -> {return "src/main/resources/turtleSE.jpg";}
+            case S -> {return "src/main/resources/turtleS.jpg";}
             case SW -> {return "src/main/resources/turtleSW.jpg";}
             case W -> {return "src/main/resources/turtleW.jpg";}
+            case NW -> {return "src/main/resources/turtleNW.jpg";}
             default -> {return "src/main/resources/turtleW.jpg";}
         }
     }
@@ -98,21 +98,31 @@ public class Animal extends AbstractMapElement {
         return this.genomeList.get(actualGenomeIndex);
     }
 
+    public void randomChangeGenomeIndex(){
+        Random rand = new Random();
+        actualGenomeIndex = rand.nextInt(this.genomeList.size());
+    }
+
+
     // rotation
     public void rotate(boolean changeDirection){
 
+        if (behaviourMode == 1){
+            Random rand = new Random();
+            int randNum = rand.nextInt(100) + 1;
+            if (randNum > 80) randomChangeGenomeIndex(); // change actual genome index to random (in 20% cases)
+        }
 
         int rotation = getRotationNum();
         if(changeDirection) rotation = 4; // change direction
 
-        for(int i = 1; i <= rotation; i++){
+        for (int i = 1; i <= rotation; i++) {
             this.orientation = this.orientation.next();
-
         }
 
     }
 
-//    OBSERVERS
+//    observers
 
     public void addObserver(IPositionChangeObserver observer) {
         observerlist.add(observer);
@@ -141,7 +151,7 @@ public class Animal extends AbstractMapElement {
 
         // Kula ziemska
 
-        if (this.mode == 0){
+        if (this.mapMode == 0){
 
             // change direction when entering pole!
             if(newPosition.y < 0 || newPosition.y > height){
@@ -184,7 +194,6 @@ public class Animal extends AbstractMapElement {
         position = newPosition;
 
     }
-
     public boolean isDead() {
         return this.energy <= 0;
     }
