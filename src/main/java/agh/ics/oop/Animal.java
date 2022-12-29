@@ -13,7 +13,7 @@ public class Animal extends AbstractMapElement {
     private int genomeLength;
     private List<Integer> genomeList;
     public int actualGenomeIndex;
-    private int energyLimitToCopulation;
+    private int energyToBreed;
     private final int energyToFull = 10;
     private int mapMode;
     private int mutationMode;
@@ -41,7 +41,7 @@ public class Animal extends AbstractMapElement {
         this.map = map;
     }
 
-    public Animal(IWorldMap map, Vector2d initialPosition, int energy, int genomeLength, int energyLimitToCopulation, int mapMode, int mutationMode, int behaviourMode){
+    public Animal(IWorldMap map, Vector2d initialPosition, int energy, int genomeLength, int energyToBreed, int mapMode, int mutationMode, int behaviourMode){
         super(initialPosition);
         this.map = map;
         this.genomeLength = genomeLength;
@@ -49,7 +49,7 @@ public class Animal extends AbstractMapElement {
         this.orientation = MapDirection.randomDirection();
         this.actualGenomeIndex = -1;
         this.energy = energy;
-        this.energyLimitToCopulation = energyLimitToCopulation;
+        this.energyToBreed = energyToBreed;
         this.mapMode = mapMode; // 0 - kula ziemska, 1 - piekielny portal DONE
         this.mutationMode = mutationMode; // 0 - brak mutacji, 1 - pelna losowosc, 2 - lekka korekta
         this.behaviourMode = behaviourMode; // 0 - pelna predestynacja, 1 - nieco szalenstwa DONE
@@ -59,13 +59,13 @@ public class Animal extends AbstractMapElement {
 
     public Animal(Animal animal1, Animal animal2, Vector2d position){
         super(position);
-        this.energy = animal1.energyLimitToCopulation + animal2.energyLimitToCopulation;
+        this.energy = animal1.energyToBreed + animal2.energyToBreed;
         this.map = animal1.map;
         this.genomeLength = animal1.genomeLength;
         this.orientation = MapDirection.randomDirection();
         this.actualGenomeIndex = 0; // Popraw
         this.genomeList = parentsGenome(animal1, animal2);
-        this.energyLimitToCopulation = animal1.energyLimitToCopulation;
+        this.energyToBreed = animal1.energyToBreed;
         this.mapMode = animal1.mapMode;
         this.mutationMode = animal1.mutationMode;
         this.behaviourMode = animal1.behaviourMode;
@@ -242,7 +242,7 @@ public class Animal extends AbstractMapElement {
             }
 
             rotate(false);
-            changeEnergy(-energyLimitToCopulation);
+            changeEnergy(-energyToBreed);
 
         }
 

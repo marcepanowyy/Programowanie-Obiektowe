@@ -32,16 +32,16 @@ public class AbstractWorldMap implements IWorldMap, IPositionChangeObserver {
     private int grassProfit;
     private int startAnimalsEnergy;
     //copulation
-    private final int energyLimitToCopulation;
+    private final int energyToBreed;
     private final int energyToFull = 1;
 
 
-    public AbstractWorldMap(int width, int height, int grassProfit, int energyLimitToCopulation, int startAnimalsEnergy) {
+    public AbstractWorldMap(int width, int height, int grassProfit, int energyToBreed, int startAnimalsEnergy) {
         this.mapVisualizer = new MapVisualizer(this);
         this.startAnimalsEnergy = startAnimalsEnergy;
         this.grassList = new LinkedList<>();
         this.animalsList = new LinkedList<>();
-        this.energyLimitToCopulation = energyLimitToCopulation;
+        this.energyToBreed = energyToBreed;
         this.grassProfit = grassProfit;
         this.lowerLeft = new Vector2d(0, 0);
         this.upperRight = new Vector2d(width, height);
@@ -255,8 +255,8 @@ public class AbstractWorldMap implements IWorldMap, IPositionChangeObserver {
             Animal animal2 = l.get(1);
             if (animal1.energy >= energyToFull && animal2.energy >= energyToFull){
                 Animal animal = new Animal(animal1, animal2, animal1.getPosition());
-                animal1.changeEnergy(-energyLimitToCopulation);
-                animal2.changeEnergy(-energyLimitToCopulation);
+                animal1.changeEnergy(-energyToBreed);
+                animal2.changeEnergy(-energyToBreed);
                 animal1.kids++;
                 animal2.kids++;
                 addAnimal(animal, animal1.getPosition());
