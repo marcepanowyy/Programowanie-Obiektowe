@@ -15,12 +15,19 @@ public class MapTest {
     @Test
     void testAnimal(){
 
-        this.map = new AbstractWorldMap(5, 5, 40, 40, 40);
+        this.map = new AbstractWorldMap(5, 5, 40, 1, 40);
         Animal animal =  new Animal(this.map, new Vector2d(3,5), 30, 10, 1, 0, 0, 0);
         Animal animal1 = new Animal(this.map, new Vector2d(3,5), 10, 10, 1, 0, 0, 0);
         this.map.place(animal1);
         this.map.place(animal);
         this.map.fuckThemAll();
+
+        animal.move();
+        animal1.move();
+
+        System.out.println(animal.getPosition());
+        System.out.println(animal1.getPosition());
+
 
 //        System.out.println(animal1.getGenomeList());
 //        System.out.println(map.animals);

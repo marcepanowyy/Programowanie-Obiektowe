@@ -72,12 +72,12 @@ public class SimulationEngine implements Runnable, IEngine {
     }
 
 
+
     @Override
     public void run() {
 
         if(map.getAnimals().size() != 0) {
             while (true) {
-
                 for (int i = 0; i < map.getAnimals().size(); i++) {
 
                     try {
@@ -89,6 +89,7 @@ public class SimulationEngine implements Runnable, IEngine {
                     }
 
                     Animal animal = map.getAnimals().get(i);
+
                     animal.move();
                     mapChanged();
                 }

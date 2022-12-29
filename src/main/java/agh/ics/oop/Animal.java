@@ -13,7 +13,7 @@ public class Animal extends AbstractMapElement {
     private int genomeLength;
     private List<Integer> genomeList;
     public int actualGenomeIndex;
-    private int energyToBreed;
+    public int energyToBreed;
     private final int energyToFull = 10;
     private int mapMode;
     private int mutationMode;
@@ -89,7 +89,6 @@ public class Animal extends AbstractMapElement {
         float y = (float) genomeLength / x;
         int firstAnimalLength = (int) y;
         int secondAnimalLength = genomeLength - firstAnimalLength;
-        System.out.println(firstAnimalLength);
         List<Integer> newGenome = new ArrayList<>();
         int chance = (int) (Math.random() * 1); // 0 oznacza lewo 1 oznacza prawo
 
@@ -176,7 +175,6 @@ public class Animal extends AbstractMapElement {
             this.orientation = this.orientation.next();
         }
 
-        System.out.println(this.actualGenomeIndex + " " + rotation);
 
     }
 

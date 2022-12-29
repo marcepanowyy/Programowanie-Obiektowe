@@ -103,6 +103,9 @@ public class AbstractWorldMap implements IWorldMap, IPositionChangeObserver {
         for (int i = 0; i < l.size(); i++) {
             Animal a = animalsList.get(i);
             if (a.isDead()) {
+                System.out.println(a.energy);
+                System.out.println(a.getPosition());
+
                 removeAnimal(a, a.getPosition());
                 a.removeObserver(this);
                 animalsList.remove(a);
@@ -259,7 +262,8 @@ public class AbstractWorldMap implements IWorldMap, IPositionChangeObserver {
                 animal2.changeEnergy(-energyToBreed);
                 animal1.kids++;
                 animal2.kids++;
-                addAnimal(animal, animal1.getPosition());
+                System.out.println("SEKSIK HYHYHY");
+                place(animal);
             }
 
         }
