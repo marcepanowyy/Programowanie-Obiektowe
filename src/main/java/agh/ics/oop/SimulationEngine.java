@@ -14,7 +14,6 @@ public class SimulationEngine implements Runnable, IEngine {
     private final AbstractWorldMap map;
     private final int moveDelay;
     private final String worldWarrant;
-    MoveDirection[] moves;
     private final ArrayList<ISimulationEngineObserver> observers = new ArrayList<ISimulationEngineObserver>();
     private int width;
     private int height;
@@ -65,17 +64,9 @@ public class SimulationEngine implements Runnable, IEngine {
         return new Vector2d(x, y);
 
     }
-//    private void addAnimalsToMap() {
-//        for (Vector2d position : positions) {
-//            Animal animal = new Animal(map, position, startingEnergy);
-//            map.place(animal);
-//        }
-//    }
-
     private void addAnimalsToMap() {
         for (int i = 0; i < this.animalsNum; i++) {
-            Animal animal = new Animal(map, getRandomVector(), startingEnergy);
-//            animals.add(animal);
+            Animal animal = new Animal(map, getRandomVector(), startingEnergy, genomeLength, energyToBreed, 0);
             map.place(animal);
         }
     }
@@ -90,7 +81,8 @@ public class SimulationEngine implements Runnable, IEngine {
                 for (int i = 0; i < map.getAnimals().size(); i++) {
 
                     try {
-                        Thread.sleep(this.moveDelay);
+//                        Thread.sleep(this.moveDelay);
+                        Thread.sleep(500);
 
                     } catch (InterruptedException e) {
                         e.printStackTrace();
@@ -98,7 +90,6 @@ public class SimulationEngine implements Runnable, IEngine {
 
                     Animal animal = map.getAnimals().get(i);
                     animal.move();
-
                     mapChanged();
                 }
 

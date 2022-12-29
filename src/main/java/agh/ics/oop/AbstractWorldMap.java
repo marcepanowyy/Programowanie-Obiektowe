@@ -35,11 +35,6 @@ public class AbstractWorldMap implements IWorldMap, IPositionChangeObserver {
     //copulation
     private final int energyLimitToCopulation;
 
-
-//    public AbstractWorldMap() {
-//        this.mapVisualizer = new MapVisualizer(this);
-//    }
-
     public AbstractWorldMap(int width, int height, int grassProfit, int dayCost, int energyLimitToCopulation, int startAnimalsEnergy) {
         this.mapVisualizer = new MapVisualizer(this);
         this.startAnimalsEnergy = startAnimalsEnergy;
@@ -49,14 +44,14 @@ public class AbstractWorldMap implements IWorldMap, IPositionChangeObserver {
         this.grassProfit = grassProfit;
         this.dayCost = (-1) * dayCost;
         this.lowerLeft = new Vector2d(0, 0);
-        this.upperRight = new Vector2d(width - 1, height - 1);
+        this.upperRight = new Vector2d(width, height);
         this.width = width;
         this.height = height;
         this.middleX = width / 2;
         this.middleY = height / 2;
         this.equatorFields = Math.round((height * width) * 0.2);
         getEquatorWidth();
-        System.out.println(equatorFields);
+//        System.out.println(equatorFields);
     }
 
 
@@ -123,7 +118,7 @@ public class AbstractWorldMap implements IWorldMap, IPositionChangeObserver {
     }
 
     public boolean addAnimal(Animal a, Vector2d p) {
-        System.out.println(animalsList);
+//        System.out.println(animalsList);
         if (a == null) return false;
 //        Vector2d pos = a.getPosition();
         LinkedList<Animal> l = animals.get(p);
@@ -190,17 +185,17 @@ public class AbstractWorldMap implements IWorldMap, IPositionChangeObserver {
         return true;
     }
 
-    public void nextDay() {
-        for (LinkedList<Animal> animalList : animals.values()) {
-            if (animalList != null) {
-                if (animalList.size() > 0) {
-                    for (Animal a : animalList) {
-                        a.changeEnergy(dayCost);
-                    }
-                }
-            }
-        }
-    }
+//    public void nextDay() {
+//        for (LinkedList<Animal> animalList : animals.values()) {
+//            if (animalList != null) {
+//                if (animalList.size() > 0) {
+//                    for (Animal a : animalList) {
+//                        a.changeEnergy(dayCost);
+//                    }
+//                }
+//            }
+//        }
+//    }
 
     public void spawnGrass(int num){
         for (int i = 0; i < num; i++) {
@@ -245,11 +240,6 @@ public class AbstractWorldMap implements IWorldMap, IPositionChangeObserver {
         this.equatorStartY = (height - equatorHeight) / 2;
         this.equatorEndY = equatorStartY + equatorHeight;
     }
-
-
-
-
-
 
     public LinkedList<Animal> getAnimals() {
         return animalsList;

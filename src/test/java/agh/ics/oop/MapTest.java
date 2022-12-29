@@ -15,21 +15,26 @@ public class MapTest {
     @Test
     void testAnimal(){
 
-        this.map = new AbstractWorldMap(20, 30, 40, 40, 40, 40);
+        this.map = new AbstractWorldMap(5, 5, 40, 40, 40, 40);
 
-        Animal animal1 = new Animal(this.map, new Vector2d(5,5), 10);
+        Animal animal1 = new Animal(this.map, new Vector2d(3,5), 10, 3, 10, 0);
+        animal1.orientation = MapDirection.N;
         this.map.place(animal1);
-        System.out.println(map.animalsList);
+        System.out.println(animal1.getGenomeList());
         System.out.println(map.animals);
         animal1.move();
-        System.out.println(map.animalsList);
-        System.out.println(map.animals);
+        System.out.println(animal1.getPosition() + " " + map.animals);
         animal1.move();
-        System.out.println(map.animalsList);
-        System.out.println(map.animals);
+        System.out.println(animal1.getPosition() + " " + map.animals);
         animal1.move();
-        System.out.println(map.animalsList);
-        System.out.println(map.animals);
+        System.out.println(animal1.getPosition() + " " + map.animals);
+        animal1.move();
+        System.out.println(animal1.getPosition() + " " + map.animals);
+        animal1.move();
+        System.out.println(animal1.getPosition() + " " + map.animals);
+        animal1.move();
+        System.out.println(animal1.getPosition() + " " + map.animals);
+
     }
 
 

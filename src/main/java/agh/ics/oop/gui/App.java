@@ -82,12 +82,6 @@ public class App extends Application implements ISimulationEngineObserver {
 
             this.map = new AbstractWorldMap(this.width, this.height, plantEnergy, 1, energyToBreed, startingEnergy);
 
-//            Vector2d[] positions = {
-//                    new Vector2d(6, 8),
-//                    new Vector2d(10, 10),
-//                    new Vector2d(6, 6),
-//            };
-
             this.engine = new SimulationEngine(this.map, 500, this.width, this.height, plantsNum, plantEnergy, plantsDaily, animalsNum, startingEnergy,  genomeLength,  energyToFull,  energyToBreed,  minNumOfMutations,  maxNumOfMutations,
              mutationWarrant, behaviourWarrant,  plantGrowthWarrant, worldWarrant);
             engine.addObserver(this);
@@ -108,8 +102,6 @@ public class App extends Application implements ISimulationEngineObserver {
                 genomeLengthTextField, energyToFullTextField, energyToBreedTextField, minNumOfMutationsTextField, maxNumOfMutationsTextField, mutationWarrantTextField, behaviourWarrantTextField, plantGrowthWarrantTextField, worldWarrantTextField, start);
 
         VBox vbox = new VBox(gridPane, gridPane1);
-
-
 
         Scene scene = new Scene(vbox, 800, 800);
         primaryStage.setScene(scene);
@@ -195,7 +187,6 @@ public class App extends Application implements ISimulationEngineObserver {
     public int getHeight(){
         return this.height;
     }
-
 
 
 }

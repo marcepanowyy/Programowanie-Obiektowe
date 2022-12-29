@@ -4,15 +4,20 @@ import java.util.*;
 
 public class Animal extends AbstractMapElement {
 
-    private MapDirection orientation = MapDirection.randomDirection();
+    public MapDirection orientation = MapDirection.randomDirection();
     private final IWorldMap map;
     public ArrayList<IPositionChangeObserver> observerlist = new ArrayList<>();
 
-    private int energy = 10;
-    private int genomeLength = 4;
+    private int energy;
+    private int genomeLength;
     private List<Integer> genomeList;
-
     private int actualGenomeIndex;
+    private int energyLimitToCopulation;
+    private int mode = 0;
+
+    // mode 0 - kula ziemska
+    // mode 1 - piekielny portal
+
     public String toString(){
         return switch(this.orientation){
             case N -> "^";
@@ -31,16 +36,18 @@ public class Animal extends AbstractMapElement {
         this.map = map;
 //        addObserver((IPositionChangeObserver) map);
     }
-    public Animal(IWorldMap map, Vector2d initialPosition, int energy){
+    public Animal(IWorldMap map, Vector2d initialPosition, int energy, int genomeLength, int energyLimitToCopulation, int mode){
         super(initialPosition);
         this.map = map;
+        this.genomeLength = genomeLength;
         this.genomeList = generateRandomGenome();
         this.orientation = MapDirection.randomDirection();
         this.actualGenomeIndex = -1;
         this.energy = energy;
+        this.energyLimitToCopulation = energyLimitToCopulation;
+        this.mode = mode;
 //        addObserver((IPositionChangeObserver) map);
     }
-
     public int getRandomNumber(){
         return (int)(Math.random() * 8);
     }
@@ -52,7 +59,6 @@ public class Animal extends AbstractMapElement {
         }
         return newGenome;
     }
-
 
     public List<Integer> getGenomeList(){
         return this.genomeList;
@@ -79,18 +85,17 @@ public class Animal extends AbstractMapElement {
     }
 
     // getting genome
-
     public int getRotationNum(){
         actualGenomeIndex = (actualGenomeIndex+1) % this.genomeLength;
         return this.genomeList.get(actualGenomeIndex);
     }
 
-
     // rotation
+    public void rotate(boolean changeDirection){
 
-    public void rotate(){
 
         int rotation = getRotationNum();
+        if(changeDirection) rotation = 4; // change direction
 
         for(int i = 1; i <= rotation; i++){
             this.orientation = this.orientation.next();
@@ -116,29 +121,58 @@ public class Animal extends AbstractMapElement {
 
     // moving
 
-//    public void move(String warrant, int width, int height) {
     public void move() {
 
-        Vector2d newPosition = position;
-//        if (warrant.equals("kula ziemska")){
-            //TO DO
-//            System.out.println("OK");
-//            newPosition = position.add(orientation.toUnitVector());
-//            if (newPosition.x > width) {
-//                newPosition = new Vector2d(0, position.y);
-//            }
-//            else if (newPosition.x < 0){
-//                newPosition = new Vector2d(width - 1, position.y);
-//            }
-//        }
-//        else {
-//            newPosition = position.add(orientation.toUnitVector());
-//        }
 
+        Vector2d boundaries = this.map.getUpperRight();
+        int width = boundaries.x;
+        int height = boundaries.y;
+
+        Vector2d newPosition = position;
         newPosition = position.add(orientation.toUnitVector());
+
+        // Kula ziemska
+
+        if (this.mode == 0){
+
+            // change direction when entering pole!
+            if(newPosition.y < 0 || newPosition.y > height){
+                newPosition = position;
+                rotate(true);
+
+            }
+
+            else {
+                newPosition.y = Math.floorMod(newPosition.y, height+1);
+                newPosition.x = Math.floorMod(newPosition.x, width+1);
+                rotate(false);
+            }
+
+            changeEnergy(1);
+
+        }
+
+        // Piekielny portal
+
+        else {
+
+            if(newPosition.x > width || newPosition.x < 0 || newPosition.y > height || newPosition.y < 0) {
+
+                Random rand = new Random();
+                int x = rand.nextInt(width);
+                int y = rand.nextInt(height);
+                newPosition = new Vector2d(x, y);
+
+            }
+
+            rotate(false);
+
+            changeEnergy(energyLimitToCopulation);
+
+        }
+
         this.positionChanged(this.position, newPosition, this);
         position = newPosition;
-        rotate();
 
     }
 
