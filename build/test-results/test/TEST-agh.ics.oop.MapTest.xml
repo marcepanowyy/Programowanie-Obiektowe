@@ -1,33 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="agh.ics.oop.MapTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2022-12-29T15:16:43" hostname="DESKTOP-9BCLMCE" time="0.048">
+<testsuite name="agh.ics.oop.MapTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2022-12-29T15:50:20" hostname="DESKTOP-9BCLMCE" time="0.047">
   <properties/>
-  <testcase name="testAnimal()" classname="agh.ics.oop.MapTest" time="0.048"/>
-  <system-out><![CDATA[[2, 7, 1, 5, 2, 5, 1, 4, 7, 6]
-{(3, 5)=[^]}
--1
-0
-1
-2
-3
-4
-5
-6
-7
-8
-9
-0
-1
-2
-3
-4
-5
-6
-7
-8
-9
-0
-1
-2
+  <testcase name="testAnimal()" classname="agh.ics.oop.MapTest" time="0.047"/>
+  <system-out><![CDATA[[0, 7, 5, 2, 1, 6, 3, 1, 6, 7]
+{(3, 5)=[^>]}
+0 4
+1 6
+2 4
+3 1
+4 2
+5 7
 ]]></system-out>
   <system-err><![CDATA[]]></system-err>
 </testsuite>

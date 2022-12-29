@@ -50,7 +50,7 @@ public class Animal extends AbstractMapElement {
         this.energy = energy;
         this.energyLimitToCopulation = energyLimitToCopulation;
         this.mapMode = mapMode; // 0 - kula ziemska, 1 - piekielny portal DONE
-        this.mutationMode = mapMode; // 0 - brak mutacji, 1 - pelna losowosc, 2 - lekka korekta
+        this.mutationMode = mutationMode; // 0 - brak mutacji, 1 - pelna losowosc, 2 - lekka korekta
         this.behaviourMode = behaviourMode; // 0 - pelna predestynacja, 1 - nieco szalenstwa DONE
         this.age = 0;
         this.kids = 0;
@@ -114,11 +114,23 @@ public class Animal extends AbstractMapElement {
         }
 
         int rotation = getRotationNum();
-        if(changeDirection) rotation = 4; // change direction
+
+        if (mutationMode == 1){
+            rotation = getRandomNumber();
+        } else if (mutationMode == 2) {
+            Random rand = new Random();
+            int randNum = rand.nextInt(100) + 1;
+            if (randNum > 50) rotation = Math.floorMod(rotation+1,8);
+            else rotation = Math.floorMod(rotation-1, 8);
+        }
+
+        if(changeDirection) rotation = 4; // change direction when animal enters pole area
 
         for (int i = 1; i <= rotation; i++) {
             this.orientation = this.orientation.next();
         }
+
+        System.out.println(this.actualGenomeIndex + " " + rotation);
 
     }
 
