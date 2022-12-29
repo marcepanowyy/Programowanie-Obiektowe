@@ -80,7 +80,7 @@ public class App extends Application implements ISimulationEngineObserver {
             String plantGrowthWarrant = plantGrowthWarrantTextField.getText();
             String worldWarrant = worldWarrantTextField.getText();
 
-            this.map = new AbstractWorldMap(this.width, this.height, plantEnergy, energyToBreed, startingEnergy);
+            this.map = new AbstractWorldMap(this.width, this.height, plantEnergy, energyToBreed, startingEnergy, plantGrowthWarrant);
 
             this.engine = new SimulationEngine(this.map, 500, this.width, this.height, plantsNum, plantEnergy, plantsDaily, animalsNum, startingEnergy,  genomeLength,  energyToFull,  energyToBreed,  minNumOfMutations,  maxNumOfMutations,
              mutationWarrant, behaviourWarrant,  plantGrowthWarrant, worldWarrant);

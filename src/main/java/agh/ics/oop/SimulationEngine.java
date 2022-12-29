@@ -82,7 +82,7 @@ public class SimulationEngine implements Runnable, IEngine {
 
                     try {
 //                        Thread.sleep(this.moveDelay);
-                        Thread.sleep(500);
+                        Thread.sleep(300);
 
                     } catch (InterruptedException e) {
                         e.printStackTrace();
@@ -99,6 +99,7 @@ public class SimulationEngine implements Runnable, IEngine {
                 map.fuckThemAll();
                 map.spawnGrass(plantsDaily);
                 map.removeDeadAnimals();
+                System.out.println(map.deadAnimals);
                 mapChanged();
             }
 
@@ -118,5 +119,4 @@ public class SimulationEngine implements Runnable, IEngine {
             }
         }
     }
-
 }

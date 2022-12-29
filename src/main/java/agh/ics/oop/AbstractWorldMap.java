@@ -6,13 +6,17 @@ public class AbstractWorldMap implements IWorldMap, IPositionChangeObserver {
 
     protected final MapVisualizer mapVisualizer;
     protected final Map<Vector2d, IMapElement> mapElements = new HashMap<>();
+    private final String plantGrowthWarrant;
     protected Set<IMapElement> newMapElements = new HashSet<>();
 
     //map elements
     public Map<Vector2d, Grass> grass = new HashMap<>();
     public Map<Vector2d, LinkedList<Animal>> animals = new HashMap<>();
+    public Map<Vector2d, Integer> deadAnimals = new HashMap<>();
+    public LinkedList<Vector2d> deadPlaces = new LinkedList<>();
     public LinkedList<Animal> animalsList;
     public LinkedList<Grass> grassList;
+    public int mode = 1;
 
     // map size
 
@@ -36,7 +40,7 @@ public class AbstractWorldMap implements IWorldMap, IPositionChangeObserver {
     private final int energyToFull = 1;
 
 
-    public AbstractWorldMap(int width, int height, int grassProfit, int energyToBreed, int startAnimalsEnergy) {
+    public AbstractWorldMap(int width, int height, int grassProfit, int energyToBreed, int startAnimalsEnergy, String plantGrowthWarrant) {
         this.mapVisualizer = new MapVisualizer(this);
         this.startAnimalsEnergy = startAnimalsEnergy;
         this.grassList = new LinkedList<>();
@@ -50,6 +54,7 @@ public class AbstractWorldMap implements IWorldMap, IPositionChangeObserver {
         this.middleX = width / 2;
         this.middleY = height / 2;
         this.equatorFields = Math.round((height * width) * 0.2);
+        this.plantGrowthWarrant = plantGrowthWarrant;
         getEquatorWidth();
     }
 
@@ -103,13 +108,21 @@ public class AbstractWorldMap implements IWorldMap, IPositionChangeObserver {
         for (int i = 0; i < l.size(); i++) {
             Animal a = animalsList.get(i);
             if (a.isDead()) {
-                System.out.println(a.energy);
-                System.out.println(a.getPosition());
-
+                addDeadAnimals(a.getPosition());
                 removeAnimal(a, a.getPosition());
                 a.removeObserver(this);
                 animalsList.remove(a);
             }
+        }
+    }
+
+    public void addDeadAnimals(Vector2d position){
+        if (deadAnimals.get(position) == null){
+            deadAnimals.put(position, 1);
+            deadPlaces.add(position);
+        }
+        else{
+            deadAnimals.put(position, deadAnimals.get(position) + 1);
         }
     }
 
@@ -161,30 +174,61 @@ public class AbstractWorldMap implements IWorldMap, IPositionChangeObserver {
     }
 
     public void spawnGrass(int num){
-        for (int i = 0; i < num; i++) {
-            int chance = (int) (Math.random() * 10);
-            int counter = 0;
-            while (true) {
-                counter++;
-                int randomX;
-                int randomY;
-                if (chance <= 8){
-                    randomX = (int) ((Math.random() * (equatorEndX - equatorStartX)) + equatorStartX);
-                    randomY = (int) ((Math.random() * (equatorEndY - equatorStartY)) + equatorStartY);
-                }
-                else {
-                    randomX = (int) (Math.random() * width);
-                    randomY = (int) (Math.random() * height);
-                }
-                Vector2d randomPos = new Vector2d(randomX, randomY);
-                if (objectAt(randomPos) == null) {
-                    grass.put(randomPos , new Grass(randomPos));
-                    break;
-                }
-                if (counter > equatorFields){
-                    break;
+        if (plantGrowthWarrant.equals("zalesione równiki")) {
+            for (int i = 0; i < num; i++) {
+                int chance = (int) (Math.random() * 10);
+                int counter = 0;
+                while (true) {
+                    counter++;
+                    int randomX;
+                    int randomY;
+                    if (chance <= 8) {
+                        randomX = (int) ((Math.random() * (equatorEndX - equatorStartX)) + equatorStartX);
+                        randomY = (int) ((Math.random() * (equatorEndY - equatorStartY)) + equatorStartY);
+                    } else {
+                        randomX = (int) (Math.random() * width);
+                        randomY = (int) (Math.random() * height);
+                    }
+                    Vector2d randomPos = new Vector2d(randomX, randomY);
+                    if (objectAt(randomPos) == null) {
+                        grass.put(randomPos, new Grass(randomPos));
+                        break;
+                    }
+                    if (counter > equatorFields) {
+                        break;
+                    }
                 }
             }
+        }
+        else {
+            for (int i = 0; i < num; i++) {
+                int chance = (int) (Math.random() * 10);
+                int counter = 0;
+                while (true) {
+                    counter++;
+                    int randomX;
+                    int randomY;
+                    if(deadPlaces.size() > 0 && chance > 8) {
+                        int randomIndex = (int) (Math.random() * deadPlaces.size());
+                        Vector2d vector2d = deadPlaces.get(randomIndex);
+                        randomX = vector2d.x;
+                        randomY = vector2d.y;
+                    }
+                    else {
+                        randomX = (int) (Math.random() * width);
+                        randomY = (int) (Math.random() * height);
+                    }
+                    Vector2d randomPos = new Vector2d(randomX, randomY);
+                    if (objectAt(randomPos) == null) {
+                        grass.put(randomPos, new Grass(randomPos));
+                        break;
+                    }
+                    if (counter > equatorFields) {
+                        break;
+                    }
+                }
+            }
+
         }
     }
 

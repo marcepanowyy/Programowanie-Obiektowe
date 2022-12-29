@@ -15,7 +15,7 @@ public class MapTest {
     @Test
     void testAnimal(){
 
-        this.map = new AbstractWorldMap(5, 5, 40, 1, 40);
+        this.map = new AbstractWorldMap(5, 5, 40, 1, 40, "zalesione równiki");
         Animal animal =  new Animal(this.map, new Vector2d(3,5), 10, 10, 1, 0, 0, 0);
         Animal animal1 = new Animal(this.map, new Vector2d(3,5), 10, 10, 1, 0, 0, 0);
         this.map.place(animal1);
