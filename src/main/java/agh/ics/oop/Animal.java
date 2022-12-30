@@ -13,11 +13,11 @@ public class Animal extends AbstractMapElement {
     private int genomeLength;
     private List<Integer> genomeList;
     public int actualGenomeIndex;
-    public int energyToBreed;
-    private final int energyToFull = 10;
-    private int mapMode;
-    private int mutationMode;
-    private int behaviourMode;
+    public int energyUsedForBreeding;
+    public int mapMode;
+    public int mutationMode;
+    public int behaviourMode;
+    public int relativeEnergy;
 
 
 
@@ -41,7 +41,7 @@ public class Animal extends AbstractMapElement {
         this.map = map;
     }
 
-    public Animal(IWorldMap map, Vector2d initialPosition, int energy, int genomeLength, int energyToBreed, int mapMode, int mutationMode, int behaviourMode){
+    public Animal(IWorldMap map, Vector2d initialPosition, int energy, int genomeLength, int energyUsedForBreeding, int mapMode, int mutationMode, int behaviourMode){
         super(initialPosition);
         this.map = map;
         this.genomeLength = genomeLength;
@@ -49,28 +49,30 @@ public class Animal extends AbstractMapElement {
         this.orientation = MapDirection.randomDirection();
         this.actualGenomeIndex = -1;
         this.energy = energy;
-        this.energyToBreed = energyToBreed;
+        this.energyUsedForBreeding = energyUsedForBreeding;
         this.mapMode = mapMode; // 0 - kula ziemska, 1 - piekielny portal DONE
-        this.mutationMode = mutationMode; // 0 - brak mutacji, 1 - pelna losowosc, 2 - lekka korekta
+        this.mutationMode = mutationMode; // 0 - brak mutacji, 1 - pelna losowosc, 2 - lekka korekta DONE
         this.behaviourMode = behaviourMode; // 0 - pelna predestynacja, 1 - nieco szalenstwa DONE
         this.age = 0;
         this.kids = 0;
+        this.relativeEnergy = energy;
     }
 
     public Animal(Animal animal1, Animal animal2, Vector2d position){
         super(position);
-        this.energy = animal1.energyToBreed + animal2.energyToBreed;
+        this.energy = animal1.energyUsedForBreeding + animal2.energyUsedForBreeding;
         this.map = animal1.map;
         this.genomeLength = animal1.genomeLength;
         this.orientation = MapDirection.randomDirection();
-        this.actualGenomeIndex = 0; // Popraw
+        this.actualGenomeIndex = (int)(Math.random() * genomeLength);
         this.genomeList = parentsGenome(animal1, animal2);
-        this.energyToBreed = animal1.energyToBreed;
+        this.energyUsedForBreeding = animal1.energyUsedForBreeding;
         this.mapMode = animal1.mapMode;
         this.mutationMode = animal1.mutationMode;
         this.behaviourMode = animal1.behaviourMode;
         this.age = 0;
         this.kids = 0;
+        this.relativeEnergy = animal1.relativeEnergy;
 
     }
     public int getRandomNumber(){
@@ -134,16 +136,33 @@ public class Animal extends AbstractMapElement {
     public String getPath(IMapElement object){
         Animal animal = (Animal) object;
         MapDirection orientation = animal.orientation;
-        switch (orientation){
-            case N -> {return "src/main/resources/turtleN.jpg";}
-            case NE -> {return "src/main/resources/turtleNE.jpg";}
-            case E -> {return "src/main/resources/turtleE.jpg";}
-            case SE -> {return "src/main/resources/turtleSE.jpg";}
-            case S -> {return "src/main/resources/turtleS.jpg";}
-            case SW -> {return "src/main/resources/turtleSW.jpg";}
-            case W -> {return "src/main/resources/turtleW.jpg";}
-            case NW -> {return "src/main/resources/turtleNW.jpg";}
-            default -> {return "src/main/resources/turtleW.jpg";}
+
+        if(animal.energy < 0.5 * animal.relativeEnergy){
+            switch (orientation){
+                case N -> {return "src/main/resources/turtleNLowEnergy.jpg";}
+                case NE -> {return "src/main/resources/turtleNELowEnergy.jpg";}
+                case E -> {return "src/main/resources/turtleELowEnergy.jpg";}
+                case SE -> {return "src/main/resources/turtleSELowEnergy.jpg";}
+                case S -> {return "src/main/resources/turtleSLowEnergy.jpg";}
+                case SW -> {return "src/main/resources/turtleSWLowEnergy.jpg";}
+                case W -> {return "src/main/resources/turtleWLowEnergy.jpg";}
+                case NW -> {return "src/main/resources/turtleNWLowEnergy.jpg";}
+                default -> {return "src/main/resources/turtleWLowEnergy.jpg";}
+            }
+        }
+
+        else {
+            switch (orientation){
+                case N -> {return "src/main/resources/turtleN.jpg";}
+                case NE -> {return "src/main/resources/turtleNE.jpg";}
+                case E -> {return "src/main/resources/turtleE.jpg";}
+                case SE -> {return "src/main/resources/turtleSE.jpg";}
+                case S -> {return "src/main/resources/turtleS.jpg";}
+                case SW -> {return "src/main/resources/turtleSW.jpg";}
+                case W -> {return "src/main/resources/turtleW.jpg";}
+                case NW -> {return "src/main/resources/turtleNW.jpg";}
+                default -> {return "src/main/resources/turtleW.jpg";}
+            }
         }
     }
 
@@ -250,7 +269,7 @@ public class Animal extends AbstractMapElement {
             }
 
             rotate(false);
-            changeEnergy(-energyToBreed);
+            changeEnergy(-energyUsedForBreeding);
 
         }
 

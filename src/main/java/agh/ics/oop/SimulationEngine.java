@@ -3,27 +3,21 @@ package agh.ics.oop;
 import java.util.ArrayList;
 import java.io.FileNotFoundException;
 import java.util.Random;
-import java.util.concurrent.TimeUnit;
-
-import agh.ics.oop.gui.App;
-import javafx.application.Application;
-import javafx.application.Platform;
-import javafx.stage.Stage;
 
 public class SimulationEngine implements Runnable, IEngine {
     private final AbstractWorldMap map;
     private final int moveDelay;
-    private final String worldWarrant;
     private final ArrayList<ISimulationEngineObserver> observers = new ArrayList<ISimulationEngineObserver>();
     private int width;
     private int height;
-    private int energyToBreed;
-    private int energyToFull;
+    private int energyUsedForBreeding;
+    private int minEnergyToBreed;
     private int minNumOfMutations;
     private int maxNumOfMutations;
-    private String mutationWarrant;
-    private String behaviourWarrant;
-    private String plantGrowthWarrant;
+    private final int mapMode;
+    private int mutationMode;
+    private int behaviourMode;
+    private int plantGrowthMode;
     private int plantsNum;
     public int plantEnergy;
     private int plantsDaily;
@@ -32,8 +26,8 @@ public class SimulationEngine implements Runnable, IEngine {
     private int startingEnergy;
     private int counter = 0;
 
-    public SimulationEngine(AbstractWorldMap map, int moveDelay, int width, int height, int plantsNum,int plantEnergy,int plantsDaily,int animalsNum, int startingEnergy, int genomeLength, int energyToFull, int energyToBreed, int minNumOfMutations, int maxNumOfMutations,
-                            String mutationWarrant, String behaviourWarrant, String plantGrowthWarrant, String worldWarrant) {
+    public SimulationEngine(AbstractWorldMap map, int moveDelay, int width, int height, int plantsNum, int plantEnergy, int plantsDaily, int animalsNum, int startingEnergy, int genomeLength, int minEnergyToBreed, int energyUsedForBreeding, int minNumOfMutations, int maxNumOfMutations,
+                            int mutationMode, int behaviourMode, int plantGrowthMode, int mapMode) {
         this.map = map;
         this.moveDelay = moveDelay;
         this.width = width;
@@ -44,14 +38,14 @@ public class SimulationEngine implements Runnable, IEngine {
         this.animalsNum = animalsNum;
         this.startingEnergy = startingEnergy;
         this.genomeLength = genomeLength;
-        this.energyToFull = energyToFull;
-        this.energyToBreed = energyToBreed;
+        this.minEnergyToBreed = minEnergyToBreed;
+        this.energyUsedForBreeding = energyUsedForBreeding;
         this.minNumOfMutations = minNumOfMutations;
         this.maxNumOfMutations = maxNumOfMutations;
-        this.mutationWarrant = mutationWarrant;
-        this.behaviourWarrant = behaviourWarrant;
-        this.plantGrowthWarrant = plantGrowthWarrant;
-        this.worldWarrant = worldWarrant;
+        this.mutationMode = mutationMode;
+        this.behaviourMode = behaviourMode;
+        this.mapMode = mapMode;
+        this.plantGrowthMode = plantGrowthMode;
         addAnimalsToMap();
         map.spawnGrass(plantsNum);
     }
@@ -66,12 +60,10 @@ public class SimulationEngine implements Runnable, IEngine {
     }
     private void addAnimalsToMap() {
         for (int i = 0; i < this.animalsNum; i++) {
-            Animal animal = new Animal(map, getRandomVector(), startingEnergy, genomeLength, energyToBreed, 0, 0, 0);
+            Animal animal = new Animal(map, getRandomVector(), startingEnergy, genomeLength, energyUsedForBreeding, mapMode, mutationMode, behaviourMode);
             map.place(animal);
         }
     }
-
-
 
     @Override
     public void run() {
@@ -90,7 +82,9 @@ public class SimulationEngine implements Runnable, IEngine {
 
                     Animal animal = map.getAnimals().get(i);
 
+//                    System.out.println("mutation mode: " + animal.mutationMode + ", behaviour mode: " + animal.behaviourMode + ", map mode " + animal.mapMode + ", plant growth mode: " + map.plantGrowthMode);
                     animal.move();
+                    System.out.println(animal.relativeEnergy + " " + animal.energy);
                     mapChanged();
                 }
 
@@ -99,7 +93,6 @@ public class SimulationEngine implements Runnable, IEngine {
                 map.copulateThemAll();
                 map.spawnGrass(plantsDaily);
                 map.removeDeadAnimals();
-                System.out.println(map.deadAnimals);
                 mapChanged();
             }
 

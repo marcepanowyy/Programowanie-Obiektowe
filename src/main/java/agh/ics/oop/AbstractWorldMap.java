@@ -6,7 +6,7 @@ public class AbstractWorldMap implements IWorldMap, IPositionChangeObserver {
 
     protected final MapVisualizer mapVisualizer;
     protected final Map<Vector2d, IMapElement> mapElements = new HashMap<>();
-    private final String plantGrowthWarrant;
+    public final int plantGrowthMode;
     protected Set<IMapElement> newMapElements = new HashSet<>();
 
     //map elements
@@ -36,16 +36,16 @@ public class AbstractWorldMap implements IWorldMap, IPositionChangeObserver {
     private int grassProfit;
     private int startAnimalsEnergy;
     //copulation
-    private final int energyToBreed;
-    private final int energyToFull = 1;
+    private final int energyUsedForBreeding;
+    private final int minEnergyToBreed = 1;
 
 
-    public AbstractWorldMap(int width, int height, int grassProfit, int energyToBreed, int startAnimalsEnergy, String plantGrowthWarrant) {
+    public AbstractWorldMap(int width, int height, int grassProfit, int energyUsedForBreeding, int startAnimalsEnergy, int plantGrowthMode) {
         this.mapVisualizer = new MapVisualizer(this);
         this.startAnimalsEnergy = startAnimalsEnergy;
         this.grassList = new LinkedList<>();
         this.animalsList = new LinkedList<>();
-        this.energyToBreed = energyToBreed;
+        this.energyUsedForBreeding = energyUsedForBreeding;
         this.grassProfit = grassProfit;
         this.lowerLeft = new Vector2d(0, 0);
         this.upperRight = new Vector2d(width, height);
@@ -54,7 +54,7 @@ public class AbstractWorldMap implements IWorldMap, IPositionChangeObserver {
         this.middleX = width / 2;
         this.middleY = height / 2;
         this.equatorFields = Math.round((height * width) * 0.2);
-        this.plantGrowthWarrant = plantGrowthWarrant;
+        this.plantGrowthMode = plantGrowthMode;
         getEquatorWidth();
     }
 
@@ -174,7 +174,7 @@ public class AbstractWorldMap implements IWorldMap, IPositionChangeObserver {
     }
 
     public void spawnGrass(int num){
-        if (plantGrowthWarrant.equals("zalesione równiki")) {
+        if (plantGrowthMode == 0) {
             for (int i = 0; i < num; i++) {
                 int chance = (int) (Math.random() * 10);
                 int counter = 0;
@@ -186,8 +186,8 @@ public class AbstractWorldMap implements IWorldMap, IPositionChangeObserver {
                         randomX = (int) ((Math.random() * (equatorEndX - equatorStartX)) + equatorStartX);
                         randomY = (int) ((Math.random() * (equatorEndY - equatorStartY)) + equatorStartY);
                     } else {
-                        randomX = (int) (Math.random() * width);
-                        randomY = (int) (Math.random() * height);
+                        randomX = (int) (Math.random() * (width+1));
+                        randomY = (int) (Math.random() * (height+1));
                     }
                     Vector2d randomPos = new Vector2d(randomX, randomY);
                     if (objectAt(randomPos) == null) {
@@ -215,8 +215,8 @@ public class AbstractWorldMap implements IWorldMap, IPositionChangeObserver {
                         randomY = vector2d.y;
                     }
                     else {
-                        randomX = (int) (Math.random() * width);
-                        randomY = (int) (Math.random() * height);
+                        randomX = (int) (Math.random() * (width+1));
+                        randomY = (int) (Math.random() * (height+1));
                     }
                     Vector2d randomPos = new Vector2d(randomX, randomY);
                     if (objectAt(randomPos) == null) {
@@ -300,10 +300,10 @@ public class AbstractWorldMap implements IWorldMap, IPositionChangeObserver {
             });
             Animal animal1 = l.getFirst();
             Animal animal2 = l.get(1);
-            if (animal1.energy >= energyToFull && animal2.energy >= energyToFull){
+            if (animal1.energy >= minEnergyToBreed && animal2.energy >= minEnergyToBreed){
                 Animal animal = new Animal(animal1, animal2, animal1.getPosition());
-                animal1.changeEnergy(-energyToBreed);
-                animal2.changeEnergy(-energyToBreed);
+                animal1.changeEnergy(-energyUsedForBreeding);
+                animal2.changeEnergy(-energyUsedForBreeding);
                 animal1.kids++;
                 animal2.kids++;
                 place(animal);
