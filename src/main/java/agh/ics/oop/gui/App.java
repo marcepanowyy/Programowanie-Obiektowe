@@ -26,7 +26,7 @@ public class App extends Application implements ISimulationEngineObserver {
     private int width;
 
 
-    public void start(Stage primaryStage) throws FileNotFoundException{
+    public void start(Stage primaryStage){
 
 
         TextField widthTextField = new TextField();
@@ -48,7 +48,6 @@ public class App extends Application implements ISimulationEngineObserver {
         TextField plantsDailyTextField = new TextField();
         plantsDailyTextField.setPromptText("Plants daily");
         GridPane.setConstraints(plantsDailyTextField, 0, 1);
-
 
         TextField animalsNumTextField = new TextField();
         animalsNumTextField.setPromptText("Number of starting animals");
@@ -98,8 +97,185 @@ public class App extends Application implements ISimulationEngineObserver {
         worldWarrantOption.setValue("Kula ziemska");
         GridPane.setConstraints(worldWarrantOption, 3, 3);
 
+        Button test1 = new Button("test1");
+        GridPane.setConstraints(test1, 0, 4);
+        test1.setOnAction(e -> {
+
+
+            widthTextField.setText("10");
+            heightTextField.setText("10");
+            plantsNumTextField.setText("5");
+            plantsEnergyTextField.setText("40");
+            plantsDailyTextField.setText("3");
+            animalsNumTextField.setText("5");
+            startingEnergyTextField.setText("40");
+            genomeLengthTextField.setText("5");
+            energyToFullTextField.setText("50");
+            energyToBreedTextField.setText("50");
+            minNumOfMutationsTextField.setText("5");
+            maxNumOfMutationsTextField.setText("5");
+            mutationWarrantOption.setValue("Brak mutacji");
+            behaviourWarrantOption.setValue("Pelna predestynacja");
+            plantGrowthWarrantOption.setValue("Zalesione rowniki");
+            worldWarrantOption.setValue("Kula ziemska");
+        });
+
+        Button test2 = new Button("test2");
+        GridPane.setConstraints(test2, 1, 4);
+        test2.setOnAction(e -> {
+
+            widthTextField.setText("10");
+            heightTextField.setText("10");
+            plantsNumTextField.setText("3");
+            plantsEnergyTextField.setText("10");
+            plantsDailyTextField.setText("2");
+            animalsNumTextField.setText("8");
+            startingEnergyTextField.setText("50");
+            genomeLengthTextField.setText("10");
+            energyToFullTextField.setText("40");
+            energyToBreedTextField.setText("100");
+            minNumOfMutationsTextField.setText("5");
+            maxNumOfMutationsTextField.setText("5");
+            mutationWarrantOption.setValue("Brak mutacji");
+            behaviourWarrantOption.setValue("Pelna predestynacja");
+            plantGrowthWarrantOption.setValue("Zalesione rowniki");
+            worldWarrantOption.setValue("Kula ziemska");
+        });
+
+        Button test3 = new Button("test3");
+        GridPane.setConstraints(test3, 2, 4);
+        test3.setOnAction(e -> {
+
+            widthTextField.setText("10");
+            heightTextField.setText("10");
+            plantsNumTextField.setText("3");
+            plantsEnergyTextField.setText("10");
+            plantsDailyTextField.setText("4");
+            animalsNumTextField.setText("10");
+            startingEnergyTextField.setText("1000");
+            genomeLengthTextField.setText("10");
+            energyToFullTextField.setText("40");
+            energyToBreedTextField.setText("50");
+            minNumOfMutationsTextField.setText("5");
+            maxNumOfMutationsTextField.setText("5");
+            mutationWarrantOption.setValue("Pelna losowosc");
+            behaviourWarrantOption.setValue("Nieco szalenstwa");
+            plantGrowthWarrantOption.setValue("Toksyczne trupy");
+            worldWarrantOption.setValue("Piekielny portal");
+        });
+
+        Button test4 = new Button("test4");
+        GridPane.setConstraints(test4, 3, 4);
+        test4.setOnAction(e -> {
+
+            widthTextField.setText("10");
+            heightTextField.setText("10");
+            plantsNumTextField.setText("0");
+            plantsEnergyTextField.setText("100");
+            plantsDailyTextField.setText("5");
+            animalsNumTextField.setText("8");
+            startingEnergyTextField.setText("1000");
+            genomeLengthTextField.setText("10");
+            energyToFullTextField.setText("50");
+            energyToBreedTextField.setText("50");
+            minNumOfMutationsTextField.setText("5");
+            maxNumOfMutationsTextField.setText("5");
+            mutationWarrantOption.setValue("Pelna losowosc");
+            behaviourWarrantOption.setValue("Nieco szalenstwa");
+            plantGrowthWarrantOption.setValue("Toksyczne trupy");
+            worldWarrantOption.setValue("Piekielny portal");
+        });
+
+        Button test5 = new Button("test5");
+        GridPane.setConstraints(test5, 0, 5);
+        test5.setOnAction(e -> {
+
+            widthTextField.setText("8");
+            heightTextField.setText("8");
+            plantsNumTextField.setText("0");
+            plantsEnergyTextField.setText("0");
+            plantsDailyTextField.setText("5");
+            animalsNumTextField.setText("5");
+            startingEnergyTextField.setText("600");
+            genomeLengthTextField.setText("20");
+            energyToFullTextField.setText("50");
+            energyToBreedTextField.setText("50");
+            minNumOfMutationsTextField.setText("15");
+            maxNumOfMutationsTextField.setText("15");
+            mutationWarrantOption.setValue("Pelna losowosc");
+            behaviourWarrantOption.setValue("Nieco szalenstwa");
+            plantGrowthWarrantOption.setValue("Toksyczne trupy");
+            worldWarrantOption.setValue("Piekielny portal");
+        });
+
+        Button test6 = new Button("test6");
+        GridPane.setConstraints(test6, 1, 5);
+        test6.setOnAction(e -> {
+
+            widthTextField.setText("4");
+            heightTextField.setText("4");
+            plantsNumTextField.setText("10");
+            plantsEnergyTextField.setText("10");
+            plantsDailyTextField.setText("4");
+            animalsNumTextField.setText("2");
+            startingEnergyTextField.setText("400");
+            genomeLengthTextField.setText("7");
+            energyToFullTextField.setText("50");
+            energyToBreedTextField.setText("50");
+            minNumOfMutationsTextField.setText("5");
+            maxNumOfMutationsTextField.setText("5");
+            mutationWarrantOption.setValue("Pelna losowosc");
+            behaviourWarrantOption.setValue("Nieco szalenstwa");
+            plantGrowthWarrantOption.setValue("Toksyczne trupy");
+            worldWarrantOption.setValue("Kula ziemska");
+        });
+
+        Button test7 = new Button("test7");
+        GridPane.setConstraints(test7, 2, 5);
+        test7.setOnAction(e -> {
+
+            widthTextField.setText("8");
+            heightTextField.setText("8");
+            plantsNumTextField.setText("10");
+            plantsEnergyTextField.setText("30");
+            plantsDailyTextField.setText("4");
+            animalsNumTextField.setText("6");
+            startingEnergyTextField.setText("100");
+            genomeLengthTextField.setText("10");
+            energyToFullTextField.setText("30");
+            energyToBreedTextField.setText("30");
+            minNumOfMutationsTextField.setText("25");
+            maxNumOfMutationsTextField.setText("25");
+            mutationWarrantOption.setValue("Brak mutacji");
+            behaviourWarrantOption.setValue("Nieco szalenstwa");
+            plantGrowthWarrantOption.setValue("Zalesione rowniki");
+            worldWarrantOption.setValue("Kula ziemska");
+        });
+
+        Button test8 = new Button("test8");
+        GridPane.setConstraints(test8, 3, 5);
+        test8.setOnAction(e -> {
+
+            widthTextField.setText("8");
+            heightTextField.setText("8");
+            plantsNumTextField.setText("10");
+            plantsEnergyTextField.setText("200");
+            plantsDailyTextField.setText("1");
+            animalsNumTextField.setText("5");
+            startingEnergyTextField.setText("500");
+            genomeLengthTextField.setText("4");
+            energyToFullTextField.setText("10");
+            energyToBreedTextField.setText("10");
+            minNumOfMutationsTextField.setText("5");
+            maxNumOfMutationsTextField.setText("5");
+            mutationWarrantOption.setValue("Brak mutacji");
+            behaviourWarrantOption.setValue("Pelna predestynacja");
+            plantGrowthWarrantOption.setValue("Toksyczne trupy");
+            worldWarrantOption.setValue("Piekielny portal");
+        });
+
         Button start = new Button("start");
-        GridPane.setConstraints(start, 0, 4);
+        GridPane.setConstraints(start, 0, 6);
 
         start.setOnAction(e -> {
             this.width = Integer.parseInt(widthTextField.getText());
@@ -114,14 +290,12 @@ public class App extends Application implements ISimulationEngineObserver {
             int energyUsedForBreeding = Integer.parseInt(energyToBreedTextField.getText());
             int minNumOfMutations = Integer.parseInt(minNumOfMutationsTextField.getText());
             int maxNumOfMutations = Integer.parseInt(maxNumOfMutationsTextField.getText());
-
             int mutationMode = mutationWarrantOption.getSelectionModel().getSelectedItem() == "Brak mutacji" ? 0 : (mutationWarrantOption.getSelectionModel().getSelectedItem() == "Pelna losowosc" ? 1 : 2);
             int behaviourMode = behaviourWarrantOption.getSelectionModel().getSelectedItem() == "Pelna predestynacja" ? 0 : 1;
             int plantGrowthMode = plantGrowthWarrantOption.getSelectionModel().getSelectedItem() == "Zalesione rowniki" ? 0 : 1;
             int mapMode = worldWarrantOption.getSelectionModel().getSelectedItem() == "Kula ziemska" ? 0 : 1;
 
             this.map = new AbstractWorldMap(this.width, this.height, plantEnergy, energyUsedForBreeding, startingEnergy, plantGrowthMode);
-
 
             this.engine = new SimulationEngine(this.map, 50, this.width, this.height, plantsNum, plantEnergy, plantsDaily, animalsNum, startingEnergy,  genomeLength,  minEnergyToBreed,  energyUsedForBreeding,  minNumOfMutations,  maxNumOfMutations,
                     mutationMode, behaviourMode, plantGrowthMode, mapMode);
@@ -140,8 +314,7 @@ public class App extends Application implements ISimulationEngineObserver {
         gridPane1.setPadding(new Insets(10, 10, 10, 10));
         gridPane1.setAlignment(Pos.BOTTOM_CENTER);
         gridPane1.getChildren().addAll(widthTextField, heightTextField, plantsNumTextField, plantsEnergyTextField, plantsDailyTextField, animalsNumTextField, startingEnergyTextField,
-//                genomeLengthTextField, energyToFullTextField, energyToBreedTextField, minNumOfMutationsTextField, maxNumOfMutationsTextField, mutationWarrantTextField, behaviourWarrantTextField, plantGrowthWarrantTextField, worldWarrantTextField, start);
-                genomeLengthTextField, energyToFullTextField, energyToBreedTextField, minNumOfMutationsTextField, maxNumOfMutationsTextField, mutationWarrantOption, behaviourWarrantOption, plantGrowthWarrantOption, worldWarrantOption, start);
+                genomeLengthTextField, energyToFullTextField, energyToBreedTextField, minNumOfMutationsTextField, maxNumOfMutationsTextField, mutationWarrantOption, behaviourWarrantOption, plantGrowthWarrantOption, worldWarrantOption, start, test1, test2, test3, test4, test5, test6, test7, test8);
 
         VBox vbox = new VBox(gridPane, gridPane1);
 
@@ -150,7 +323,6 @@ public class App extends Application implements ISimulationEngineObserver {
         primaryStage.show();
 
     }
-
     private void makeScene() throws FileNotFoundException {
 
         elementsList = map.getNewMapElements();
@@ -200,7 +372,6 @@ public class App extends Application implements ISimulationEngineObserver {
             GridPane.setHalignment(yAxisNumber, HPos.CENTER);
         }
     }
-
     @Override
     public void mapChanged() {
         Platform.runLater(() -> {
@@ -213,11 +384,9 @@ public class App extends Application implements ISimulationEngineObserver {
             }
         });
     }
-
     public int getWidth(){
         return this.width;
     }
-
     public int getHeight(){
         return this.height;
     }

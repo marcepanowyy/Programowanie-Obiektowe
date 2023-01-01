@@ -32,8 +32,6 @@ public class SimulationEngine implements Runnable, IEngine {
     private int averageEnergy = 0;
     private int allFields;
 
-
-
     public SimulationEngine(AbstractWorldMap map, int moveDelay, int width, int height, int plantsNum, int plantEnergy, int plantsDaily, int animalsNum, int startingEnergy, int genomeLength, int minEnergyToBreed, int energyUsedForBreeding, int minNumOfMutations, int maxNumOfMutations,
                             int mutationMode, int behaviourMode, int plantGrowthMode, int mapMode) {
         this.map = map;
@@ -59,23 +57,18 @@ public class SimulationEngine implements Runnable, IEngine {
         map.spawnGrass(plantsNum);
         Arrays.fill(this.array, 0);
     }
-
     public Vector2d getRandomVector() {
-
         Random rand = new Random();
         int x = rand.nextInt(this.width);
         int y = rand.nextInt(this.height);
         return new Vector2d(x, y);
-
     }
-
     private void addAnimalsToMap() {
         for (int i = 0; i < this.animalsNum; i++) {
             Animal animal = new Animal(map, getRandomVector(), startingEnergy, genomeLength, energyUsedForBreeding, mapMode, mutationMode, behaviourMode);
             map.place(animal);
         }
     }
-
     @Override
     public void run() {
 
@@ -86,8 +79,7 @@ public class SimulationEngine implements Runnable, IEngine {
             for (int i = 0; i < map.getAnimals().size(); i++) {
 
                 try {
-//                    Thread.sleep(this.moveDelay);
-                    Thread.sleep( 500 / map.animalsAliveCount);
+                    Thread.sleep(50);
 
                 } catch (InterruptedException e) {
                     e.printStackTrace();
@@ -99,7 +91,6 @@ public class SimulationEngine implements Runnable, IEngine {
                 if (animal.energy > 0){
                     averageEnergy += animal.energy;
                 }
-//                mapChanged();
             }
 
             counter++;
@@ -113,14 +104,11 @@ public class SimulationEngine implements Runnable, IEngine {
             averageEnergy = 0;
             mapChanged();
 
-
         }
     }
-
     public void addObserver(ISimulationEngineObserver observer) {
         this.observers.add(observer);
     }
-
     public void mapChanged() {
         for (ISimulationEngineObserver observer : observers) {
             try {
