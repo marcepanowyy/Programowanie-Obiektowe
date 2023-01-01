@@ -38,6 +38,9 @@ public class AbstractWorldMap implements IWorldMap, IPositionChangeObserver {
     //copulation
     private final int energyUsedForBreeding;
     private final int minEnergyToBreed = 1;
+    public int grassCount;
+    public int animalsAliveCount;
+    public int animalsDeadCount;
 
 
     public AbstractWorldMap(int width, int height, int grassProfit, int energyUsedForBreeding, int startAnimalsEnergy, int plantGrowthMode) {
@@ -55,6 +58,9 @@ public class AbstractWorldMap implements IWorldMap, IPositionChangeObserver {
         this.middleY = height / 2;
         this.equatorFields = Math.round((height * width) * 0.2);
         this.plantGrowthMode = plantGrowthMode;
+        this.grassCount = 0;
+        this.animalsAliveCount = 0;
+        this.animalsDeadCount = 0;
         getEquatorWidth();
     }
 
@@ -80,7 +86,6 @@ public class AbstractWorldMap implements IWorldMap, IPositionChangeObserver {
 
     @Override
     public void positionChanged(Vector2d oldPosition, Vector2d newPosition, Object a){
-
         removeAnimal((Animal) a, oldPosition);
         addAnimal((Animal) a, newPosition);
     }
@@ -90,15 +95,16 @@ public class AbstractWorldMap implements IWorldMap, IPositionChangeObserver {
 
         Vector2d position = element.getPosition();
 
-        if (element instanceof Grass) {
-            if (grass.get(position) == null)
-                grass.put(position, (Grass) element);
-            grassList.add((Grass) element);
-        }
+//        if (element instanceof Grass) {
+//            if (grass.get(position) == null)
+//                grass.put(position, (Grass) element);
+//            grassList.add((Grass) element);
+//        }
         if (element instanceof Animal) {
             addAnimal((Animal) element, position);
             animalsList.add((Animal) element);
             element.addObserver(this);
+            animalsAliveCount += 1;
         }
 
     }
@@ -112,6 +118,8 @@ public class AbstractWorldMap implements IWorldMap, IPositionChangeObserver {
                 removeAnimal(a, a.getPosition());
                 a.removeObserver(this);
                 animalsList.remove(a);
+                animalsAliveCount -= 1;
+                animalsDeadCount += 1;
             }
         }
     }
@@ -148,7 +156,6 @@ public class AbstractWorldMap implements IWorldMap, IPositionChangeObserver {
         else if (l.size() == 0) return grass.get(position);
         else return l.getFirst();
     }
-
 
     public boolean isOccupied(Vector2d position) {
         return mapElements.containsKey(position);
@@ -198,6 +205,7 @@ public class AbstractWorldMap implements IWorldMap, IPositionChangeObserver {
                         break;
                     }
                 }
+                grassCount += 1;
             }
         }
         else {
@@ -227,6 +235,7 @@ public class AbstractWorldMap implements IWorldMap, IPositionChangeObserver {
                         break;
                     }
                 }
+                grassCount += 1;
             }
 
         }
@@ -252,10 +261,6 @@ public class AbstractWorldMap implements IWorldMap, IPositionChangeObserver {
         return animalsList;
     }
 
-    public LinkedList<Grass> getGrass() {
-        return grassList;
-    }
-
     public void eatGrassOnPosition(Vector2d position){
         LinkedList<Animal> l = animals.get(position);
         if (grass.get(position) == null){
@@ -264,6 +269,7 @@ public class AbstractWorldMap implements IWorldMap, IPositionChangeObserver {
         else if(l.size() == 1){
             l.getFirst().changeEnergy(grassProfit);
             grass.remove(position);
+            grassCount -= 1;
         }
         else {
             Collections.sort(l, new Comparator<Animal>() {
@@ -283,6 +289,7 @@ public class AbstractWorldMap implements IWorldMap, IPositionChangeObserver {
             });
             l.getFirst().changeEnergy(grassProfit);
             grass.remove(position);
+            grassCount -= 1;
         }
     }
 

@@ -1,7 +1,7 @@
 package agh.ics.oop;
 
+import java.io.*;
 import java.util.ArrayList;
-import java.io.FileNotFoundException;
 import java.util.Random;
 
 public class SimulationEngine implements Runnable, IEngine {
@@ -50,7 +50,7 @@ public class SimulationEngine implements Runnable, IEngine {
         map.spawnGrass(plantsNum);
     }
 
-    public Vector2d getRandomVector(){
+    public Vector2d getRandomVector() {
 
         Random rand = new Random();
         int x = rand.nextInt(this.width);
@@ -58,6 +58,7 @@ public class SimulationEngine implements Runnable, IEngine {
         return new Vector2d(x, y);
 
     }
+
     private void addAnimalsToMap() {
         for (int i = 0; i < this.animalsNum; i++) {
             Animal animal = new Animal(map, getRandomVector(), startingEnergy, genomeLength, energyUsedForBreeding, mapMode, mutationMode, behaviourMode);
@@ -68,37 +69,36 @@ public class SimulationEngine implements Runnable, IEngine {
     @Override
     public void run() {
 
-        if(map.getAnimals().size() != 0) {
-            while (true) {
-                for (int i = 0; i < map.getAnimals().size(); i++) {
+        WriteToCSV.saveRecord("day count", "animals alive count", " animals dead count", "grass count", "statistics.csv");
+        WriteToCSV.saveRecord(Integer.toString(counter), Integer.toString(map.animalsAliveCount), Integer.toString(map.animalsDeadCount), Integer.toString(map.grassCount), "statistics.csv");
 
-                    try {
-//                        Thread.sleep(this.moveDelay);
-                        Thread.sleep(300);
+        while (map.getAnimals().size() > 0) {
+            for (int i = 0; i < map.getAnimals().size(); i++) {
 
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
+                try {
+//                    Thread.sleep(this.moveDelay);
+                    Thread.sleep( 500 / map.animalsAliveCount);
 
-                    Animal animal = map.getAnimals().get(i);
-
-//                    System.out.println("mutation mode: " + animal.mutationMode + ", behaviour mode: " + animal.behaviourMode + ", map mode " + animal.mapMode + ", plant growth mode: " + map.plantGrowthMode);
-                    animal.move();
-                    System.out.println(animal.relativeEnergy + " " + animal.energy);
-                    mapChanged();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
                 }
 
-                counter++;
-                map.feedThemALL();
-                map.copulateThemAll();
-                map.spawnGrass(plantsDaily);
-                map.removeDeadAnimals();
-                mapChanged();
+                Animal animal = map.getAnimals().get(i);
+                animal.move();
+//                mapChanged();
             }
 
-        }
+            counter++;
+            map.feedThemALL();
+            map.copulateThemAll();
+            map.spawnGrass(plantsDaily);
+            map.removeDeadAnimals();
+            WriteToCSV.saveRecord(Integer.toString(counter), Integer.toString(map.animalsAliveCount), Integer.toString(map.animalsDeadCount), Integer.toString(map.grassCount), "statistics.csv");
+            mapChanged();
 
+        }
     }
+
     public void addObserver(ISimulationEngineObserver observer) {
         this.observers.add(observer);
     }
@@ -112,4 +112,5 @@ public class SimulationEngine implements Runnable, IEngine {
             }
         }
     }
+
 }

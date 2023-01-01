@@ -19,11 +19,6 @@ public class Animal extends AbstractMapElement {
     public int behaviourMode;
     public int relativeEnergy;
 
-
-
-    // mode 0 - kula ziemska
-    // mode 1 - piekielny portal
-
     public String toString(){
         return switch(this.orientation){
             case N -> "^";
@@ -40,7 +35,6 @@ public class Animal extends AbstractMapElement {
         super(new Vector2d(0, 0));
         this.map = map;
     }
-
     public Animal(IWorldMap map, Vector2d initialPosition, int energy, int genomeLength, int energyUsedForBreeding, int mapMode, int mutationMode, int behaviourMode){
         super(initialPosition);
         this.map = map;
@@ -57,7 +51,6 @@ public class Animal extends AbstractMapElement {
         this.kids = 0;
         this.relativeEnergy = energy;
     }
-
     public Animal(Animal animal1, Animal animal2, Vector2d position){
         super(position);
         this.energy = animal1.energyUsedForBreeding + animal2.energyUsedForBreeding;
@@ -85,7 +78,6 @@ public class Animal extends AbstractMapElement {
         }
         return newGenome;
     }
-
     public List<Integer> parentsGenome(Animal animal1, Animal animal2){
         int energySum = animal1.energy + animal2.energy;
         float x = (float) energySum / animal1.energy;
@@ -171,12 +163,10 @@ public class Animal extends AbstractMapElement {
         actualGenomeIndex = (actualGenomeIndex+1) % this.genomeLength;
         return this.genomeList.get(actualGenomeIndex);
     }
-
     public void randomChangeGenomeIndex(){
         Random rand = new Random();
         actualGenomeIndex = rand.nextInt(this.genomeList.size());
     }
-
 
     // rotation
     public void rotate(boolean changeDirection){
@@ -198,7 +188,7 @@ public class Animal extends AbstractMapElement {
             else rotation = Math.floorMod(rotation-1, 8);
         }
 
-        if(changeDirection) rotation = 4; // change direction when animal enters pole area
+        if(changeDirection && this.mapMode == 0) rotation = 4; // change direction when animal enters pole area
 
         for (int i = 1; i <= rotation; i++) {
             this.orientation = this.orientation.next();
@@ -208,7 +198,6 @@ public class Animal extends AbstractMapElement {
     }
 
 //    observers
-
     public void addObserver(IPositionChangeObserver observer) {
         observerlist.add(observer);
     }
@@ -223,7 +212,6 @@ public class Animal extends AbstractMapElement {
     }
 
     // moving
-
     public void move() {
 
 
@@ -282,7 +270,6 @@ public class Animal extends AbstractMapElement {
     public boolean isDead() {
         return this.energy <= 0;
     }
-
     public void changeEnergy(int value) {
         this.energy = this.energy + value;
     }

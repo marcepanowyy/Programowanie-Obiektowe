@@ -1,0 +1,16 @@
+Width: 10;
+Height: 10;
+Opening number of plants: 3;
+Plant energy: 10;
+Plants daily: 5;
+Number of starting animals: 6;
+Starting energy: 40;
+Genome length: 10;
+Min Energy To Breed: 5;
+Energy Used For Breeding: 5;
+Min Number of mutations: 5;
+Max Number of mutations: 5;
+Brak pelna losowosc;
+Pelna nieco szalenstwa;
+toksyczne trupy;
+piekielny portal;

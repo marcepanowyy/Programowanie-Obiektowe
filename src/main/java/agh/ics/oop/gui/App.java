@@ -115,17 +115,15 @@ public class App extends Application implements ISimulationEngineObserver {
             int minNumOfMutations = Integer.parseInt(minNumOfMutationsTextField.getText());
             int maxNumOfMutations = Integer.parseInt(maxNumOfMutationsTextField.getText());
 
-
             int mutationMode = mutationWarrantOption.getSelectionModel().getSelectedItem() == "Brak mutacji" ? 0 : (mutationWarrantOption.getSelectionModel().getSelectedItem() == "Pelna losowosc" ? 1 : 2);
             int behaviourMode = behaviourWarrantOption.getSelectionModel().getSelectedItem() == "Pelna predestynacja" ? 0 : 1;
             int plantGrowthMode = plantGrowthWarrantOption.getSelectionModel().getSelectedItem() == "Zalesione rowniki" ? 0 : 1;
             int mapMode = worldWarrantOption.getSelectionModel().getSelectedItem() == "Kula ziemska" ? 0 : 1;
 
-
             this.map = new AbstractWorldMap(this.width, this.height, plantEnergy, energyUsedForBreeding, startingEnergy, plantGrowthMode);
 
 
-            this.engine = new SimulationEngine(this.map, 500, this.width, this.height, plantsNum, plantEnergy, plantsDaily, animalsNum, startingEnergy,  genomeLength,  minEnergyToBreed,  energyUsedForBreeding,  minNumOfMutations,  maxNumOfMutations,
+            this.engine = new SimulationEngine(this.map, 50, this.width, this.height, plantsNum, plantEnergy, plantsDaily, animalsNum, startingEnergy,  genomeLength,  minEnergyToBreed,  energyUsedForBreeding,  minNumOfMutations,  maxNumOfMutations,
                     mutationMode, behaviourMode, plantGrowthMode, mapMode);
             engine.addObserver(this);
 
