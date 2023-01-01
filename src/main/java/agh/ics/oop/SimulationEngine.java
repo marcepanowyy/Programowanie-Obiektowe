@@ -32,6 +32,7 @@ public class SimulationEngine implements Runnable, IEngine {
     private int averageEnergy = 0;
     private int allFields;
 
+
     public SimulationEngine(AbstractWorldMap map, int moveDelay, int width, int height, int plantsNum, int plantEnergy, int plantsDaily, int animalsNum, int startingEnergy, int genomeLength, int minEnergyToBreed, int energyUsedForBreeding, int minNumOfMutations, int maxNumOfMutations,
                             int mutationMode, int behaviourMode, int plantGrowthMode, int mapMode) {
         this.map = map;
@@ -79,7 +80,7 @@ public class SimulationEngine implements Runnable, IEngine {
             for (int i = 0; i < map.getAnimals().size(); i++) {
 
                 try {
-                    Thread.sleep(50);
+                    Thread.sleep(200);
 
                 } catch (InterruptedException e) {
                     e.printStackTrace();
@@ -90,6 +91,9 @@ public class SimulationEngine implements Runnable, IEngine {
                 array[animal.mostPopularGen] += 1;
                 if (animal.energy > 0){
                     averageEnergy += animal.energy;
+                }
+                if (animal.followed){
+                    animal.follow(counter);
                 }
             }
 

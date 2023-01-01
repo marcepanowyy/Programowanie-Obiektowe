@@ -24,6 +24,8 @@ public class App extends Application implements ISimulationEngineObserver {
     private Set<IMapElement> elementsList;
     private int height;
     private int width;
+    private Animal animalFollowed;
+
 
 
     public void start(Stage primaryStage){
@@ -355,6 +357,17 @@ public class App extends Application implements ISimulationEngineObserver {
                 Object object = this.map.objectAt(new Vector2d(i, endY + startY - j));
                 if (object != null) {
                     VBox el = new GuiElementBox((IMapElement) object).getvBox();
+                    if (object instanceof Animal){
+                    el.setOnMouseClicked(event -> {if (animalFollowed == null){
+                        animalFollowed = (Animal) object;
+                        animalFollowed.followed = true;
+                    }
+                    else {
+                        animalFollowed.followed = false;
+                        animalFollowed = (Animal) object;
+                        animalFollowed.followed = true;
+                    }
+                    });}
                     gridPane.add(el, i+1 - lowerLeft.getX(), j+1 -lowerLeft.getY());
                     GridPane.setHalignment(el, HPos.CENTER);
                 }

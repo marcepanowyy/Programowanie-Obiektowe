@@ -19,6 +19,8 @@ public class Animal extends AbstractMapElement {
     public int behaviourMode;
     public int relativeEnergy;
     public int mostPopularGen;
+    public boolean followed;
+    public int grassEaten;
 
     public String toString(){
         return switch(this.orientation){
@@ -42,7 +44,7 @@ public class Animal extends AbstractMapElement {
         this.genomeLength = genomeLength;
         this.genomeList = generateRandomGenome();
         this.orientation = MapDirection.randomDirection();
-        this.actualGenomeIndex = -1;
+        this.actualGenomeIndex = 0;
         this.energy = energy;
         this.energyUsedForBreeding = energyUsedForBreeding;
         this.mapMode = mapMode; // 0 - kula ziemska, 1 - piekielny portal DONE
@@ -52,6 +54,8 @@ public class Animal extends AbstractMapElement {
         this.kids = 0;
         this.relativeEnergy = energy;
         this.mostPopularGen = mostPopularGenotype();
+        this.followed = false;
+        this.grassEaten = 0;
     }
     public Animal(Animal animal1, Animal animal2, Vector2d position){
         super(position);
@@ -69,6 +73,8 @@ public class Animal extends AbstractMapElement {
         this.kids = 0;
         this.relativeEnergy = animal1.relativeEnergy;
         this.mostPopularGen = mostPopularGenotype();
+        this.followed = false;
+        this.grassEaten = 0;
     }
     public int getRandomNumber(){
         return (int)(Math.random() * 8);
@@ -144,7 +150,9 @@ public class Animal extends AbstractMapElement {
                 default -> {return "src/main/resources/turtleWLowEnergy.jpg";}
             }
         }
-
+        else if(animal.followed){
+            return "src/main/resources/img.png";
+        }
         else {
             switch (orientation){
                 case N -> {return "src/main/resources/turtleN.jpg";}
@@ -290,4 +298,22 @@ public class Animal extends AbstractMapElement {
         return largest;
     }
 
+    public void follow(int day){
+        System.out.print("genom: ");
+        System.out.println(genomeList.get(actualGenomeIndex));
+        System.out.print("genom index");
+        System.out.println(actualGenomeIndex);
+        System.out.print("energy: ");
+        System.out.println(energy);
+        System.out.print("grass eatean: ");
+        System.out.println(grassEaten);
+        System.out.print("kids: ");
+        System.out.println(kids);
+        System.out.print("age: ");
+        System.out.println(age);
+        if (energy < 0){
+            System.out.print("Rip died day: ");
+            System.out.println(day);
+        }
+    }
 }

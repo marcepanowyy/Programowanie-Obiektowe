@@ -267,6 +267,7 @@ public class AbstractWorldMap implements IWorldMap, IPositionChangeObserver {
         }
         else if(l.size() == 1){
             l.getFirst().changeEnergy(grassProfit);
+            l.getFirst().grassEaten++;
             grass.remove(position);
             grassCount -= 1;
         }
@@ -287,6 +288,7 @@ public class AbstractWorldMap implements IWorldMap, IPositionChangeObserver {
                 }
             });
             l.getFirst().changeEnergy(grassProfit);
+            l.getFirst().grassEaten++;
             grass.remove(position);
             grassCount -= 1;
         }
