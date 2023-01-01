@@ -137,7 +137,10 @@ public class Animal extends AbstractMapElement {
         Animal animal = (Animal) object;
         MapDirection orientation = animal.orientation;
 
-        if(animal.energy < 0.5 * animal.relativeEnergy){
+        if(animal.followed){
+            return "src/main/resources/img.png";
+        }
+        else if(animal.energy < 0.5 * animal.relativeEnergy){
             switch (orientation){
                 case N -> {return "src/main/resources/turtleNLowEnergy.jpg";}
                 case NE -> {return "src/main/resources/turtleNELowEnergy.jpg";}
@@ -149,9 +152,6 @@ public class Animal extends AbstractMapElement {
                 case NW -> {return "src/main/resources/turtleNWLowEnergy.jpg";}
                 default -> {return "src/main/resources/turtleWLowEnergy.jpg";}
             }
-        }
-        else if(animal.followed){
-            return "src/main/resources/img.png";
         }
         else {
             switch (orientation){
