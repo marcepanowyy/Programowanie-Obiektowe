@@ -80,7 +80,7 @@ public class SimulationEngine implements Runnable, IEngine {
             for (int i = 0; i < map.getAnimals().size(); i++) {
 
                 try {
-                    Thread.sleep(200);
+                    Thread.sleep(50);
 
                 } catch (InterruptedException e) {
                     e.printStackTrace();
