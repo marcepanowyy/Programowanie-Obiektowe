@@ -277,6 +277,13 @@ public class App extends Application implements ISimulationEngineObserver {
         Button start = new Button("start");
         GridPane.setConstraints(start, 0, 6);
 
+
+        GridPane gridPane1 = new GridPane();
+        gridPane1.setPadding(new Insets(10, 10, 10, 10));
+        gridPane1.setAlignment(Pos.BOTTOM_CENTER);
+        gridPane1.getChildren().addAll(widthTextField, heightTextField, plantsNumTextField, plantsEnergyTextField, plantsDailyTextField, animalsNumTextField, startingEnergyTextField,
+                genomeLengthTextField, energyToFullTextField, energyToBreedTextField, minNumOfMutationsTextField, maxNumOfMutationsTextField, mutationWarrantOption, behaviourWarrantOption, plantGrowthWarrantOption, worldWarrantOption, start, test1, test2, test3, test4, test5, test6, test7, test8);
+
         start.setOnAction(e -> {
             this.width = Integer.parseInt(widthTextField.getText());
             this.height = Integer.parseInt(heightTextField.getText());
@@ -295,6 +302,8 @@ public class App extends Application implements ISimulationEngineObserver {
             int plantGrowthMode = plantGrowthWarrantOption.getSelectionModel().getSelectedItem() == "Zalesione rowniki" ? 0 : 1;
             int mapMode = worldWarrantOption.getSelectionModel().getSelectedItem() == "Kula ziemska" ? 0 : 1;
 
+            gridPane1.getChildren().removeAll(test1, test2, test3, test4, test5, test6, test7, test8);
+
             this.map = new AbstractWorldMap(this.width, this.height, plantEnergy, energyUsedForBreeding, startingEnergy, plantGrowthMode);
 
             this.engine = new SimulationEngine(this.map, 50, this.width, this.height, plantsNum, plantEnergy, plantsDaily, animalsNum, startingEnergy,  genomeLength,  minEnergyToBreed,  energyUsedForBreeding,  minNumOfMutations,  maxNumOfMutations,
@@ -309,12 +318,6 @@ public class App extends Application implements ISimulationEngineObserver {
             Thread engineThread = new Thread(engine);
             engineThread.start();
         });
-
-        GridPane gridPane1 = new GridPane();
-        gridPane1.setPadding(new Insets(10, 10, 10, 10));
-        gridPane1.setAlignment(Pos.BOTTOM_CENTER);
-        gridPane1.getChildren().addAll(widthTextField, heightTextField, plantsNumTextField, plantsEnergyTextField, plantsDailyTextField, animalsNumTextField, startingEnergyTextField,
-                genomeLengthTextField, energyToFullTextField, energyToBreedTextField, minNumOfMutationsTextField, maxNumOfMutationsTextField, mutationWarrantOption, behaviourWarrantOption, plantGrowthWarrantOption, worldWarrantOption, start, test1, test2, test3, test4, test5, test6, test7, test8);
 
         VBox vbox = new VBox(gridPane, gridPane1);
 
