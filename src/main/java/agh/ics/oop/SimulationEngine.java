@@ -1,7 +1,9 @@
 package agh.ics.oop;
 
+import java.awt.image.AreaAveragingScaleFilter;
 import java.io.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Random;
 
 public class SimulationEngine implements Runnable, IEngine {
@@ -25,6 +27,12 @@ public class SimulationEngine implements Runnable, IEngine {
     private int genomeLength;
     private int startingEnergy;
     private int counter = 0;
+    private int mostPopularGen = -1;
+    private int array[] = new int[8];
+    private int averageEnergy = 0;
+    private int allFields;
+
+
 
     public SimulationEngine(AbstractWorldMap map, int moveDelay, int width, int height, int plantsNum, int plantEnergy, int plantsDaily, int animalsNum, int startingEnergy, int genomeLength, int minEnergyToBreed, int energyUsedForBreeding, int minNumOfMutations, int maxNumOfMutations,
                             int mutationMode, int behaviourMode, int plantGrowthMode, int mapMode) {
@@ -46,8 +54,10 @@ public class SimulationEngine implements Runnable, IEngine {
         this.behaviourMode = behaviourMode;
         this.mapMode = mapMode;
         this.plantGrowthMode = plantGrowthMode;
+        this.allFields = width * height;
         addAnimalsToMap();
         map.spawnGrass(plantsNum);
+        Arrays.fill(this.array, 0);
     }
 
     public Vector2d getRandomVector() {
@@ -69,8 +79,8 @@ public class SimulationEngine implements Runnable, IEngine {
     @Override
     public void run() {
 
-        WriteToCSV.saveRecord("day count", "animals alive count", " animals dead count", "grass count", "statistics.csv");
-        WriteToCSV.saveRecord(Integer.toString(counter), Integer.toString(map.animalsAliveCount), Integer.toString(map.animalsDeadCount), Integer.toString(map.grassCount), "statistics.csv");
+        WriteToCSV.saveRecord("day count", "animals alive count", " animals dead count", "grass count", "freeFields", "famousGenotype", "averageAnimalEnergy", "averageAnimalLifespan", "statistics.csv");
+        WriteToCSV.saveRecord(Integer.toString(counter), Integer.toString(map.animalsAliveCount), Integer.toString(map.animalsDeadCount), Integer.toString(map.grassCount), Integer.toString(allFields - map.countFreeFields()), Integer.toString(mostPopularGenotype()),  Integer.toString(startingEnergy), Integer.toString(map.averageLifespan()), "statistics.csv");
 
         while (map.getAnimals().size() > 0) {
             for (int i = 0; i < map.getAnimals().size(); i++) {
@@ -85,16 +95,24 @@ public class SimulationEngine implements Runnable, IEngine {
 
                 Animal animal = map.getAnimals().get(i);
                 animal.move();
+                array[animal.mostPopularGen] += 1;
+                if (animal.energy > 0){
+                    averageEnergy += animal.energy;
+                }
 //                mapChanged();
             }
 
             counter++;
             map.feedThemALL();
             map.copulateThemAll();
-            map.spawnGrass(plantsDaily);
             map.removeDeadAnimals();
-            WriteToCSV.saveRecord(Integer.toString(counter), Integer.toString(map.animalsAliveCount), Integer.toString(map.animalsDeadCount), Integer.toString(map.grassCount), "statistics.csv");
+            map.spawnGrass(plantsDaily);
+            WriteToCSV.saveRecord(Integer.toString(counter), Integer.toString(map.animalsAliveCount), Integer.toString(map.animalsDeadCount), Integer.toString(map.grassCount), Integer.toString(allFields - map.countFreeFields()), Integer.toString(mostPopularGenotype()), Integer.toString(map.averageEnergy(averageEnergy)), Integer.toString(map.averageLifespan()
+            ),"statistics.csv");
+            Arrays.fill(this.array, 0);
+            averageEnergy = 0;
             mapChanged();
+
 
         }
     }
@@ -111,6 +129,13 @@ public class SimulationEngine implements Runnable, IEngine {
                 ex.printStackTrace();
             }
         }
+    }
+    public int mostPopularGenotype(){
+        int largest = 0;
+        for (int i = 0; i < this.array.length; i++){
+            if (this.array[i] > this.array[largest]) {largest = i;}
+        }
+        return largest;
     }
 
 }

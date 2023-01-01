@@ -41,6 +41,8 @@ public class AbstractWorldMap implements IWorldMap, IPositionChangeObserver {
     public int grassCount;
     public int animalsAliveCount;
     public int animalsDeadCount;
+    public int deadAnimalsAgeCount;
+    public int notFreeFields;
 
 
     public AbstractWorldMap(int width, int height, int grassProfit, int energyUsedForBreeding, int startAnimalsEnergy, int plantGrowthMode) {
@@ -61,6 +63,7 @@ public class AbstractWorldMap implements IWorldMap, IPositionChangeObserver {
         this.grassCount = 0;
         this.animalsAliveCount = 0;
         this.animalsDeadCount = 0;
+        this.deadAnimalsAgeCount = 0;
         getEquatorWidth();
     }
 
@@ -94,17 +97,12 @@ public class AbstractWorldMap implements IWorldMap, IPositionChangeObserver {
     public void place(IMapElement element) throws IllegalArgumentException {
 
         Vector2d position = element.getPosition();
-
-//        if (element instanceof Grass) {
-//            if (grass.get(position) == null)
-//                grass.put(position, (Grass) element);
-//            grassList.add((Grass) element);
-//        }
         if (element instanceof Animal) {
             addAnimal((Animal) element, position);
             animalsList.add((Animal) element);
             element.addObserver(this);
             animalsAliveCount += 1;
+
         }
 
     }
@@ -120,6 +118,7 @@ public class AbstractWorldMap implements IWorldMap, IPositionChangeObserver {
                 animalsList.remove(a);
                 animalsAliveCount -= 1;
                 animalsDeadCount += 1;
+                deadAnimalsAgeCount += a.age;
             }
         }
     }
@@ -197,7 +196,7 @@ public class AbstractWorldMap implements IWorldMap, IPositionChangeObserver {
                         randomY = (int) (Math.random() * (height+1));
                     }
                     Vector2d randomPos = new Vector2d(randomX, randomY);
-                    if (objectAt(randomPos) == null) {
+                    if (objectAt(randomPos) instanceof Animal || objectAt(randomPos) == null) {
                         grass.put(randomPos, new Grass(randomPos));
                         break;
                     }
@@ -227,7 +226,7 @@ public class AbstractWorldMap implements IWorldMap, IPositionChangeObserver {
                         randomY = (int) (Math.random() * (height+1));
                     }
                     Vector2d randomPos = new Vector2d(randomX, randomY);
-                    if (objectAt(randomPos) == null) {
+                    if (objectAt(randomPos) instanceof Animal || objectAt(randomPos) == null) {
                         grass.put(randomPos, new Grass(randomPos));
                         break;
                     }
@@ -322,5 +321,29 @@ public class AbstractWorldMap implements IWorldMap, IPositionChangeObserver {
     public void copulateThemAll(){
         animals.forEach((key, value) -> copulate(key));
     }
+    public int countFreeFields(){
+        int counter = animals.size();
+        for (Map.Entry<Vector2d, Grass> entry : grass.entrySet()) {
+            if (animals.get(entry.getKey()) != null){
+                counter -= 1;
+            }
+        }
+        return counter;
+    }
+    public int averageLifespan(){
+        if (animalsDeadCount == 0){
+            return 0;
+        }
+        return deadAnimalsAgeCount / animalsDeadCount;
+    }
+
+    public int averageEnergy(int val){
+        if (animalsAliveCount > 0){
+            return val / animalsAliveCount;
+        }
+        return 0;
+
+    }
+
 
 }

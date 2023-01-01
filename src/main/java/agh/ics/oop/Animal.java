@@ -18,6 +18,7 @@ public class Animal extends AbstractMapElement {
     public int mutationMode;
     public int behaviourMode;
     public int relativeEnergy;
+    public int mostPopularGen;
 
     public String toString(){
         return switch(this.orientation){
@@ -50,6 +51,7 @@ public class Animal extends AbstractMapElement {
         this.age = 0;
         this.kids = 0;
         this.relativeEnergy = energy;
+        this.mostPopularGen = mostPopularGenotype();
     }
     public Animal(Animal animal1, Animal animal2, Vector2d position){
         super(position);
@@ -66,7 +68,7 @@ public class Animal extends AbstractMapElement {
         this.age = 0;
         this.kids = 0;
         this.relativeEnergy = animal1.relativeEnergy;
-
+        this.mostPopularGen = mostPopularGenotype();
     }
     public int getRandomNumber(){
         return (int)(Math.random() * 8);
@@ -274,5 +276,18 @@ public class Animal extends AbstractMapElement {
         this.energy = this.energy + value;
     }
 
+
+    public int mostPopularGenotype(){
+        int array[] = new int[8];
+        Arrays.fill(array, 0);
+        for (int i = 0; i < genomeLength; i++){
+            array[genomeList.get(i)] += 1;
+        }
+        int largest = 0;
+        for (int i = 0; i < array.length; i++){
+            if (array[i] > array[largest]) {largest = i;}
+        }
+        return largest;
+    }
 
 }
